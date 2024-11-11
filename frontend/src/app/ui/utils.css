@@ -18,5 +18,6 @@
 
 /* 애니메이션을 적용할 input 스타일 */
 input.shake {
-  animation: shake 0.5s ease-in-out;
+  animation: shake 0.4s ease-in-out;
+  border-color: red;
 }
