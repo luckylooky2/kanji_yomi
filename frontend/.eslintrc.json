@@ -1,0 +1,22 @@
+{
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    "no-undef": ["off"],
+    "no-console": ["warn"],
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          ["builtin", "external"],
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "newlines-between": "always",
+        "alphabetize": { "order": "asc" }
+      }
+    ]
+  }
+}
