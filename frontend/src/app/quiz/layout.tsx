@@ -3,7 +3,18 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <section>{children}</section>;
+  return (
+    <section
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "300px",
+        gap: "20px",
+      }}
+    >
+      {children}
+    </section>
+  );
 }
 
 // layout은 모든 라우트에 공통적으로 적용. 상태 값이 모든 페이지에 공통으로 적용됨
