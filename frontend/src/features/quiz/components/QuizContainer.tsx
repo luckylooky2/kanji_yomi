@@ -4,34 +4,63 @@ import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import { useAtomValue, useAtom } from "jotai";
 import { useState, useEffect } from "react";
 
+import { quizOptionDifficultyState } from "@/entities/option/store";
 import { playTTS } from "@/entities/quiz/lib/playTTS";
-import { database } from "@/shared/model/db";
-import { Kanji } from "@/shared/model/db";
+import {
+  quizCurrentKanjiState,
+  quizCurrentRoundState,
+  QuizQuestionDTO,
+} from "@/entities/quiz/model";
+import { API_URL, BASE_OPTIONS } from "@/shared/model";
 
 import AnswerForm from "./AnswerForm";
 
 const QuizContainer = () => {
-  const [kanji, setKanji] = useState<Kanji>(["", ""]);
-  const [word, answer] = kanji;
-
-  const random = () => {
-    const rand = Math.floor(Math.random() * 1000) % database.length;
-    setKanji(database[rand]);
-  };
-
-  useEffect(() => {
-    random();
-  }, []);
+  const difficulty = useAtomValue(quizOptionDifficultyState);
+  const currentRound = useAtomValue(quizCurrentRoundState);
+  const [kanji, setKanji] = useAtom<QuizQuestionDTO | null>(
+    quizCurrentKanjiState
+  );
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    // TODO: disabled 처리하기
     if ("speechSynthesis" in window) {
       console.log("Web Speech API supported!");
     } else {
       console.log("Web Speech API not supported :-(");
     }
   }, []);
+
+  async function fetchQuestion() {
+    setKanji(null);
+    const options = {
+      method: "POST",
+      body: JSON.stringify({ difficulty }),
+      ...BASE_OPTIONS,
+    };
+    try {
+      const response = await fetch(`${API_URL}/quiz/question`, options);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      setKanji(result);
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  useEffect(() => {
+    if (!kanji) {
+      fetchQuestion();
+    }
+  }, [currentRound]);
 
   return (
     <>
@@ -44,27 +73,35 @@ const QuizContainer = () => {
           height: "100px",
         }}
       >
-        <div style={{ fontSize: "50px" }}>{word}</div>
+        <div style={{ fontSize: "50px" }}>
+          {kanji ? kanji.word : "loading..."}
+        </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ButtonGroup variant="outlined" aria-label="Hint button group">
           <Button
             onClick={() => {
-              playTTS(answer);
+              if (!kanji) {
+                return;
+              }
+              playTTS(kanji.word);
             }}
           >
             <VolumeUpIcon />
           </Button>
           <Button
             onClick={() => {
-              window.open(`https://jisho.org/search/${word}`, "_blank");
+              if (!kanji) {
+                return;
+              }
+              window.open(`https://jisho.org/search/${kanji.word}`, "_blank");
             }}
           >
             <TravelExploreIcon />
           </Button>
         </ButtonGroup>
       </div>
-      <AnswerForm kanji={kanji} random={random} />
+      <AnswerForm random={fetchQuestion} />
     </>
   );
 };
