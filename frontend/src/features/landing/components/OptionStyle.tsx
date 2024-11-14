@@ -7,7 +7,7 @@ interface Props {
 
 const OptionStyle = ({ title, children }: Props) => {
   return (
-    <article>
+    <article style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
       <h3>{title}</h3>
       <div style={{ height: "50px", display: "flex", alignItems: "center" }}>
         {children}
