@@ -7,7 +7,7 @@ import { useAtom, useSetAtom } from "jotai";
 
 import {
   quizOptionRoundState,
-  quizOptionSourceState,
+  quizOptionDifficultyState,
 } from "@/entities/option/store";
 import { quizIsStartedState, QuizStatus } from "@/entities/quiz/model";
 import { RowRadioGroup } from "@/shared/components/withRowDirection";
@@ -16,23 +16,23 @@ import { ROUNDS, SOURCES } from "@/shared/model/db";
 import OptionStyle from "./OptionStyle";
 
 const QuizOptionSelect = () => {
-  const [source, setSource] = useAtom(quizOptionSourceState);
+  const [difficulty, setDifficulty] = useAtom(quizOptionDifficultyState);
   const [round, setRound] = useAtom(quizOptionRoundState);
   const setQuizStatus = useSetAtom(quizIsStartedState);
 
-  const handleSourceChange = ({
+  const handleDifficultyChange = ({
     currentTarget,
   }: {
     currentTarget: HTMLButtonElement;
   }) => {
-    const currSource = currentTarget.dataset.value as string;
-    let nextSource;
-    if (source.includes(currSource)) {
-      nextSource = source.filter((v) => v !== currSource);
+    const currDifficulty = currentTarget.dataset.value as string;
+    let nextDifficulty;
+    if (difficulty.includes(currDifficulty)) {
+      nextDifficulty = difficulty.filter((v) => v !== currDifficulty);
     } else {
-      nextSource = [...source, currSource];
+      nextDifficulty = [...difficulty, currDifficulty];
     }
-    setSource(nextSource);
+    setDifficulty(nextDifficulty);
   };
 
   const handleRoundChange = ({ target }: { target: HTMLInputElement }) => {
@@ -40,38 +40,31 @@ const QuizOptionSelect = () => {
   };
 
   const startQuiz = () => {
-    if (source.length) {
+    if (difficulty.length) {
       setQuizStatus(QuizStatus.ONGOING);
     } else {
     }
   };
 
   return (
-    <section
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: "300px",
-        gap: "20px",
-      }}
-    >
-      <form style={{ display: "flex", gap: "5px", flexDirection: "column" }}>
-        <OptionStyle title="단어 소스">
+    <>
+      <form style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
+        <OptionStyle title="Difficulties">
           <Stack direction="row" spacing={1}>
             {SOURCES.map((item, index) => (
               <Chip
                 key={index}
-                variant={source.includes(item) ? "filled" : "outlined"}
+                variant={difficulty.includes(item) ? "filled" : "outlined"}
                 color="primary"
                 component="button"
                 label={item}
                 data-value={item}
-                onClick={handleSourceChange}
+                onClick={handleDifficultyChange}
               />
             ))}
           </Stack>
         </OptionStyle>
-        <OptionStyle title="라운드">
+        <OptionStyle title="Rounds">
           <RowRadioGroup>
             {ROUNDS.map((item, index) => (
               <FormControlLabel
@@ -88,7 +81,7 @@ const QuizOptionSelect = () => {
       <Button onClick={startQuiz} variant="contained">
         quiz start
       </Button>
-    </section>
+    </>
   );
 };
 

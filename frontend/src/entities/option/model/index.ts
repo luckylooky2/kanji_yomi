@@ -1,4 +1,4 @@
 export type QuizOption = {
-  source: string[];
+  difficulty: string[];
   round: number;
 };
