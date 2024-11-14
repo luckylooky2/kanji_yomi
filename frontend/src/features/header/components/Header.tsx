@@ -5,10 +5,10 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <AppBar>
-      <Toolbar>
+    <AppBar style={{ position: "static" }}>
+      <Toolbar style={{ justifyContent: "center" }}>
         <Typography variant="h6" component="div">
-          <Link href="/">kanji yomu</Link>
+          <Link href="/quiz">kanji yomu</Link>
         </Typography>
       </Toolbar>
     </AppBar>
