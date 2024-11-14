@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import Header from "@/features/header/components/Header";
+import GlobalModal from "@/features/modal/components/GlobalModal";
 import BottomNavigation from "@/features/navigation/components/BottomNavigation";
+import Page from "@/shared/components/Page";
 
 import "./ui/globals.css";
-import styles from "./ui/page.module.css";
 
 const geistSans = localFont({
   src: "./ui/fonts/GeistVF.woff",
@@ -31,12 +32,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <GlobalModal>
+          <div>123</div>
+        </GlobalModal>
         <Header />
-        <div className={styles.page}>
-          <main className={styles.main}>{children}</main>
-        </div>
+        <main
+          style={{
+            margin: "50px",
+            display: "flex",
+            justifyContent: "center",
+            overflow: "auto",
+          }}
+        >
+          <Page>{children}</Page>
+        </main>
         <BottomNavigation />
-        <footer className={styles.footer}>Footer</footer>
+        {/* <footer className={styles.footer}>@luckylooky2</footer> */}
       </body>
     </html>
   );
