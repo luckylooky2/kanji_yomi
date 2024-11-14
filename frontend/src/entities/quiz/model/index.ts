@@ -16,5 +16,18 @@ export enum QuizStatus {
   RESULT = "2",
 }
 
+export type QuizQuestionDTO = {
+  id: number;
+  word: string;
+  difficulty: string;
+};
+
+export type QuizAnswerDTO = {
+  id: number;
+  result: boolean;
+  meaning: string;
+};
+
 export const quizCurrentRoundState = atom(0);
 export const quizIsStartedState = atom<QuizStatus>(QuizStatus.OPTION);
+export const quizCurrentKanjiState = atom<QuizQuestionDTO | null>(null);
