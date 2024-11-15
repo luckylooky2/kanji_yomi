@@ -8,7 +8,7 @@ import { useState } from "react";
 
 import { GlobalModalIsOpenState } from "@/entities/modal/store";
 
-const ToggleRegister = () => {
+const MywordRegisterToggle = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const setIsOpen = useSetAtom(GlobalModalIsOpenState);
   return (
@@ -28,4 +28,4 @@ const ToggleRegister = () => {
   );
 };
 
-export default ToggleRegister;
+export default MywordRegisterToggle;
