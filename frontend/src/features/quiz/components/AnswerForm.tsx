@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { useSetAtom, useAtomValue } from "jotai";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 
 import { quizOptionRoundState } from "@/entities/option/store";
@@ -18,11 +18,7 @@ import "../../../app/ui/utils.css";
 import useEventAPI from "@/shared/hooks/useEventAPI";
 import { API_URL, BASE_OPTIONS } from "@/shared/model";
 
-interface Props {
-  random: () => void;
-}
-
-const AnswerForm = ({ random }: Props) => {
+const AnswerForm = () => {
   const { register, handleSubmit, reset } = useForm<AnswerInputType>();
   const [, setStatus] = useState(AnswerStatus.BEFORE);
   const setCurrentRound = useSetAtom(quizCurrentRoundState);
@@ -34,7 +30,6 @@ const AnswerForm = ({ random }: Props) => {
   const { fetchData } = useEventAPI(`${API_URL}/quiz/answer`);
 
   const getNextQuestion = () => {
-    random();
     reset();
     setCurrentRound((prev) => {
       if (prev + 1 === maxRound) {

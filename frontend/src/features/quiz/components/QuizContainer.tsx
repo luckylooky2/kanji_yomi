@@ -57,9 +57,7 @@ const QuizContainer = () => {
   }
 
   useEffect(() => {
-    if (!kanji) {
-      fetchQuestion();
-    }
+    fetchQuestion();
   }, [currentRound]);
 
   return (
@@ -101,7 +99,7 @@ const QuizContainer = () => {
           </Button>
         </ButtonGroup>
       </div>
-      <AnswerForm random={fetchQuestion} />
+      <AnswerForm />
     </>
   );
 };
