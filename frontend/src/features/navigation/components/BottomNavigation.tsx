@@ -1,34 +1,19 @@
 "use client";
 
 import Navigation from "@mui/material/BottomNavigation";
-import { useAtom } from "jotai";
 import Link from "next/link";
-import { useEffect } from "react";
 
-import { menus } from "@/entities/navigation/model";
-import {
-  getNavigationStatus,
-  NavigationStatus,
-  navigationStatusState,
-} from "@/entities/navigation/store";
+import { getNavigationStatus, menus } from "@/entities/navigation/model";
 
 import { LinkNavigationAction } from "./LinkNavigationAction";
 
-const BottomNavigation = () => {
-  const [navStatus, setNavStatus] = useAtom(navigationStatusState);
+interface Props {
+  path: string;
+}
 
-  useEffect(() => {
-    const pathname = window.location.pathname.slice(1);
-    setNavStatus(getNavigationStatus(pathname));
-  }, []);
-
+const BottomNavigation = ({ path }: Props) => {
   return (
-    <Navigation
-      value={navStatus}
-      onChange={(_event, newNavStatus) => {
-        setNavStatus(newNavStatus as NavigationStatus);
-      }}
-    >
+    <Navigation value={getNavigationStatus(path)}>
       {menus.map((menu, index) => (
         <LinkNavigationAction
           key={index}
