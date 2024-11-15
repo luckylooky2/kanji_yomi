@@ -8,15 +8,16 @@ import {
   quizCurrentKanjiState,
   quizCurrentRoundState,
   quizIsStartedState,
-  QuizStatus,
-} from "@/entities/quiz/model";
+} from "@/entities/quiz/store";
+import { QuizStatus } from "@/entities/quiz/types";
 import QuizOptionSelect from "@/features/landing/components/QuizOptionSelect";
 import { useModal } from "@/features/modal/hooks/useModal";
-import ToggleRegister from "@/features/myword/components/ToggleRegister";
-import ProgressBar from "@/features/quiz/components/ProgressBar";
-import QuitModal from "@/features/quiz/components/QuitModal";
-import QuizContainer from "@/features/quiz/components/QuizContainer";
+import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
+import QuizAnswerForm from "@/features/quiz/components/QuizAnswerForm";
+import QuizProgressBar from "@/features/quiz/components/QuizProgressBar";
+import QuizQuitModal from "@/features/quiz/components/QuizQuitModal";
 import QuizResult from "@/features/quiz/components/QuizResult";
+import QuizWordContainer from "@/features/quiz/components/QuizWordContainer";
 import PageWithBottomNav from "@/widgets/navigation/PageWithBottomNav";
 
 function QuizPageBase() {
@@ -41,7 +42,7 @@ function QuizPageBase() {
 
   return (
     <>
-      <QuitModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <QuizQuitModal isOpen={isOpen} setIsOpen={setIsOpen} />
       <div>
         <Button
           variant="text"
@@ -53,9 +54,10 @@ function QuizPageBase() {
           <KeyboardDoubleArrowLeftIcon />
         </Button>
       </div>
-      <ProgressBar />
-      <ToggleRegister />
-      <QuizContainer />
+      <QuizProgressBar />
+      <MywordRegisterToggle />
+      <QuizWordContainer />
+      <QuizAnswerForm />
     </>
   );
 }

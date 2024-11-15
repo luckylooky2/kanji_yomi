@@ -1,7 +1,8 @@
 import { Button, ButtonGroup } from "@mui/material";
 import { useSetAtom } from "jotai";
 
-import { quizIsStartedState, QuizStatus } from "@/entities/quiz/model";
+import { quizIsStartedState } from "@/entities/quiz/store";
+import { QuizStatus } from "@/entities/quiz/types";
 import ModalBase from "@/features/modal/components/ModalBase";
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const QuitModal = ({ isOpen, setIsOpen }: Props) => {
+const QuizQuitModal = ({ isOpen, setIsOpen }: Props) => {
   const setQuizStatus = useSetAtom(quizIsStartedState);
 
   return (
@@ -36,4 +37,4 @@ const QuitModal = ({ isOpen, setIsOpen }: Props) => {
   );
 };
 
-export default QuitModal;
+export default QuizQuitModal;
