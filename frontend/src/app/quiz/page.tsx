@@ -17,8 +17,9 @@ import ProgressBar from "@/features/quiz/components/ProgressBar";
 import QuitModal from "@/features/quiz/components/QuitModal";
 import QuizContainer from "@/features/quiz/components/QuizContainer";
 import QuizResult from "@/features/quiz/components/QuizResult";
+import Page from "@/shared/components/Page";
 
-export default function QuizPage() {
+function QuizPageBase() {
   const quizStatus = useAtomValue(quizIsStartedState);
   const setCurrentRound = useSetAtom(quizCurrentRoundState);
   const setCurrentKanji = useSetAtom(quizCurrentKanjiState);
@@ -56,5 +57,13 @@ export default function QuizPage() {
       <ToggleRegister />
       <QuizContainer />
     </>
+  );
+}
+
+export default function QuizPage() {
+  return (
+    <Page path="quiz">
+      <QuizPageBase />
+    </Page>
   );
 }

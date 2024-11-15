@@ -1,8 +1,11 @@
+import BottomNavigation from "@/features/navigation/components/BottomNavigation";
+
 interface Props {
   children: React.ReactNode;
+  path: string;
 }
 
-const Page = ({ children }: Props) => {
+const Page = ({ children, path }: Props) => {
   return (
     <div style={{ height: "500px", width: "300px" }}>
       <section
@@ -15,6 +18,7 @@ const Page = ({ children }: Props) => {
         }}
       >
         {children}
+        <BottomNavigation path={path} />
       </section>
     </div>
   );
