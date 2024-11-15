@@ -6,14 +6,9 @@ import GlobalModal from "@/features/modal/components/GlobalModal";
 
 import "./ui/globals.css";
 
-const geistSans = localFont({
-  src: "./ui/fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./ui/fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+const helveticaNeue = localFont({
+  src: "./ui/fonts/Helvetica_Neue_Regular.woff",
+  variable: "--font-helvetica-neue",
   weight: "100 900",
 });
 
@@ -30,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${helveticaNeue.variable}`}>
         <GlobalModal>
           <div>123</div>
         </GlobalModal>
