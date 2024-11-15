@@ -17,7 +17,7 @@ import ProgressBar from "@/features/quiz/components/ProgressBar";
 import QuitModal from "@/features/quiz/components/QuitModal";
 import QuizContainer from "@/features/quiz/components/QuizContainer";
 import QuizResult from "@/features/quiz/components/QuizResult";
-import Page from "@/shared/components/Page";
+import PageWithBottomNav from "@/widgets/navigation/PageWithBottomNav";
 
 function QuizPageBase() {
   const quizStatus = useAtomValue(quizIsStartedState);
@@ -62,8 +62,8 @@ function QuizPageBase() {
 
 export default function QuizPage() {
   return (
-    <Page path="quiz">
+    <PageWithBottomNav path="quiz">
       <QuizPageBase />
-    </Page>
+    </PageWithBottomNav>
   );
 }

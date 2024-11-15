@@ -1,6 +1,6 @@
 "use client";
 
-import Page from "@/shared/components/Page";
+import PageWithBottomNav from "@/widgets/navigation/PageWithBottomNav";
 
 function MyPageBase() {
   return <div>123</div>;
@@ -8,8 +8,8 @@ function MyPageBase() {
 
 export default function MyPage() {
   return (
-    <Page path="mypage">
+    <PageWithBottomNav path="mypage">
       <MyPageBase />
-    </Page>
+    </PageWithBottomNav>
   );
 }

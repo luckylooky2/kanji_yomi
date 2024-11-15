@@ -10,8 +10,8 @@ import {
   quizOptionDifficultyState,
 } from "@/entities/option/store";
 import { quizIsStartedState, QuizStatus } from "@/entities/quiz/model";
-import { RowRadioGroup } from "@/shared/components/withRowDirection";
-import { ROUNDS, SOURCES } from "@/shared/model/db";
+import { rounds, difficulties } from "@/shared/model";
+import { RowRadioGroup } from "@/widgets/HOC/withRowDirection";
 
 import OptionStyle from "./OptionStyle";
 
@@ -51,7 +51,7 @@ const QuizOptionSelect = () => {
       <form style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
         <OptionStyle title="Difficulties">
           <Stack direction="row" spacing={1}>
-            {SOURCES.map((item, index) => (
+            {difficulties.map((item, index) => (
               <Chip
                 key={index}
                 variant={difficulty.includes(item) ? "filled" : "outlined"}
@@ -66,7 +66,7 @@ const QuizOptionSelect = () => {
         </OptionStyle>
         <OptionStyle title="Rounds">
           <RowRadioGroup>
-            {ROUNDS.map((item, index) => (
+            {rounds.map((item, index) => (
               <FormControlLabel
                 key={index}
                 control={<Radio onChange={handleRoundChange} />}
