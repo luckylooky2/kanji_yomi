@@ -1,6 +1,8 @@
-import { quizIsStartedState, QuizStatus } from "@/entities/quiz/model";
 import { Button } from "@mui/material";
 import { useSetAtom } from "jotai";
+
+import { quizIsStartedState } from "@/entities/quiz/store";
+import { QuizStatus } from "@/entities/quiz/types";
 
 const QuizResult = () => {
   const setQuizStatus = useSetAtom(quizIsStartedState);

@@ -9,7 +9,8 @@ import {
   quizOptionRoundState,
   quizOptionDifficultyState,
 } from "@/entities/option/store";
-import { quizIsStartedState, QuizStatus } from "@/entities/quiz/model";
+import { quizIsStartedState } from "@/entities/quiz/store";
+import { QuizStatus } from "@/entities/quiz/types";
 import { rounds, difficulties } from "@/shared/model";
 import { RowRadioGroup } from "@/widgets/HOC/withRowDirection";
 

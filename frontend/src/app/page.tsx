@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import { useSetAtom } from "jotai";
 import { useCallback, useState } from "react";
 
-import { quizCurrentRoundState } from "@/entities/quiz/model";
+import { quizCurrentRoundState } from "@/entities/quiz/store";
 
 export default function Home() {
   const [isLanding, setIsLanding] = useState(false);
