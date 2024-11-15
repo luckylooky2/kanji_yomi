@@ -5,3 +5,26 @@ export const BASE_OPTIONS = {
     "Content-Type": "application/json",
   },
 };
+
+const enum NavigationStatus {
+  ROOT = -1,
+  QUIZ = 0,
+  COMMUNITY = 1,
+  MYPAGE = 2,
+}
+
+export function getNavigationStatus(path: string) {
+  switch (path) {
+    case "quiz":
+      return NavigationStatus.QUIZ;
+    case "community":
+      return NavigationStatus.COMMUNITY;
+    case "mypage":
+      return NavigationStatus.MYPAGE;
+    default:
+      return NavigationStatus.ROOT;
+  }
+}
+
+export const difficulties = ["N5", "N4", "N3"];
+export const rounds = [10, 30, Infinity];
