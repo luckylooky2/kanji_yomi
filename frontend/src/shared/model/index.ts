@@ -6,6 +6,14 @@ export const BASE_OPTIONS = {
   },
 };
 
+export function responseInterceptor(response: Response) {
+  if (!response.ok) {
+    throw new Error(`Error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
 const enum NavigationStatus {
   ROOT = -1,
   QUIZ = 0,
