@@ -5,26 +5,24 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { useAtomValue, useAtom } from "jotai";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import { quizOptionDifficultyState } from "@/entities/option/store";
 import { playTTS } from "@/entities/quiz/lib/playTTS";
 import {
   quizCurrentKanjiState,
   quizCurrentRoundState,
-  QuizQuestionDTO,
-} from "@/entities/quiz/model";
-import { API_URL, BASE_OPTIONS } from "@/shared/model";
+} from "@/entities/quiz/store";
+import { QuizQuestionResponseDTO } from "@/entities/quiz/types";
 
-import AnswerForm from "./AnswerForm";
+import { QuizService } from "../api";
 
 const QuizContainer = () => {
   const difficulty = useAtomValue(quizOptionDifficultyState);
   const currentRound = useAtomValue(quizCurrentRoundState);
-  const [kanji, setKanji] = useAtom<QuizQuestionDTO | null>(
+  const [kanji, setKanji] = useAtom<QuizQuestionResponseDTO | null>(
     quizCurrentKanjiState
   );
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     // TODO: disabled 처리하기
@@ -35,28 +33,17 @@ const QuizContainer = () => {
     }
   }, []);
 
-  async function fetchQuestion() {
-    setKanji(null);
-    const options = {
-      method: "POST",
-      body: JSON.stringify({ difficulty }),
-      ...BASE_OPTIONS,
-    };
-    try {
-      const response = await fetch(`${API_URL}/quiz/question`, options);
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      setKanji(result);
-    } catch (err) {
-      setError(err.message);
-    }
-  }
-
   useEffect(() => {
+    async function fetchQuestion() {
+      setKanji(null);
+      try {
+        const data = await QuizService.getQuestion({ difficulty });
+        setKanji(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     fetchQuestion();
   }, [currentRound]);
 
@@ -99,7 +86,6 @@ const QuizContainer = () => {
           </Button>
         </ButtonGroup>
       </div>
-      <AnswerForm />
     </>
   );
 };

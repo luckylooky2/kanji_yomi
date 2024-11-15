@@ -5,32 +5,38 @@ import { useForm } from "react-hook-form";
 
 import { quizOptionRoundState } from "@/entities/option/store";
 import {
-  AnswerInputType,
   quizCurrentRoundState,
-  AnswerStatus,
   quizIsStartedState,
-  QuizStatus,
-  QuizQuestionDTO,
   quizCurrentKanjiState,
-  QuizAnswerDTO,
-} from "@/entities/quiz/model";
-import "../../../app/ui/utils.css";
-import useEventAPI from "@/shared/hooks/useEventAPI";
-import { API_URL, BASE_OPTIONS } from "@/shared/model";
+} from "@/entities/quiz/store";
+import {
+  AnswerInputType,
+  AnswerStatus,
+  QuizQuestionResponseDTO,
+  QuizStatus,
+} from "@/entities/quiz/types";
 
-const AnswerForm = () => {
-  const { register, handleSubmit, reset } = useForm<AnswerInputType>();
+import "../../../app/ui/utils.css";
+import { QuizService } from "../api";
+
+const QuizAnswerForm = () => {
+  const {
+    register,
+    handleSubmit,
+    reset: resetInput,
+  } = useForm<AnswerInputType>();
   const [, setStatus] = useState(AnswerStatus.BEFORE);
   const setCurrentRound = useSetAtom(quizCurrentRoundState);
   const setQuizStatus = useSetAtom(quizIsStartedState);
   const maxRound = useAtomValue(quizOptionRoundState);
-  const kanji = useAtomValue<QuizQuestionDTO | null>(quizCurrentKanjiState);
+  const kanji = useAtomValue<QuizQuestionResponseDTO | null>(
+    quizCurrentKanjiState
+  );
   const [shake, setShake] = useState(false);
   const timeId = useRef<NodeJS.Timeout | null>(null);
-  const { fetchData } = useEventAPI(`${API_URL}/quiz/answer`);
 
   const getNextQuestion = () => {
-    reset();
+    resetInput();
     setCurrentRound((prev) => {
       if (prev + 1 === maxRound) {
         setQuizStatus(QuizStatus.RESULT);
@@ -45,16 +51,18 @@ const AnswerForm = () => {
       return;
     }
 
-    const response: QuizAnswerDTO = await fetchData({
-      method: "POST",
-      body: JSON.stringify({ word: kanji.word, answer: answer }),
-      ...BASE_OPTIONS,
-    });
-
-    if (response.result) {
-      getNextQuestion();
-    } else {
-      triggerShake();
+    try {
+      const data = await QuizService.getAnswer({
+        word: kanji.word,
+        answer: answer,
+      });
+      if (data.result) {
+        getNextQuestion();
+      } else {
+        triggerShake();
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -94,4 +102,4 @@ const AnswerForm = () => {
   );
 };
 
-export default AnswerForm;
+export default QuizAnswerForm;
