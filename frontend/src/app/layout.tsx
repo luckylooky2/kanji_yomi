@@ -30,15 +30,8 @@ export default function RootLayout({
           <div>123</div>
         </GlobalModal>
         <Header />
-        <div
-          style={{
-            margin: "50px",
-            display: "flex",
-            justifyContent: "center",
-            overflow: "auto",
-          }}
-        >
-          {children}
+        <div className="margin-container">
+          <div className="content-box">{children}</div>
         </div>
         {/* <footer className={styles.footer}>@luckylooky2</footer> */}
       </body>

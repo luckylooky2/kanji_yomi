@@ -24,6 +24,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.margin-container {
+  margin: 50px;
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+}
+
+.content-box {
+  width: 300px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
