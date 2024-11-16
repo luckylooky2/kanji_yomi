@@ -1,5 +1,7 @@
-import Box from "@mui/material/Box";
+import styled from "@emotion/styled";
 import Modal from "@mui/material/Modal";
+
+import { theme } from "@/shared/styles/theme";
 
 interface Props {
   children: React.ReactNode;
@@ -15,22 +17,19 @@ const ModalBase = ({ children, open, onClose }: Props) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 350,
-          backgroundColor: "white",
-          boxShadow: 24,
-          p: 4,
-        }}
-      >
-        {children}
-      </Box>
+      <ModalLayout>{children}</ModalLayout>
     </Modal>
   );
 };
 
 export default ModalBase;
+
+const ModalLayout = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  background-color: white;
+  padding: ${theme.spacing.medium};
+`;

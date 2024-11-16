@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ForumIcon from "@mui/icons-material/Forum";
 import QuizIcon from "@mui/icons-material/Quiz";
@@ -46,28 +47,24 @@ const BottomNavigation = ({ path }: { path: string }) => {
 
 const PageWithBottomNav = ({ children, path }: Props) => {
   return (
-    <div
-      style={{
-        width: "300px",
-        height: "500px",
-        display: "flex",
-        justifyContent: "space-between",
-        flexDirection: "column",
-      }}
-    >
-      <main
-        style={{
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-around",
-        }}
-      >
-        {children}
-      </main>
+    <>
+      <MainContainer>{children}</MainContainer>
       <BottomNavigation path={path} />
-    </div>
+    </>
   );
 };
 
 export default PageWithBottomNav;
+
+const MainContainer = styled.main`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+`;
+
+// Container: 전체 레이아웃이나 주요 영역을 감싸는 컴포넌트
+// Section: 섹션 단위로 나누는 컴포넌트
+// Layout: 여러 UI 요소를 배치하는 컴포넌트
+// Wrapper: 특정 UI 요소를 감싸는 역할을 하는 컴포넌트
+// Item: 리스트나 컬렉션에서 하나의 항목을 나타내는 컴포넌트

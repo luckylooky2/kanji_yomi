@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import Button from "@mui/material/Button";
 import { useSetAtom, useAtomValue } from "jotai";
 import React, { useState, useRef } from "react";
@@ -15,6 +16,7 @@ import {
   QuizStatus,
 } from "@/entities/quiz/types";
 import { quizOptionRoundState } from "@/entities/quizOption/store";
+import { theme } from "@/shared/styles/theme";
 
 import "../../../app/ui/utils.css";
 import { QuizService } from "../api";
@@ -82,7 +84,7 @@ const QuizAnswerForm = () => {
   };
 
   return (
-    <section style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+    <QuizAnswerSection>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           {...register("answer")}
@@ -95,8 +97,14 @@ const QuizAnswerForm = () => {
         submit
       </Button>
       <Button onClick={getNextQuestion}>skip</Button>
-    </section>
+    </QuizAnswerSection>
   );
 };
 
 export default QuizAnswerForm;
+
+const QuizAnswerSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.small};
+`;
