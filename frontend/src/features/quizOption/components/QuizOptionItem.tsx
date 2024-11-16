@@ -5,7 +5,7 @@ interface Props {
   children: ReactNode;
 }
 
-const OptionStyle = ({ title, children }: Props) => {
+const QuizOptionItem = ({ title, children }: Props) => {
   return (
     <article style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
       <h3>{title}</h3>
@@ -16,4 +16,4 @@ const OptionStyle = ({ title, children }: Props) => {
   );
 };
 
-export default OptionStyle;
+export default QuizOptionItem;

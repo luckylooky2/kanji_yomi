@@ -10,14 +10,14 @@ import {
   quizIsStartedState,
 } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
-import QuizOptionSelect from "@/features/landing/components/QuizOptionSelect";
 import { useModal } from "@/features/modal/hooks/useModal";
 import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
 import QuizAnswerForm from "@/features/quiz/components/QuizAnswerForm";
 import QuizProgressBar from "@/features/quiz/components/QuizProgressBar";
 import QuizQuitModal from "@/features/quiz/components/QuizQuitModal";
-import QuizResult from "@/features/quiz/components/QuizResult";
 import QuizWordContainer from "@/features/quiz/components/QuizWordContainer";
+import QuizOption from "@/features/quizOption/components/QuizOption";
+import QuizResult from "@/features/quizResult/components/QuizResult";
 import PageWithBottomNav from "@/widgets/navigation/PageWithBottomNav";
 
 function QuizPageBase() {
@@ -26,14 +26,14 @@ function QuizPageBase() {
   const setCurrentKanji = useSetAtom(quizCurrentKanjiState);
   const { isOpen, setIsOpen } = useModal();
 
-  function resetState() {
+  function resetQuizState() {
     setCurrentRound(0);
     setCurrentKanji(null);
   }
 
   if (quizStatus === QuizStatus.OPTION) {
-    resetState();
-    return <QuizOptionSelect />;
+    resetQuizState();
+    return <QuizOption />;
   }
 
   if (quizStatus === QuizStatus.RESULT) {
@@ -43,17 +43,15 @@ function QuizPageBase() {
   return (
     <>
       <QuizQuitModal isOpen={isOpen} setIsOpen={setIsOpen} />
-      <div>
-        <Button
-          variant="text"
-          color="error"
-          onClick={() => {
-            setIsOpen(true);
-          }}
-        >
-          <KeyboardDoubleArrowLeftIcon />
-        </Button>
-      </div>
+      <Button
+        variant="text"
+        color="error"
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        <KeyboardDoubleArrowLeftIcon />
+      </Button>
       <QuizProgressBar />
       <MywordRegisterToggle />
       <QuizWordContainer />

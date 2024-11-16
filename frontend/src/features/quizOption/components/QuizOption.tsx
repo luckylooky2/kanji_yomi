@@ -5,18 +5,18 @@ import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
 import { useAtom, useSetAtom } from "jotai";
 
+import { quizIsStartedState } from "@/entities/quiz/store";
+import { QuizStatus } from "@/entities/quiz/types";
 import {
   quizOptionRoundState,
   quizOptionDifficultyState,
-} from "@/entities/option/store";
-import { quizIsStartedState } from "@/entities/quiz/store";
-import { QuizStatus } from "@/entities/quiz/types";
+} from "@/entities/quizOption/store";
 import { rounds, difficulties } from "@/shared/model";
 import { RowRadioGroup } from "@/widgets/HOC/withRowDirection";
 
-import OptionStyle from "./OptionStyle";
+import QuizOptionItem from "./QuizOptionItem";
 
-const QuizOptionSelect = () => {
+const QuizOption = () => {
   const [difficulty, setDifficulty] = useAtom(quizOptionDifficultyState);
   const [round, setRound] = useAtom(quizOptionRoundState);
   const setQuizStatus = useSetAtom(quizIsStartedState);
@@ -50,7 +50,7 @@ const QuizOptionSelect = () => {
   return (
     <>
       <form style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
-        <OptionStyle title="Difficulties">
+        <QuizOptionItem title="Difficulties">
           <Stack direction="row" spacing={1}>
             {difficulties.map((item, index) => (
               <Chip
@@ -64,8 +64,8 @@ const QuizOptionSelect = () => {
               />
             ))}
           </Stack>
-        </OptionStyle>
-        <OptionStyle title="Rounds">
+        </QuizOptionItem>
+        <QuizOptionItem title="Rounds">
           <RowRadioGroup>
             {rounds.map((item, index) => (
               <FormControlLabel
@@ -77,7 +77,7 @@ const QuizOptionSelect = () => {
               />
             ))}
           </RowRadioGroup>
-        </OptionStyle>
+        </QuizOptionItem>
       </form>
       <Button onClick={startQuiz} variant="contained">
         quiz start
@@ -86,4 +86,4 @@ const QuizOptionSelect = () => {
   );
 };
 
-export default QuizOptionSelect;
+export default QuizOption;
