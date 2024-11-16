@@ -11,12 +11,11 @@ import {
 } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import { useModal } from "@/features/modal/hooks/useModal";
-import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
 import QuizAnswerForm from "@/features/quiz/components/QuizAnswerForm";
 import QuizProgressBar from "@/features/quiz/components/QuizProgressBar";
 import QuizQuitModal from "@/features/quiz/components/QuizQuitModal";
 import QuizWordContainer from "@/features/quiz/components/QuizWordContainer";
-import QuizOption from "@/features/quizOption/components/QuizOption";
+import QuizOptions from "@/features/quizOption/components/QuizOptions";
 import QuizResult from "@/features/quizResult/components/QuizResult";
 import PageWithBottomNav from "@/widgets/navigation/PageWithBottomNav";
 
@@ -33,7 +32,7 @@ function QuizPageBase() {
 
   if (quizStatus === QuizStatus.OPTION) {
     resetQuizState();
-    return <QuizOption />;
+    return <QuizOptions />;
   }
 
   if (quizStatus === QuizStatus.RESULT) {
@@ -53,7 +52,6 @@ function QuizPageBase() {
         <KeyboardDoubleArrowLeftIcon />
       </Button>
       <QuizProgressBar />
-      <MywordRegisterToggle />
       <QuizWordContainer />
       <QuizAnswerForm />
     </>
