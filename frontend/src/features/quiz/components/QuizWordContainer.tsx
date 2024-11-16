@@ -1,11 +1,12 @@
 "use client";
 
+import styled from "@emotion/styled";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { useAtomValue, useAtom } from "jotai";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { playTTS } from "@/entities/quiz/lib/playTTS";
 import {
@@ -14,15 +15,18 @@ import {
 } from "@/entities/quiz/store";
 import { QuizQuestionResponseDTO } from "@/entities/quiz/types";
 import { quizOptionDifficultyState } from "@/entities/quizOption/store";
+import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
+import { theme } from "@/shared/styles/theme";
 
 import { QuizService } from "../api";
 
-const QuizContainer = () => {
+const QuizWordContainer = () => {
   const difficulty = useAtomValue(quizOptionDifficultyState);
   const currentRound = useAtomValue(quizCurrentRoundState);
   const [kanji, setKanji] = useAtom<QuizQuestionResponseDTO | null>(
     quizCurrentKanjiState
   );
+  const isFirstRendered = useRef(true);
 
   useEffect(() => {
     // TODO: disabled 처리하기
@@ -44,50 +48,67 @@ const QuizContainer = () => {
       }
     }
 
-    fetchQuestion();
+    // 페이지 이동 간의 호출을 막기 위해
+    if (isFirstRendered.current) {
+      if (kanji === null) {
+        fetchQuestion();
+      }
+    } else {
+      fetchQuestion();
+    }
+    isFirstRendered.current = false;
   }, [currentRound]);
 
+  const handleSpeakWord = () => {
+    if (!kanji) {
+      return;
+    }
+    playTTS(kanji.word);
+  };
+
+  const handleRedirectDictionary = () => {
+    if (!kanji) {
+      return;
+    }
+    window.open(`https://jisho.org/search/${kanji.word}`, "_blank");
+  };
+
   return (
-    <section>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          height: "100px",
-        }}
-      >
-        <div style={{ fontSize: "50px" }}>
-          {kanji ? kanji.word : "loading..."}
-        </div>
-      </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
+    <QuizWordSection>
+      <MywordRegisterToggle />
+      <QuizWord>{kanji ? kanji.word : "loading..."}</QuizWord>
+      <QuizWordHintLayout>
         <ButtonGroup variant="outlined" aria-label="Hint button group">
-          <Button
-            onClick={() => {
-              if (!kanji) {
-                return;
-              }
-              playTTS(kanji.word);
-            }}
-          >
+          <Button onClick={handleSpeakWord}>
             <VolumeUpIcon />
           </Button>
-          <Button
-            onClick={() => {
-              if (!kanji) {
-                return;
-              }
-              window.open(`https://jisho.org/search/${kanji.word}`, "_blank");
-            }}
-          >
+          <Button onClick={handleRedirectDictionary}>
             <TravelExploreIcon />
           </Button>
         </ButtonGroup>
-      </div>
-    </section>
+      </QuizWordHintLayout>
+    </QuizWordSection>
   );
 };
 
-export default QuizContainer;
+export default QuizWordContainer;
+
+const QuizWordSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.small};
+`;
+
+const QuizWord = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100px;
+  font-size: 50px;
+`;
+
+const QuizWordHintLayout = styled.div`
+  display: flex;
+  justify-content: center;
+`;
