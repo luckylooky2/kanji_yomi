@@ -3,8 +3,8 @@
 import LinearProgress from "@mui/material/LinearProgress";
 import { useAtomValue } from "jotai";
 
-import { quizOptionRoundState } from "@/entities/option/store";
 import { quizCurrentRoundState } from "@/entities/quiz/store";
+import { quizOptionRoundState } from "@/entities/quizOption/store";
 
 const QuizProgressBar = () => {
   const maxRound = useAtomValue(quizOptionRoundState);

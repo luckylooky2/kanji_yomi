@@ -30,7 +30,7 @@ export default function RootLayout({
           <div>123</div>
         </GlobalModal>
         <Header />
-        <main
+        <div
           style={{
             margin: "50px",
             display: "flex",
@@ -39,7 +39,7 @@ export default function RootLayout({
           }}
         >
           {children}
-        </main>
+        </div>
         {/* <footer className={styles.footer}>@luckylooky2</footer> */}
       </body>
     </html>

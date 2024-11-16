@@ -3,7 +3,6 @@ import { useSetAtom, useAtomValue } from "jotai";
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 
-import { quizOptionRoundState } from "@/entities/option/store";
 import {
   quizCurrentRoundState,
   quizIsStartedState,
@@ -15,6 +14,7 @@ import {
   QuizQuestionResponseDTO,
   QuizStatus,
 } from "@/entities/quiz/types";
+import { quizOptionRoundState } from "@/entities/quizOption/store";
 
 import "../../../app/ui/utils.css";
 import { QuizService } from "../api";
@@ -82,11 +82,8 @@ const QuizAnswerForm = () => {
   };
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        style={{ display: "flex", gap: "5px" }}
-      >
+    <section style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <input
           {...register("answer")}
           className={shake ? "shake" : ""}
@@ -98,7 +95,7 @@ const QuizAnswerForm = () => {
         submit
       </Button>
       <Button onClick={getNextQuestion}>skip</Button>
-    </>
+    </section>
   );
 };
 

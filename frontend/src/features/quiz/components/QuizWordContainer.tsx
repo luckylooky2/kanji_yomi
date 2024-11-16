@@ -7,13 +7,13 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { useAtomValue, useAtom } from "jotai";
 import { useEffect } from "react";
 
-import { quizOptionDifficultyState } from "@/entities/option/store";
 import { playTTS } from "@/entities/quiz/lib/playTTS";
 import {
   quizCurrentKanjiState,
   quizCurrentRoundState,
 } from "@/entities/quiz/store";
 import { QuizQuestionResponseDTO } from "@/entities/quiz/types";
+import { quizOptionDifficultyState } from "@/entities/quizOption/store";
 
 import { QuizService } from "../api";
 
@@ -48,7 +48,7 @@ const QuizContainer = () => {
   }, [currentRound]);
 
   return (
-    <>
+    <section>
       <div
         style={{
           display: "flex",
@@ -86,7 +86,7 @@ const QuizContainer = () => {
           </Button>
         </ButtonGroup>
       </div>
-    </>
+    </section>
   );
 };
 

@@ -31,7 +31,7 @@ const BottomNavigation = ({ path }: { path: string }) => {
   ];
 
   return (
-    <Navigation value={getNavigationStatus(path)}>
+    <Navigation value={getNavigationStatus(path)} component="nav">
       {menus.map((menu, index) => (
         <NavigationAction
           key={index}
@@ -46,19 +46,26 @@ const BottomNavigation = ({ path }: { path: string }) => {
 
 const PageWithBottomNav = ({ children, path }: Props) => {
   return (
-    <div style={{ height: "500px", width: "300px" }}>
-      <section
+    <div
+      style={{
+        width: "300px",
+        height: "500px",
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+      }}
+    >
+      <main
         style={{
+          height: "100%",
           display: "flex",
           flexDirection: "column",
-          width: "300px",
-          height: "100%",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
         }}
       >
         {children}
-        <BottomNavigation path={path} />
-      </section>
+      </main>
+      <BottomNavigation path={path} />
     </div>
   );
 };
