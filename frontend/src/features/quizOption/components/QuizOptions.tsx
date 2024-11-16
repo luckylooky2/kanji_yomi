@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,11 +13,12 @@ import {
   quizOptionDifficultyState,
 } from "@/entities/quizOption/store";
 import { rounds, difficulties } from "@/shared/model";
+import { theme } from "@/shared/styles/theme";
 import { RowRadioGroup } from "@/widgets/HOC/withRowDirection";
 
-import QuizOptionItem from "./QuizOptionItem";
+import QuizOptionLayout from "./QuizOptionLayout";
 
-const QuizOption = () => {
+const QuizOptions = () => {
   const [difficulty, setDifficulty] = useAtom(quizOptionDifficultyState);
   const [round, setRound] = useAtom(quizOptionRoundState);
   const setQuizStatus = useSetAtom(quizIsStartedState);
@@ -49,8 +51,8 @@ const QuizOption = () => {
 
   return (
     <>
-      <form style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
-        <QuizOptionItem title="Difficulties">
+      <QuizOptionSection>
+        <QuizOptionLayout title="Difficulties">
           <Stack direction="row" spacing={1}>
             {difficulties.map((item, index) => (
               <Chip
@@ -60,12 +62,13 @@ const QuizOption = () => {
                 component="button"
                 label={item}
                 data-value={item}
+                aria-label={item}
                 onClick={handleDifficultyChange}
               />
             ))}
           </Stack>
-        </QuizOptionItem>
-        <QuizOptionItem title="Rounds">
+        </QuizOptionLayout>
+        <QuizOptionLayout title="Rounds">
           <RowRadioGroup>
             {rounds.map((item, index) => (
               <FormControlLabel
@@ -73,12 +76,13 @@ const QuizOption = () => {
                 control={<Radio onChange={handleRoundChange} />}
                 label={item}
                 value={item}
+                aria-label={`${item}`}
                 checked={round === item}
               />
             ))}
           </RowRadioGroup>
-        </QuizOptionItem>
-      </form>
+        </QuizOptionLayout>
+      </QuizOptionSection>
       <Button onClick={startQuiz} variant="contained">
         quiz start
       </Button>
@@ -86,4 +90,10 @@ const QuizOption = () => {
   );
 };
 
-export default QuizOption;
+export default QuizOptions;
+
+const QuizOptionSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.small};
+`;
