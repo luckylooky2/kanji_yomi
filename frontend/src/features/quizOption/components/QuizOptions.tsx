@@ -50,7 +50,7 @@ const QuizOptions = () => {
   };
 
   return (
-    <>
+    <QuizOptionContainer>
       <QuizOptionSection>
         <QuizOptionLayout title="Difficulties">
           <Stack direction="row" spacing={1}>
@@ -86,11 +86,18 @@ const QuizOptions = () => {
       <Button onClick={startQuiz} variant="contained">
         quiz start
       </Button>
-    </>
+    </QuizOptionContainer>
   );
 };
 
 export default QuizOptions;
+
+const QuizOptionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+`;
 
 const QuizOptionSection = styled.section`
   display: flex;
