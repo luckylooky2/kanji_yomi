@@ -33,13 +33,23 @@ const ProgressBarLayout = styled.div`
   justify-content: center;
   align-items: center;
   gap: ${theme.spacing.small};
+  position: relative;
+  padding: 10px 0px;
 `;
 
 const ProgressBar = styled(LinearProgress)`
-  flex: 7;
+  width: 100%;
+  height: 20px;
+  border-radius: 1rem;
 `;
 
 const ProgressRate = styled.div`
-  flex: 3;
-  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+  pointer-events: none;
 `;
