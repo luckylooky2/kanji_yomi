@@ -75,7 +75,7 @@ const QuizWordContainer = () => {
 
   return (
     <QuizWordSection>
-      <MywordRegisterToggle />
+      {/* <MywordRegisterToggle /> */}
       <QuizWord>{kanji ? kanji.word : "loading..."}</QuizWord>
       <QuizWordHintLayout>
         <ButtonGroup variant="outlined" aria-label="Hint button group">

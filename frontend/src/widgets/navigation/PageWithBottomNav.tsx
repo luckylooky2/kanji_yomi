@@ -49,7 +49,7 @@ const PageWithBottomNav = ({ children, path }: Props) => {
   return (
     <>
       <MainContainer>{children}</MainContainer>
-      <BottomNavigation path={path} />
+      {/* <BottomNavigation path={path} /> */}
     </>
   );
 };
@@ -57,9 +57,6 @@ const PageWithBottomNav = ({ children, path }: Props) => {
 export default PageWithBottomNav;
 
 const MainContainer = styled.main`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
   height: 100%;
 `;
 
