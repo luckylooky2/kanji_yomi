@@ -1,7 +1,6 @@
 "use client";
 
-import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import { Button } from "@mui/material";
+import styled from "@emotion/styled";
 import { useAtomValue, useSetAtom } from "jotai";
 
 import {
@@ -14,9 +13,11 @@ import { useModal } from "@/features/modal/hooks/useModal";
 import QuizAnswerForm from "@/features/quiz/components/QuizAnswerForm";
 import QuizProgressBar from "@/features/quiz/components/QuizProgressBar";
 import QuizQuitModal from "@/features/quiz/components/QuizQuitModal";
+import QuizStatusControlButtons from "@/features/quiz/components/QuizStatusControlButtons";
 import QuizWordContainer from "@/features/quiz/components/QuizWordContainer";
 import QuizOptions from "@/features/quizOption/components/QuizOptions";
 import QuizResult from "@/features/quizResult/components/QuizResult";
+import { theme } from "@/shared/styles/theme";
 import PageWithBottomNav from "@/widgets/navigation/PageWithBottomNav";
 
 function QuizPageBase() {
@@ -40,21 +41,13 @@ function QuizPageBase() {
   }
 
   return (
-    <>
+    <QuizQuestionContainer>
       <QuizQuitModal isOpen={isOpen} setIsOpen={setIsOpen} />
-      <Button
-        variant="text"
-        color="error"
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      >
-        <KeyboardDoubleArrowLeftIcon />
-      </Button>
+      <QuizStatusControlButtons setIsOpen={setIsOpen} />
       <QuizProgressBar />
       <QuizWordContainer />
       <QuizAnswerForm />
-    </>
+    </QuizQuestionContainer>
   );
 }
 
@@ -65,3 +58,15 @@ export default function QuizPage() {
     </PageWithBottomNav>
   );
 }
+
+const QuizQuestionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: ${theme.spacing.large};
+  height: 100%;
+
+  @media (max-width: 480px) {
+    gap: ${theme.spacing.medium};
+  }
+`;
