@@ -83,6 +83,15 @@ const QuizAnswerForm = () => {
     timeId.current = id;
   };
 
+  const handlePullUpScrollToTarget = () => {
+    setTimeout(() => {
+      // 바로 실행하면 동작하지 않음
+      document
+        .getElementById("scrollTarget")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }, 200);
+  };
+
   return (
     <QuizAnswerSection>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -91,6 +100,8 @@ const QuizAnswerForm = () => {
           className={shake ? "shake" : ""}
           autoComplete="off"
           autoFocus
+          placeholder="Type in Hiragana"
+          onFocus={handlePullUpScrollToTarget}
         />
       </form>
       <Button variant="contained" onClick={handleSubmit(onSubmit)}>
