@@ -40,7 +40,7 @@ const ProgressBarLayout = styled.div`
 const ProgressBar = styled(LinearProgress)`
   width: 100%;
   height: 20px;
-  border-radius: 1rem;
+  border-radius: ${theme.radius.large};
 `;
 
 const ProgressRate = styled.div`
