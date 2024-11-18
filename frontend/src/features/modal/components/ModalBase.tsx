@@ -7,9 +7,10 @@ interface Props {
   children: React.ReactNode;
   open: boolean;
   onClose: () => void;
+  title?: string;
 }
 
-const ModalBase = ({ children, open, onClose }: Props) => {
+const ModalBase = ({ children, open, onClose, title }: Props) => {
   return (
     <Modal
       open={open}
@@ -17,7 +18,10 @@ const ModalBase = ({ children, open, onClose }: Props) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <ModalLayout>{children}</ModalLayout>
+      <ModalLayout>
+        {title && <ModalTitle>{title}</ModalTitle>}
+        {children}
+      </ModalLayout>
     </Modal>
   );
 };
@@ -32,4 +36,12 @@ const ModalLayout = styled.div`
   width: 350px;
   background-color: white;
   padding: ${theme.spacing.medium};
+  border-radius: ${theme.radius.small};
+`;
+
+const ModalTitle = styled.h3`
+  display: inline-block;
+  height: 50px;
+  line-height: 50px;
+  margin-left: ${theme.spacing.medium};
 `;
