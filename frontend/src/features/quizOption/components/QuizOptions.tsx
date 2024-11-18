@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Radio from "@mui/material/Radio";
+import Slider from "@mui/material/Slider";
 import Stack from "@mui/material/Stack";
 import { useAtom, useSetAtom } from "jotai";
 
@@ -12,9 +11,8 @@ import {
   quizOptionRoundState,
   quizOptionDifficultyState,
 } from "@/entities/quizOption/store";
-import { rounds, difficulties } from "@/shared/model";
+import { difficulties, roundMarks } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
-import { RowRadioGroup } from "@/widgets/HOC/withRowDirection";
 
 import QuizOptionLayout from "./QuizOptionLayout";
 
@@ -38,8 +36,8 @@ const QuizOptions = () => {
     setDifficulty(nextDifficulty);
   };
 
-  const handleRoundChange = ({ target }: { target: HTMLInputElement }) => {
-    setRound(+target.value);
+  const handleRoundChange = (_event: Event, value: number | number[]) => {
+    setRound(value as number);
   };
 
   const startQuiz = () => {
@@ -68,19 +66,16 @@ const QuizOptions = () => {
             ))}
           </Stack>
         </QuizOptionLayout>
-        <QuizOptionLayout title="Rounds">
-          <RowRadioGroup>
-            {rounds.map((item, index) => (
-              <FormControlLabel
-                key={index}
-                control={<Radio onChange={handleRoundChange} />}
-                label={item}
-                value={item}
-                aria-label={`${item}`}
-                checked={round === item}
-              />
-            ))}
-          </RowRadioGroup>
+        <QuizOptionLayout title="Rounds" spacing="large">
+          <SliderWrapper
+            aria-label="quiz-round"
+            defaultValue={round}
+            step={10}
+            min={10}
+            valueLabelDisplay="on"
+            marks={roundMarks}
+            onChange={handleRoundChange}
+          />
         </QuizOptionLayout>
       </QuizOptionSection>
       <Button onClick={startQuiz} variant="contained">
@@ -103,4 +98,8 @@ const QuizOptionSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.small};
+`;
+
+const SliderWrapper = styled(Slider)`
+  width: 80%;
 `;
