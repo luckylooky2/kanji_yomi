@@ -16,10 +16,10 @@ const QuizProgressBar = () => {
     <ProgressBarLayout role="progress" aria-labelledby="progress-rate">
       <ProgressBar
         variant="determinate"
-        value={maxRound === Infinity ? 100 : (currRound / maxRound) * 100}
+        value={((currRound + 1) / maxRound) * 100}
       />
       <ProgressRate id="progress-rate">
-        {`${currRound} / ${maxRound === Infinity ? "∞" : maxRound}`}
+        {`${currRound + 1} / ${maxRound}`}
       </ProgressRate>
     </ProgressBarLayout>
   );
