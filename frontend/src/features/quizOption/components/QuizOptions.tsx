@@ -5,7 +5,7 @@ import Slider from "@mui/material/Slider";
 import Stack from "@mui/material/Stack";
 import { useAtom, useSetAtom } from "jotai";
 
-import { quizIsStartedState } from "@/entities/quiz/store";
+import { quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import {
   quizOptionRoundState,
@@ -19,7 +19,7 @@ import QuizOptionLayout from "./QuizOptionLayout";
 const QuizOptions = () => {
   const [difficulty, setDifficulty] = useAtom(quizOptionDifficultyState);
   const [round, setRound] = useAtom(quizOptionRoundState);
-  const setQuizStatus = useSetAtom(quizIsStartedState);
+  const setQuizStatus = useSetAtom(quizStatusState);
 
   const handleDifficultyChange = ({
     currentTarget,
@@ -41,14 +41,12 @@ const QuizOptions = () => {
   };
 
   const startQuiz = () => {
-    if (difficulty.length) {
-      setQuizStatus(QuizStatus.ONGOING);
-    } else {
-    }
+    setQuizStatus(QuizStatus.ONGOING);
   };
 
   return (
     <QuizOptionContainer>
+      <h1>Quiz Option</h1>
       <QuizOptionSection>
         <QuizOptionLayout title="Difficulties">
           <Stack direction="row" spacing={1}>
@@ -78,7 +76,11 @@ const QuizOptions = () => {
           />
         </QuizOptionLayout>
       </QuizOptionSection>
-      <Button onClick={startQuiz} variant="contained">
+      <Button
+        onClick={startQuiz}
+        variant="contained"
+        disabled={!(difficulty.length && round)}
+      >
         quiz start
       </Button>
     </QuizOptionContainer>
@@ -90,14 +92,16 @@ export default QuizOptions;
 const QuizOptionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   height: 100%;
 `;
 
 const QuizOptionSection = styled.section`
   display: flex;
   flex-direction: column;
+  margin-top: ${theme.spacing.large};
   gap: ${theme.spacing.small};
+  height: 100%;
 `;
 
 const SliderWrapper = styled(Slider)`
