@@ -6,7 +6,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import {
   quizCurrentKanjiState,
   quizCurrentRoundState,
-  quizIsStartedState,
+  quizStatusState,
 } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import { useModal } from "@/features/modal/hooks/useModal";
@@ -21,7 +21,7 @@ import { theme } from "@/shared/styles/theme";
 import PageWithBottomNav from "@/widgets/navigation/PageWithBottomNav";
 
 function QuizPageBase() {
-  const quizStatus = useAtomValue(quizIsStartedState);
+  const quizStatus = useAtomValue(quizStatusState);
   const setCurrentRound = useSetAtom(quizCurrentRoundState);
   const setCurrentKanji = useSetAtom(quizCurrentKanjiState);
   const { isOpen, setIsOpen } = useModal();
