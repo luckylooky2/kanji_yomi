@@ -6,13 +6,15 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useAtomValue, useAtom } from "jotai";
+import dayjs from "dayjs";
+import { useAtomValue, useAtom, useSetAtom } from "jotai";
 import { useEffect, useRef } from "react";
 
 import { playTTS } from "@/entities/quiz/lib/playTTS";
 import {
   quizCurrentKanjiState,
   quizCurrentRoundState,
+  quizStartTime,
 } from "@/entities/quiz/store";
 import { QuizQuestionResponseDTO } from "@/entities/quiz/types";
 import { quizOptionDifficultyState } from "@/entities/quizOption/store";
@@ -27,6 +29,7 @@ const QuizWordContainer = () => {
   const [kanji, setKanji] = useAtom<QuizQuestionResponseDTO | null>(
     quizCurrentKanjiState
   );
+  const setStartTime = useSetAtom(quizStartTime);
   const isFirstRendered = useRef(true);
 
   useEffect(() => {
@@ -36,6 +39,7 @@ const QuizWordContainer = () => {
     } else {
       console.log("Web Speech API not supported :-(");
     }
+    setStartTime(dayjs(new Date()));
   }, []);
 
   useEffect(() => {
