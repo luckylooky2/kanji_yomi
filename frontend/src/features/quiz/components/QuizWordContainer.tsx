@@ -5,6 +5,7 @@ import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useAtomValue, useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 
@@ -15,7 +16,7 @@ import {
 } from "@/entities/quiz/store";
 import { QuizQuestionResponseDTO } from "@/entities/quiz/types";
 import { quizOptionDifficultyState } from "@/entities/quizOption/store";
-import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
+// import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
 import { theme } from "@/shared/styles/theme";
 
 import { QuizService } from "../api";
@@ -65,7 +66,6 @@ const QuizWordContainer = () => {
     }
     playTTS(kanji.word);
   };
-
   const handleRedirectDictionary = () => {
     if (!kanji) {
       return;
@@ -76,7 +76,7 @@ const QuizWordContainer = () => {
   return (
     <QuizWordSection>
       {/* <MywordRegisterToggle /> */}
-      <QuizWord>{kanji ? kanji.word : "loading..."}</QuizWord>
+      <QuizWord>{kanji ? kanji.word : <CircularProgress />}</QuizWord>
       <QuizWordHintLayout>
         <ButtonGroup variant="outlined" aria-label="Hint button group">
           <Button onClick={handleSpeakWord}>
