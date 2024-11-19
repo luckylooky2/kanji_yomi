@@ -1,17 +1,19 @@
 import styled from "@emotion/styled";
 import Button from "@mui/material/Button";
-import { useSetAtom, useAtomValue } from "jotai";
+import { useSetAtom, useAtomValue, useAtom } from "jotai";
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 
 import {
   quizCurrentRoundState,
-  quizIsStartedState,
+  quizStatusState,
   quizCurrentKanjiState,
+  quizResultState,
 } from "@/entities/quiz/store";
 import {
   AnswerInputType,
   AnswerStatus,
+  QuizAnswerResponseDTO,
   QuizQuestionResponseDTO,
   QuizStatus,
 } from "@/entities/quiz/types";
@@ -29,13 +31,15 @@ const QuizAnswerForm = () => {
   } = useForm<AnswerInputType>();
   const [, setStatus] = useState(AnswerStatus.BEFORE);
   const setCurrentRound = useSetAtom(quizCurrentRoundState);
-  const setQuizStatus = useSetAtom(quizIsStartedState);
+  const setQuizStatus = useSetAtom(quizStatusState);
   const maxRound = useAtomValue(quizOptionRoundState);
+  const [quizResult, setQuizResult] = useAtom(quizResultState);
   const kanji = useAtomValue<QuizQuestionResponseDTO | null>(
     quizCurrentKanjiState
   );
   const [shake, setShake] = useState(false);
   const timeId = useRef<NodeJS.Timeout | null>(null);
+  const retries = useRef(0);
 
   const getNextQuestion = () => {
     resetInput();
@@ -54,14 +58,25 @@ const QuizAnswerForm = () => {
     }
 
     try {
-      const data = await QuizService.getAnswer({
+      const data: QuizAnswerResponseDTO = await QuizService.getAnswer({
         word: kanji.word,
         answer: answer,
       });
       if (data.result) {
+        setQuizResult([
+          ...quizResult,
+          {
+            word: kanji.word,
+            meaning: data.meaning,
+            skipped: false,
+            retries: retries.current,
+          },
+        ]);
+        retries.current = 0;
         getNextQuestion();
       } else {
         triggerShake();
+        retries.current++;
       }
     } catch (error) {
       console.log(error);
@@ -92,6 +107,24 @@ const QuizAnswerForm = () => {
     }, 200);
   };
 
+  const handleSkip = () => {
+    if (!kanji) {
+      return;
+    }
+
+    setQuizResult([
+      ...quizResult,
+      {
+        word: kanji.word,
+        meaning: null,
+        skipped: true,
+        retries: retries.current,
+      },
+    ]);
+    retries.current = 0;
+    getNextQuestion();
+  };
+
   return (
     <QuizAnswerSection>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -111,7 +144,7 @@ const QuizAnswerForm = () => {
       >
         submit
       </Button>
-      <Button onClick={getNextQuestion} disabled={!kanji}>
+      <Button onClick={handleSkip} disabled={!kanji}>
         skip
       </Button>
     </QuizAnswerSection>

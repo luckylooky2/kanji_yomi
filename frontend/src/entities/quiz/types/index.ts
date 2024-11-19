@@ -34,3 +34,10 @@ export enum QuizStatus {
   ONGOING = "1",
   RESULT = "2",
 }
+
+export type QuizResult = {
+  word: string;
+  meaning: string | null;
+  skipped: boolean;
+  retries: number;
+};
