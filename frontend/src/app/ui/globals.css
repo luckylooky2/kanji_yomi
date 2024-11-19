@@ -24,12 +24,15 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
+  /* 아이폰 SE 기준 */
+  min-width: 375px;
+  min-height: 667px;
 }
 
-/* 아이폰 Pro Max 기준 */
 @media (max-width: 480px) {
   body {
-    max-height: 950px;
+    /* max-height: 950px; */
+    /* min-height: 667px; */
   }
 }
 
