@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { useSetAtom } from "jotai";
 
-import { quizIsStartedState } from "@/entities/quiz/store";
+import { quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import ModalBase from "@/features/modal/components/ModalBase";
 import { theme } from "@/shared/styles/theme";
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const QuizQuitModal = ({ isOpen, setIsOpen }: Props) => {
-  const setQuizStatus = useSetAtom(quizIsStartedState);
+  const setQuizStatus = useSetAtom(quizStatusState);
 
   const handleQuit = () => {
     setIsOpen(false);
@@ -28,10 +28,10 @@ const QuizQuitModal = ({ isOpen, setIsOpen }: Props) => {
     <ModalBase open={isOpen} onClose={handleCancel} title="Quit?">
       <QuitModalLayout>
         <Button variant="outlined" onClick={handleQuit}>
-          Yes
+          Quit
         </Button>
         <Button variant="contained" onClick={handleCancel}>
-          No
+          Cancel
         </Button>
       </QuitModalLayout>
     </ModalBase>

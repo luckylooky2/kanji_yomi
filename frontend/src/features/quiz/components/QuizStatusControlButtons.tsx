@@ -4,7 +4,7 @@ import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArro
 import { Button } from "@mui/material";
 import { useSetAtom } from "jotai";
 
-import { quizIsStartedState } from "@/entities/quiz/store";
+import { quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
-  const setQuizStatus = useSetAtom(quizIsStartedState);
+  const setQuizStatus = useSetAtom(quizStatusState);
 
   return (
     <QuizStatusControlButtonsLayout>
