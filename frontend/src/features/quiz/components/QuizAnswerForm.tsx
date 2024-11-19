@@ -104,10 +104,16 @@ const QuizAnswerForm = () => {
           onFocus={handlePullUpScrollToTarget}
         />
       </form>
-      <Button variant="contained" onClick={handleSubmit(onSubmit)}>
+      <Button
+        variant="contained"
+        onClick={handleSubmit(onSubmit)}
+        disabled={!kanji}
+      >
         submit
       </Button>
-      <Button onClick={getNextQuestion}>skip</Button>
+      <Button onClick={getNextQuestion} disabled={!kanji}>
+        skip
+      </Button>
     </QuizAnswerSection>
   );
 };
