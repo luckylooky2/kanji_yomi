@@ -46,7 +46,7 @@ const QuizOptions = () => {
 
   return (
     <QuizOptionContainer>
-      <h1>Quiz Option</h1>
+      <h1>Options</h1>
       <QuizOptionSection>
         <QuizOptionLayout title="Difficulties">
           <Stack direction="row" spacing={1}>
@@ -81,7 +81,7 @@ const QuizOptions = () => {
         variant="contained"
         disabled={!(difficulty.length && round)}
       >
-        quiz start
+        start
       </Button>
     </QuizOptionContainer>
   );
