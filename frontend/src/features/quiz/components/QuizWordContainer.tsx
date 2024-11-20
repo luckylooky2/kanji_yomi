@@ -110,6 +110,10 @@ const QuizWord = styled.div`
   text-align: center;
   height: 100px;
   font-size: 50px;
+
+  @media (min-width: 480px) {
+    height: 250px;
+  }
 `;
 
 const QuizWordHintLayout = styled.div`
