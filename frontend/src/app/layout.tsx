@@ -6,14 +6,20 @@ import GlobalModal from "@/features/modal/components/GlobalModal";
 
 import "./ui/globals.css";
 
-const helveticaNeue = localFont({
-  src: "./ui/fonts/Helvetica_Neue_Regular.woff",
-  variable: "--font-helvetica-neue",
+const openSans = localFont({
+  src: "./ui/fonts/Open_Sans_Regular.ttf",
+  variable: "--font-open-sans",
+  weight: "100 900",
+});
+
+const openSansBold = localFont({
+  src: "./ui/fonts/Open_Sans_Bold.ttf",
+  variable: "--font-open-sans-bold",
   weight: "100 900",
 });
 
 export const metadata: Metadata = {
-  title: "kanji yomu",
+  title: "Kanji Yomi",
   description:
     "A Quiz Application that helps users match Japanese Kanji with their Hiragana to improve reading and comprehension skills.",
 };
@@ -25,15 +31,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${helveticaNeue.variable}`}>
+      <body className={`${openSans.variable} ${openSansBold.variable}`}>
         <GlobalModal>
-          <div>123</div>
+          <div>Global Modal</div>
         </GlobalModal>
         <Header />
         <div className="margin-container">
           <div className="content-box">{children}</div>
         </div>
-        {/* <footer className={styles.footer}>@luckylooky2</footer> */}
+        <footer>
+          <div className="footer-item">
+            <a href="mailto:dev.chanhyung@gmail.com">
+              <i>Contact / Support</i>
+            </a>
+          </div>
+        </footer>
       </body>
     </html>
   );
