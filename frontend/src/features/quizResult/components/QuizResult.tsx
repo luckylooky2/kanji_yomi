@@ -43,16 +43,25 @@ const QuizResult = () => {
         <QuizResultStatItem title="Time" content={calculateTime(startTime)} />
       </QuizResultStat>
       <QuizResultGrid>
-        {quizResult.map((item, index) => {
-          const { src, alt } = getImageSource(item.skipped, item.retries);
-          return (
-            <QuizResultWordItem key={`${item} + ${index}`}>
-              <Image src={src} alt={alt} width="20" height="20" />
-              <strong>{item.word}</strong>
-            </QuizResultWordItem>
-          );
-        })}
+        {quizResult.length ? (
+          <QuizResultGridLayout>
+            {quizResult.map((item, index) => {
+              const { src, alt } = getImageSource(item.skipped, item.retries);
+              return (
+                <QuizResultWordItem key={`${item} + ${index}`}>
+                  <Image src={src} alt={alt} width="20" height="20" />
+                  <strong>{item.word}</strong>
+                </QuizResultWordItem>
+              );
+            })}
+          </QuizResultGridLayout>
+        ) : (
+          <QuizResultGridEmpty>
+            Play and learn more words :)
+          </QuizResultGridEmpty>
+        )}
       </QuizResultGrid>
+
       <Button variant="contained" onClick={handleGoToQuizOption}>
         Go To Quiz Option
       </Button>
@@ -69,28 +78,41 @@ const QuizResultContainer = styled.div`
   height: 100%;
 `;
 
-const QuizResultStat = styled.div`
+const QuizResultStat = styled.section`
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: ${theme.spacing.small};
 `;
 
-const QuizResultGrid = styled.div`
+const QuizResultGrid = styled.section`
   height: 50%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  font-size: ${theme.fontSize.medium};
-  padding: ${theme.spacing.medium};
-  overflow-y: auto;
   border: 3px solid transparent;
   border-radius: ${theme.radius.medium};
   background-color: lightgray;
+  padding: ${theme.spacing.medium};
+  font-size: ${theme.fontSize.medium};
+  overflow-y: auto;
+`;
+
+const QuizResultGridLayout = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 
   @media (max-width: 480px) {
     grid-template-columns: repeat(2, 1fr);
   }
 `;
 
-const QuizResultWordItem = styled.div`
+const QuizResultGridEmpty = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+`;
+
+const QuizResultWordItem = styled.article`
   display: flex;
   align-items: center;
   justify-content: flex-start;
