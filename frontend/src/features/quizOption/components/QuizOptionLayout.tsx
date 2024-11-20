@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { ReactNode } from "react";
 
 import { theme } from "@/shared/styles/theme";
+import CustomDivider from "@/widgets/custom/CustomDivider";
 
 interface Props {
   title: string;
@@ -12,7 +13,7 @@ interface Props {
 const QuizOptionLayout = ({ title, children, spacing = "small" }: Props) => {
   return (
     <QuizOptionWrapper aria-labelledby="option-title" spacing={spacing}>
-      <h3 id="option-title">{title}</h3>
+      <CustomDivider>{title}</CustomDivider>
       <QuizOptionItem>{children}</QuizOptionItem>
     </QuizOptionWrapper>
   );
@@ -25,7 +26,9 @@ const QuizOptionWrapper = styled.article<{
 }>`
   display: flex;
   flex-direction: column;
-  gap: ${(props) => theme.spacing[props.spacing]}};
+  gap: ${(props) => theme.spacing[props.spacing]};
+  padding: ${theme.spacing.medium};
+  border-radius: ${theme.radius.large};
 
   div {
     justify-content: center;
