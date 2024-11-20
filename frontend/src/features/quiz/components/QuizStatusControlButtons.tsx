@@ -41,7 +41,7 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
 
 export default QuizStatusControlButtons;
 
-const QuizStatusControlButtonsLayout = styled.div`
+const QuizStatusControlButtonsLayout = styled.section`
   display: flex;
   justify-content: space-between;
 `;

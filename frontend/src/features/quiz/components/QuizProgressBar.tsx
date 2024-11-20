@@ -27,7 +27,7 @@ const QuizProgressBar = () => {
 
 export default QuizProgressBar;
 
-const ProgressBarLayout = styled.div`
+const ProgressBarLayout = styled.section`
   display: flex;
   flex-direction: row;
   justify-content: center;
