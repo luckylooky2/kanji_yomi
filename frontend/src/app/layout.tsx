@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     url: "https://kanji-yomi.vercel.app/",
     images: [
       {
-        url: "https://kanji-yomi.vercel.app/og-image.png",
+        url: "https://kanji-yomi.vercel.app/og_image.png",
         width: 1200,
         height: 630,
         alt: "Kanji Yomi Open Graph Image",
