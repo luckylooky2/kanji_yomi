@@ -1,14 +1,17 @@
 "use client";
 
 import styled from "@emotion/styled";
+import ReplayIcon from "@mui/icons-material/Replay";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import CircularProgress from "@mui/material/CircularProgress";
 import dayjs from "dayjs";
 import { useAtomValue, useAtom, useSetAtom } from "jotai";
-import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 import { playTTS } from "@/entities/quiz/lib/playTTS";
 import {
@@ -20,6 +23,7 @@ import { QuizQuestionResponseDTO } from "@/entities/quiz/types";
 import { quizOptionDifficultyState } from "@/entities/quizOption/store";
 // import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
 import { theme } from "@/shared/styles/theme";
+import ErrorBoundary from "@/widgets/ErrorBoundary/ErrorBoundary";
 
 import { QuizService } from "../api";
 
@@ -31,6 +35,7 @@ const QuizWordContainer = () => {
   );
   const setStartTime = useSetAtom(quizStartTime);
   const isFirstRendered = useRef(true);
+  const [error, setError] = useState<Error | null>(new Error("Network Error"));
 
   useEffect(() => {
     // TODO: disabled 처리하기
@@ -42,17 +47,20 @@ const QuizWordContainer = () => {
     setStartTime(dayjs(new Date()));
   }, []);
 
-  useEffect(() => {
-    async function fetchQuestion() {
-      setKanji(null);
-      try {
-        const data = await QuizService.getQuestion({ difficulty });
-        setKanji(data);
-      } catch (error) {
-        console.log(error);
+  async function fetchQuestion() {
+    setKanji(null);
+    try {
+      const data = await QuizService.getQuestion({ difficulty });
+      setKanji(data);
+      setError(null);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(new Error("Network Error"));
       }
     }
+  }
 
+  useEffect(() => {
     // 페이지 이동 간의 호출을 막기 위해
     if (isFirstRendered.current) {
       if (kanji === null) {
@@ -70,6 +78,7 @@ const QuizWordContainer = () => {
     }
     playTTS(kanji.word);
   };
+
   const handleRedirectDictionary = () => {
     if (!kanji) {
       return;
@@ -77,10 +86,26 @@ const QuizWordContainer = () => {
     window.open(`https://jisho.org/search/${kanji.word}`, "_blank");
   };
 
+  const QuizWordFallback = () => {
+    return (
+      <ErrorComponentContainer>
+        <div>
+          <Image src="/warning.png" width="30" height="30" alt="Error" />
+          {error?.message}
+        </div>
+        <IconButton aria-label="retry" onClick={fetchQuestion}>
+          <ReplayIcon />
+        </IconButton>
+      </ErrorComponentContainer>
+    );
+  };
+
   return (
     <QuizWordSection>
       {/* <MywordRegisterToggle /> */}
-      <QuizWord>{kanji ? kanji.word : <CircularProgress />}</QuizWord>
+      <ErrorBoundary fallback={<QuizWordFallback />} error={error}>
+        <QuizWord>{kanji ? kanji.word : <CircularProgress />}</QuizWord>
+      </ErrorBoundary>
       <QuizWordHintLayout>
         <ButtonGroup variant="outlined" aria-label="Hint button group">
           <Button onClick={handleSpeakWord}>
@@ -119,4 +144,23 @@ const QuizWord = styled.div`
 const QuizWordHintLayout = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const ErrorComponentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  gap: ${theme.spacing.small};
+  font-size: 25px;
+
+  @media (min-width: 480px) {
+    height: 250px;
+  }
+
+  div {
+    display: flex;
+    gap: ${theme.spacing.small};
+  }
 `;
