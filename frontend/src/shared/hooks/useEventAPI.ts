@@ -3,7 +3,7 @@ import { useState } from "react";
 function useEventAPI(url: string) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchData = async (options?: RequestInit) => {
     setLoading(true);
@@ -18,7 +18,9 @@ function useEventAPI(url: string) {
       result = await response.json();
       setData(result);
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      }
     } finally {
       setLoading(false);
     }

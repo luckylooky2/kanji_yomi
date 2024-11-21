@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 function useAPI<T>(url: string, options: RequestInit = {}) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -25,7 +25,9 @@ function useAPI<T>(url: string, options: RequestInit = {}) {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err.message);
+          if (err instanceof Error) {
+            setError(err.message);
+          }
         }
       } finally {
         if (isMounted) {
