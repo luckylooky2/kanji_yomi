@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Kanji Yomi - ",
-    short_name: "Kanji Yomi - 漢字読み",
+    name: "Kanji Yomi - 漢字読み",
+    short_name: "Kanji Yomi",
     description:
       "A Quiz Application that helps users match Japanese Kanji with their Hiragana to improve reading and comprehension skills.",
     start_url: "/",
