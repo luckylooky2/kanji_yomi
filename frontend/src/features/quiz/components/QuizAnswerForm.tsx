@@ -20,7 +20,7 @@ import {
 import { quizOptionRoundState } from "@/entities/quizOption/store";
 import { theme } from "@/shared/styles/theme";
 
-import "../../../app/ui/utils.css";
+import "../../../../public/styles/utils.css";
 import { QuizService } from "../api";
 
 const QuizAnswerForm = () => {

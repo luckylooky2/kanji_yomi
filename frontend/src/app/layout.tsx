@@ -4,16 +4,16 @@ import localFont from "next/font/local";
 import Header from "@/features/header/components/Header";
 import GlobalModal from "@/features/modal/components/GlobalModal";
 
-import "./ui/globals.css";
+import "../../public/styles/globals.css";
 
 const openSans = localFont({
-  src: "./ui/fonts/Open_Sans_Regular.ttf",
+  src: "../../public/fonts/Open_Sans_Regular.ttf",
   variable: "--font-open-sans",
   weight: "100 900",
 });
 
 const openSansBold = localFont({
-  src: "./ui/fonts/Open_Sans_Bold.ttf",
+  src: "../../public/fonts/Open_Sans_Bold.ttf",
   variable: "--font-open-sans-bold",
   weight: "100 900",
 });
