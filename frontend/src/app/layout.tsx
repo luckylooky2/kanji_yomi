@@ -22,6 +22,21 @@ export const metadata: Metadata = {
   title: "Kanji Yomi",
   description:
     "A Quiz Application that helps users match Japanese Kanji with their Hiragana to improve reading and comprehension skills.",
+  openGraph: {
+    title: "Kanji Yomi - 漢字読み",
+    description:
+      "A Quiz Application that helps users match Japanese Kanji with their Hiragana to improve reading and comprehension skills.",
+    url: "https://kanji-yomi.vercel.app/",
+    images: [
+      {
+        url: "https://kanji-yomi.vercel.app/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Kanji Yomi Open Graph Image",
+      },
+    ],
+    type: "website",
+  },
 };
 
 export default function RootLayout({
