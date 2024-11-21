@@ -14,6 +14,7 @@ interface Props {
   path: string;
 }
 
+/* eslint-disable no-unused-vars */
 const BottomNavigation = ({ path }: { path: string }) => {
   const handleClick = useCallback(
     ({ currentTarget }: { currentTarget: HTMLButtonElement }) => {
@@ -45,7 +46,7 @@ const BottomNavigation = ({ path }: { path: string }) => {
   );
 };
 
-const PageWithBottomNav = ({ children, path }: Props) => {
+const PageWithBottomNav = ({ children }: Props) => {
   return (
     <>
       <MainContainer>{children}</MainContainer>

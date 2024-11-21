@@ -19,7 +19,7 @@ const MywordRegisterToggle = () => {
         style={{ right: "0", width: "40px" }}
         onClick={() => {
           setIsOpen(true);
-          // setIsRegistered((prev) => !prev);
+          setIsRegistered((prev) => !prev);
         }}
       >
         {isRegistered ? <BookmarkOutlinedIcon /> : <BookmarkAddOutlinedIcon />}
