@@ -110,3 +110,53 @@ footer {
 .footer-item:hover {
   text-decoration: none;
 }
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align: center;
+  align-items: center;
+  height: 100%;
+
+  a {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Roboto", sans-serif;
+    padding: 6px 16px; /* MUI의 기본 패딩 */
+    font-size: 0.875rem; /* 14px */
+    font-weight: 500; /* 기본 글꼴 두께 */
+    line-height: 1.75;
+    letter-spacing: 0.02857em; /* 약간의 글자 간격 */
+    text-transform: uppercase; /* 모든 글자를 대문자로 */
+    color: #fff; /* 텍스트 색상 */
+    background-color: #d32f2f; /* 기본 빨간색 */
+    border: none; /* 버튼에는 기본적으로 테두리가 없음 */
+    border-radius: 4px; /* 둥근 모서리 */
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); /* MUI 기본 그림자 */
+    cursor: pointer; /* 클릭 가능한 포인터 */
+    transition: background-color 0.3s, box-shadow 0.3s; /* 부드러운 전환 효과 */
+  }
+
+  a:hover {
+    background-color: #c62828; /* hover 시 더 어두운 빨간색 */
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+      0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); /* hover 시 그림자 변화 */
+  }
+
+  a:active {
+    background-color: #b71c1c; /* active 상태의 더 어두운 빨간색 */
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+      0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); /* active 상태의 그림자 */
+  }
+
+  a:disabled {
+    background-color: rgba(0, 0, 0, 0.12); /* 비활성화 상태의 배경색 */
+    color: rgba(0, 0, 0, 0.26); /* 비활성화 상태의 텍스트 색 */
+    cursor: not-allowed; /* 클릭 불가능한 커서 */
+    box-shadow: none; /* 비활성화 상태에서는 그림자가 없음 */
+  }
+}
