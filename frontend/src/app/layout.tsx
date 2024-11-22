@@ -20,12 +20,10 @@ const openSansBold = localFont({
 
 export const metadata: Metadata = {
   title: "Kanji Yomi",
-  description:
-    "A Quiz Application that helps users match Japanese Kanji with their Hiragana to improve reading and comprehension skills.",
+  description: "Kanji-Hiragana matching quiz for Japanese reading skills.",
   openGraph: {
     title: "Kanji Yomi - 漢字読み",
-    description:
-      "A Quiz Application that helps users match Japanese Kanji with their Hiragana to improve reading and comprehension skills.",
+    description: "Kanji-Hiragana matching quiz for Japanese reading skills.",
     url: "https://kanji-yomi.vercel.app/",
     images: [
       {

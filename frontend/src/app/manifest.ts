@@ -4,8 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Kanji Yomi - 漢字読み",
     short_name: "Kanji Yomi",
-    description:
-      "A Quiz Application that helps users match Japanese Kanji with their Hiragana to improve reading and comprehension skills.",
+    description: "Kanji-Hiragana matching quiz for Japanese reading skills.",
     start_url: "/",
     display: "standalone",
     background_color: "#209CEE",
