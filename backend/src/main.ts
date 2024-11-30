@@ -9,6 +9,6 @@ async function bootstrap() {
     origin: process.env.CORS_ORIGIN,
   });
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(Number(process.env.PORT) ?? 3001);
+  await app.listen(Number(process.env.PORT) ?? 3001, '127.0.0.1');
 }
 bootstrap();
