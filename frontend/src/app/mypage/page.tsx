@@ -3,7 +3,7 @@
 import PageWithBottomNav from "@/widgets/navigation/PageWithBottomNav";
 
 function MyPageBase() {
-  return <div>123</div>;
+  return <div>my page</div>;
 }
 
 export default function MyPage() {
