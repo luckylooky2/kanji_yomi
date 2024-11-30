@@ -6,10 +6,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Quiz - Kanji Yomi",
     description: "Choose your options and start the Kanji quiz.",
-    url: "https://kanji-yomi.vercel.app/quiz",
+    url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/quiz`,
     images: [
       {
-        url: "https://kanji-yomi.vercel.app/og_image.png",
+        url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/og_image.png`,
         width: 1200,
         height: 630,
         alt: "Kanji Yomi Open Graph Image",

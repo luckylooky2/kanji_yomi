@@ -24,10 +24,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Kanji Yomi - 漢字読み",
     description: "Kanji-Hiragana matching quiz for Japanese reading skills.",
-    url: "https://kanji-yomi.vercel.app/",
+    url: process.env.NEXT_PUBLIC_FRONTEND_URL,
     images: [
       {
-        url: "https://kanji-yomi.vercel.app/og_image.png",
+        url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/og_image.png`,
         width: 1200,
         height: 630,
         alt: "Kanji Yomi Open Graph Image",
