@@ -13,6 +13,8 @@ import { useAtomValue, useAtom, useSetAtom } from "jotai";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
+import { QuizService } from "../api";
+
 import { playTTS } from "@/entities/quiz/lib/playTTS";
 import {
   quizCurrentKanjiState,
@@ -25,8 +27,6 @@ import { quizOptionDifficultyState } from "@/entities/quizOption/store";
 import { theme } from "@/shared/styles/theme";
 import ErrorBoundary from "@/widgets/ErrorBoundary/ErrorBoundary";
 
-import { QuizService } from "../api";
-
 const QuizWordContainer = () => {
   const difficulty = useAtomValue(quizOptionDifficultyState);
   const currentRound = useAtomValue(quizCurrentRoundState);
@@ -35,7 +35,7 @@ const QuizWordContainer = () => {
   );
   const setStartTime = useSetAtom(quizStartTime);
   const isFirstRendered = useRef(true);
-  const [error, setError] = useState<Error | null>(new Error("Network Error"));
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     // TODO: disabled 처리하기
