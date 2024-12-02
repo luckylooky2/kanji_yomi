@@ -13,8 +13,6 @@ import { useAtomValue, useAtom, useSetAtom } from "jotai";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import { QuizService } from "../api";
-
 import { playTTS } from "@/entities/quiz/lib/playTTS";
 import {
   quizCurrentKanjiState,
@@ -26,6 +24,8 @@ import { quizOptionDifficultyState } from "@/entities/quizOption/store";
 // import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
 import { theme } from "@/shared/styles/theme";
 import ErrorBoundary from "@/widgets/ErrorBoundary/ErrorBoundary";
+
+import { QuizService } from "../api";
 
 const QuizWordContainer = () => {
   const difficulty = useAtomValue(quizOptionDifficultyState);
