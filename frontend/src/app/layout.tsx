@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import Header from "@/features/header/components/Header";
 import GlobalModal from "@/features/modal/components/GlobalModal";
 
+import pkg from "../../package.json";
 import "../../public/styles/globals.css";
 
 const openSans = localFont({
@@ -42,6 +43,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const currVersion = `v${pkg.version}`;
+  const url = `https://github.com/luckylooky2/kanji_yomi/releases/tag/${currVersion}`;
   return (
     <html lang="en">
       <body className={`${openSans.variable} ${openSansBold.variable}`}>
@@ -53,9 +56,13 @@ export default function RootLayout({
           <div className="content-box">{children}</div>
         </div>
         <footer>
-          <div className="footer-item">
-            <a href="mailto:dev.chanhyung@gmail.com">
-              <i>Contact / Support</i>
+          <div>
+            <a className="footer-item" href="mailto:dev.chanhyung@gmail.com">
+              <i>Contact & Support</i>
+            </a>
+            <span> | </span>
+            <a className="footer-item" href={url}>
+              <i>{currVersion}</i>
             </a>
           </div>
         </footer>
