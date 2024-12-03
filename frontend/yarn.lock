@@ -2599,9 +2599,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"kanji_yomu@workspace:.":
+"kanji_yomi@workspace:.":
   version: 0.0.0-use.local
-  resolution: "kanji_yomu@workspace:."
+  resolution: "kanji_yomi@workspace:."
   dependencies:
     "@emotion/react": "npm:^11.13.3"
     "@emotion/styled": "npm:^11.13.0"
