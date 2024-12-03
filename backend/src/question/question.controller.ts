@@ -3,7 +3,7 @@ import { AnswerRequest, QuestionByFilterRequest } from './question.request';
 import { QuestionService } from './question.service';
 import logger from 'src/middleware/Logger';
 
-@Controller('api/quiz')
+@Controller('quiz')
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
