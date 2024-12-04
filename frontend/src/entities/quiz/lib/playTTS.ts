@@ -4,6 +4,10 @@ const _cache: Record<string, SpeechSynthesisVoice[]> = {}; // 언어별 음성 �
 
 // 음성 목록을 불러오는 함수
 function loadVoicesWhenAvailable(onComplete = () => {}) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
   _speechSynth = window.speechSynthesis;
   const voices = _speechSynth.getVoices();
 
