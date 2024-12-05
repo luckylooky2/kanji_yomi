@@ -62,11 +62,11 @@ export default function QuizPage() {
 const QuizQuestionContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: ${theme.spacing.medium};
   justify-content: center;
-  gap: ${theme.spacing.large};
   height: 100%;
 
-  @media (max-width: 480px) {
-    gap: ${theme.spacing.medium};
+  @media (min-width: 480px) {
+    gap: ${theme.spacing.large};
   }
 `;

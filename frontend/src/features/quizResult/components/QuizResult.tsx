@@ -97,10 +97,10 @@ const QuizResultGrid = styled.section`
 
 const QuizResultGridLayout = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
 
-  @media (max-width: 480px) {
-    grid-template-columns: repeat(2, 1fr);
+  @media (min-width: 480px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 
