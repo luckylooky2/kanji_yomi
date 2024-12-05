@@ -7,7 +7,6 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import CircularProgress from "@mui/material/CircularProgress";
 import dayjs from "dayjs";
 import { useAtomValue, useAtom, useSetAtom } from "jotai";
 import Image from "next/image";
@@ -26,6 +25,8 @@ import { theme } from "@/shared/styles/theme";
 import ErrorBoundary from "@/widgets/ErrorBoundary/ErrorBoundary";
 
 import { QuizService } from "../api";
+
+import QuizWord from "./QuizWord";
 
 const QuizWordContainer = () => {
   const difficulty = useAtomValue(quizOptionDifficultyState);
@@ -104,7 +105,7 @@ const QuizWordContainer = () => {
     <QuizWordSection>
       {/* <MywordRegisterToggle /> */}
       <ErrorBoundary fallback={<QuizWordFallback />} error={error}>
-        <QuizWord>{kanji ? kanji.word : <CircularProgress />}</QuizWord>
+        <QuizWord kanji={kanji} />
       </ErrorBoundary>
       <QuizWordHintLayout>
         <ButtonGroup variant="outlined" aria-label="Hint button group">
@@ -126,19 +127,6 @@ const QuizWordSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.small};
-`;
-
-const QuizWord = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  height: 100px;
-  font-size: 50px;
-
-  @media (min-width: 480px) {
-    height: 250px;
-  }
 `;
 
 const QuizWordHintLayout = styled.div`

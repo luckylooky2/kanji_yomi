@@ -41,3 +41,16 @@ export type QuizResult = {
   skipped: boolean;
   retries: number;
 };
+
+export interface QuizWordCategory {
+  kind: string;
+  value: string;
+  color:
+    | "primary"
+    | "secondary"
+    | "default"
+    | "error"
+    | "info"
+    | "success"
+    | "warning";
+}
