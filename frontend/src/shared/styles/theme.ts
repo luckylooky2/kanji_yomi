@@ -14,4 +14,7 @@ export const theme = {
     medium: "16px",
     large: "32px",
   },
+  breakpoints: {
+    mobile: "(max-width: 480px)",
+  },
 };
