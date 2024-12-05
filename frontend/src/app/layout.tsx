@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import React from "react";
 
 import Header from "@/features/header/components/Header";
 import GlobalModal from "@/features/modal/components/GlobalModal";
@@ -61,7 +62,7 @@ export default function RootLayout({
               <i>Contact & Support</i>
             </a>
             <span> | </span>
-            <a className="footer-item" href={url}>
+            <a className="footer-item" href={url} target="_blank">
               <i>{currVersion}</i>
             </a>
           </div>
