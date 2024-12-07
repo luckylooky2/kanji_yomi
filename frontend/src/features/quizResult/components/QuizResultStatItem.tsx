@@ -1,20 +1,46 @@
 import styled from "@emotion/styled";
+import { useEffect, useRef } from "react";
 
-import { getColorByAccuracy } from "@/entities/quizResult/lib";
+import {
+  timeFormattingFn,
+  percentFormattingFn,
+  getColorByAccuracy,
+} from "@/entities/quizResult/lib";
 import { theme } from "@/shared/styles/theme";
-import CustomDivider from "@/widgets/custom/CustomDivider";
 
 interface Props {
   title: string;
-  content: string;
+  content: number;
+  format: "percent" | "time";
   option?: number;
 }
 
-const QuizResultStatItem = ({ title, content, option }: Props) => {
+const QuizResultStatItem = ({ title, content, format, option }: Props) => {
+  const countupRef = useRef(null);
+  let countUpAnim;
+
+  async function initCountUp() {
+    const countUpModule = await import("countup.js");
+    countUpAnim = new countUpModule.CountUp(countupRef.current!, content, {
+      formattingFn: format === "time" ? timeFormattingFn : percentFormattingFn,
+    });
+    if (!countUpAnim.error) {
+      countUpAnim.start();
+    } else {
+      console.error(countUpAnim.error);
+    }
+  }
+
+  useEffect(() => {
+    initCountUp();
+  }, []);
+
   return (
     <QuizResultStatItemLayout>
-      <CustomDivider>{title}</CustomDivider>
-      <QuizResultStatContent option={option}>{content}</QuizResultStatContent>
+      <span>{title}</span>
+      <QuizResultStatContent ref={countupRef} option={option}>
+        0
+      </QuizResultStatContent>
     </QuizResultStatItemLayout>
   );
 };
@@ -24,6 +50,11 @@ export default QuizResultStatItem;
 const QuizResultStatItemLayout = styled.article`
   display: flex;
   flex-direction: column;
+  width: 100px;
+
+  span {
+    text-align: center;
+  }
 `;
 
 const QuizResultStatContent = styled.div<{ option?: number }>`
