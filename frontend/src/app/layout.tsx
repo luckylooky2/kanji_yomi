@@ -59,7 +59,15 @@ export default function RootLayout({
         <footer>
           <div>
             <a className="footer-item" href="mailto:dev.chanhyung@gmail.com">
-              <i>Contact & Support</i>
+              <i>Contact</i>
+            </a>
+            <span> | </span>
+            <a
+              className="footer-item"
+              href="https://github.com/luckylooky2/kanji_yomi/issues/new/choose"
+              target="_blank"
+            >
+              <i>Suggestion</i>
             </a>
             <span> | </span>
             <a className="footer-item" href={url} target="_blank">
