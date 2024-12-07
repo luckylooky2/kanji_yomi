@@ -1234,6 +1234,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"countup.js@npm:^2.8.0":
+  version: 2.8.0
+  resolution: "countup.js@npm:2.8.0"
+  checksum: 10c0/793c2de67a585d708cb7f7e25ea0c9bc17e6e76cf724e34babdd5325b5602bd6882a00510d59e0f1f2fd14e69f882260e08780fa0662741df2abe0feaceda51f
+  languageName: node
+  linkType: hard
+
 "cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2":
   version: 7.0.5
   resolution: "cross-spawn@npm:7.0.5"
@@ -2610,6 +2617,7 @@ __metadata:
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
+    countup.js: "npm:^2.8.0"
     dayjs: "npm:^1.11.13"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.2.15"
