@@ -16,13 +16,20 @@ export const getColorByAccuracy = (rate: number | undefined) => {
   return "black";
 };
 
-export const getImageSource = (isSkipped: boolean, retries: number) => {
+export const getImageSourceList = () => [
+  { src: "/correct.png", alt: "correct", description: "Correct" },
+  { src: "/retried.png", alt: "retried", description: "Retried" },
+  { src: "/skipped.png", alt: "skipped", description: "Skipped" },
+];
+
+export const findImageSource = (isSkipped: boolean, retries: number) => {
+  const [correctImg, retriedImg, skippedImg] = getImageSourceList();
   if (isSkipped) {
-    return { src: "/skip.png", alt: "skip" };
+    return { src: skippedImg.src, alt: skippedImg.alt };
   } else if (retries === 0) {
-    return { src: "/pass.png", alt: "pass" };
+    return { src: correctImg.src, alt: correctImg.alt };
   } else {
-    return { src: "/fail.png", alt: "fail" };
+    return { src: retriedImg.src, alt: retriedImg.alt };
   }
 };
 
