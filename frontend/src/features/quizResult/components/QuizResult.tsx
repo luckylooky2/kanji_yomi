@@ -133,7 +133,7 @@ const QuizResultStat = styled.section`
 const QuizResultGridContainer = styled.section`
   height: 60%;
   display: flex;
-  flexdirection: column;
+  flex-direction: column;
 `;
 
 const QuizResultGrid = styled.div`
