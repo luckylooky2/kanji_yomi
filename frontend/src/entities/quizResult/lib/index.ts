@@ -33,17 +33,24 @@ export const findImageSource = (isSkipped: boolean, retries: number) => {
   }
 };
 
-export const calculateTime = (startTime: Dayjs | null) => {
-  if (startTime == null) {
-    return `0:00`;
+export const getTotalSeconds = (startTime: Dayjs | null) => {
+  if (startTime === null) {
+    return 0;
   }
 
   const endTime = dayjs(new Date());
   const totalSeconds = endTime.diff(startTime, "second");
+  return totalSeconds;
+};
 
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-  return `${String(minutes)}:${String(seconds).padStart(2, "0")}`;
+export const timeFormattingFn = (num: number) => {
+  const minutes = Math.floor(num / 60);
+  const seconds = Math.floor(num % 60);
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+};
+
+export const percentFormattingFn = (num: number) => {
+  return `${num}%`;
 };
 
 export const calculateAccuracy = (correct: number, totalRetries: number) => {
