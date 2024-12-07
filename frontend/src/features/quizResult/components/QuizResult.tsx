@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 
 import {
   quizResultState,
@@ -12,10 +12,12 @@ import {
 import { QuizStatus } from "@/entities/quiz/types";
 import {
   calculateAccuracy,
-  calculateTime,
-  getImageSource,
+  findImageSource,
+  getImageSourceList,
+  getTotalSeconds,
 } from "@/entities/quizResult/lib";
 import { theme } from "@/shared/styles/theme";
+import Loading from "@/widgets/Loading/Loading";
 
 import QuizResultStatItem from "./QuizResultStatItem";
 
@@ -25,11 +27,38 @@ const QuizResult = () => {
   const [correct, totalRetries] = useAtomValue(quizTotalRetriesState);
   const accuracy = calculateAccuracy(correct, totalRetries);
   const startTime = useAtomValue(quizStartTime);
+  const [allImagesLoaded, setAllImagesLoaded] = useState(false);
+  const imageList = getImageSourceList();
 
   const handleGoToQuizOption = () => {
     setQuizStatus(QuizStatus.OPTION);
     setQuizResult([]);
   };
+
+  useEffect(() => {
+    const preloadImages = async () => {
+      const loadPromises = imageList.map(({ src }) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      });
+      await Promise.all(loadPromises);
+      setAllImagesLoaded(true);
+    };
+
+    preloadImages();
+  }, []);
+
+  if (!allImagesLoaded) {
+    return (
+      <QuizResultContainer>
+        <Loading size="50px" />
+      </QuizResultContainer>
+    );
+  }
 
   return (
     <QuizResultContainer>
@@ -37,31 +66,48 @@ const QuizResult = () => {
       <QuizResultStat>
         <QuizResultStatItem
           title="Accuracy"
-          content={accuracy + "%"}
+          content={accuracy}
+          format="percent"
           option={accuracy}
         />
-        <QuizResultStatItem title="Time" content={calculateTime(startTime)} />
+        <QuizResultStatItem
+          title="Time"
+          content={getTotalSeconds(startTime)}
+          format="time"
+        />
       </QuizResultStat>
-      <QuizResultGrid>
-        {quizResult.length ? (
-          <QuizResultGridLayout>
-            {quizResult.map((item, index) => {
-              const { src, alt } = getImageSource(item.skipped, item.retries);
-              return (
-                <QuizResultWordItem key={`${item} + ${index}`}>
-                  <Image src={src} alt={alt} width="20" height="20" />
-                  <strong>{item.word}</strong>
-                </QuizResultWordItem>
-              );
-            })}
-          </QuizResultGridLayout>
-        ) : (
-          <QuizResultGridEmpty>
-            Play and learn more words :)
-          </QuizResultGridEmpty>
-        )}
-      </QuizResultGrid>
-
+      <QuizResultGridContainer>
+        <QuizResultGrid>
+          {quizResult.length ? (
+            <QuizResultGridLayout>
+              {quizResult.map((item, index) => {
+                const { src, alt } = findImageSource(
+                  item.skipped,
+                  item.retries
+                );
+                return (
+                  <QuizResultWordItem key={`${item} + ${index}`}>
+                    <img src={src} alt={alt} width="20" height="20" />
+                    <strong>{item.word}</strong>
+                  </QuizResultWordItem>
+                );
+              })}
+            </QuizResultGridLayout>
+          ) : (
+            <QuizResultGridEmpty>
+              Play and learn more words :)
+            </QuizResultGridEmpty>
+          )}
+        </QuizResultGrid>
+        <QuizResultLegend>
+          {imageList.map(({ src, alt, description }) => (
+            <QuizResultWordItem key={`${alt} + ${description}`}>
+              <img src={src} alt={alt} width="20" height="20" />
+              <span>{description}</span>
+            </QuizResultWordItem>
+          ))}
+        </QuizResultLegend>
+      </QuizResultGridContainer>
       <Button variant="contained" onClick={handleGoToQuizOption}>
         Go To Quiz Option
       </Button>
@@ -80,17 +126,22 @@ const QuizResultContainer = styled.div`
 
 const QuizResultStat = styled.section`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
-  gap: ${theme.spacing.small};
 `;
 
-const QuizResultGrid = styled.section`
-  height: 50%;
+const QuizResultGridContainer = styled.section`
+  height: 60%;
+  display: flex;
+  flexdirection: column;
+`;
+
+const QuizResultGrid = styled.div`
+  height: 100%;
   border: 3px solid transparent;
   border-radius: ${theme.radius.medium};
   background-color: lightgray;
-  padding: ${theme.spacing.medium};
+  padding: 0 ${theme.spacing.medium};
   font-size: ${theme.fontSize.medium};
   overflow-y: auto;
 `;
@@ -118,4 +169,9 @@ const QuizResultWordItem = styled.article`
   justify-content: flex-start;
   margin: ${theme.spacing.small} 0;
   gap: ${theme.spacing.small};
+`;
+
+const QuizResultLegend = styled.div`
+  display: flex;
+  gap: ${theme.spacing.medium};
 `;
