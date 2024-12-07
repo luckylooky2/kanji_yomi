@@ -39,12 +39,6 @@ const QuizWordContainer = () => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    // TODO: disabled 처리하기
-    if ("speechSynthesis" in window) {
-      console.log("Web Speech API supported!");
-    } else {
-      console.log("Web Speech API not supported :-(");
-    }
     setStartTime(dayjs(new Date()));
   }, []);
 
