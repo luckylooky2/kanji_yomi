@@ -14,7 +14,6 @@ import {
   AnswerInputType,
   AnswerStatus,
   QuizAnswerResponseDTO,
-  QuizQuestionResponseDTO,
   QuizStatus,
 } from "@/entities/quiz/types";
 import { quizOptionRoundState } from "@/entities/quizOption/store";
@@ -34,9 +33,7 @@ const QuizAnswerForm = () => {
   const setQuizStatus = useSetAtom(quizStatusState);
   const maxRound = useAtomValue(quizOptionRoundState);
   const [quizResult, setQuizResult] = useAtom(quizResultState);
-  const kanji = useAtomValue<QuizQuestionResponseDTO | null>(
-    quizCurrentKanjiState
-  );
+  const { data: kanji, error } = useAtomValue(quizCurrentKanjiState);
   const [shake, setShake] = useState(false);
   const timeId = useRef<NodeJS.Timeout | null>(null);
   const retries = useRef(0);
@@ -53,7 +50,7 @@ const QuizAnswerForm = () => {
 
   // handleSubmit이 data(input 값을) 인자로 호출
   const onSubmit = async ({ answer }: AnswerInputType) => {
-    if (!kanji || !answer) {
+    if (error || !answer) {
       return;
     }
 
@@ -140,11 +137,11 @@ const QuizAnswerForm = () => {
       <Button
         variant="contained"
         onClick={handleSubmit(onSubmit)}
-        disabled={!kanji}
+        disabled={!!error}
       >
         submit
       </Button>
-      <Button onClick={handleSkip} disabled={!kanji}>
+      <Button onClick={handleSkip} disabled={!!error}>
         skip
       </Button>
     </QuizAnswerSection>

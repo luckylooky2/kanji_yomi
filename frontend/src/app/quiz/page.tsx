@@ -23,12 +23,12 @@ import PageWithBottomNav from "@/widgets/navigation/PageWithBottomNav";
 function QuizPageBase() {
   const quizStatus = useAtomValue(quizStatusState);
   const setCurrentRound = useSetAtom(quizCurrentRoundState);
-  const setCurrentKanji = useSetAtom(quizCurrentKanjiState);
+  const refreshKanji = useSetAtom(quizCurrentKanjiState);
   const { isOpen, setIsOpen } = useModal();
 
   function resetQuizState() {
     setCurrentRound(0);
-    setCurrentKanji(null);
+    refreshKanji();
   }
 
   if (quizStatus === QuizStatus.OPTION) {

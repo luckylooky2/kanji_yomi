@@ -1,31 +1,19 @@
 import styled from "@emotion/styled";
-import { CircularProgress } from "@mui/material";
 import Chip from "@mui/material/Chip";
+import { useAtom } from "jotai";
 
-import {
-  QuizQuestionResponseDTO,
-  QuizWordCategory,
-} from "@/entities/quiz/types";
+import { quizCurrentKanjiState } from "@/entities/quiz/store";
+import { QuizWordCategory } from "@/entities/quiz/types";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { theme } from "@/shared/styles/theme";
 
-interface QuizWordProps {
-  kanji: QuizQuestionResponseDTO | null;
-}
-
-const QuizWord = ({ kanji }: QuizWordProps) => {
+const QuizWord = () => {
   const isMobile = useMediaQuery(theme.breakpoints.mobile);
-
-  if (kanji === null) {
-    return (
-      <QuizWordLayout>
-        <CircularProgress />
-      </QuizWordLayout>
-    );
-  }
+  // error가 발생한 경우는 상위 컴포넌트에서 처리되었기 때문에 !를 사용하였다.
+  const [{ data: kanji }] = useAtom(quizCurrentKanjiState);
 
   const categories: QuizWordCategory[] = [
-    { kind: "difficulty", value: kanji.difficulty, color: "primary" },
+    { kind: "difficulty", value: kanji!.difficulty, color: "primary" },
     // { kind: "topic", value: "Transport", color: "secondary" },
   ];
 
@@ -43,7 +31,7 @@ const QuizWord = ({ kanji }: QuizWordProps) => {
           />
         ))}
       </QuizWordCategoryLayout>
-      <QuizWordWrapper>{kanji.word}</QuizWordWrapper>
+      <QuizWordWrapper>{kanji!.word}</QuizWordWrapper>
     </QuizWordLayout>
   );
 };
