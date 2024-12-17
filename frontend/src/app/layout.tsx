@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import React from "react";
+import { Slide, ToastContainer } from "react-toastify";
 
 import Header from "@/features/header/components/Header";
-import GlobalModal from "@/features/modal/components/GlobalModal";
 
 import pkg from "../../package.json";
 import "../../public/styles/globals.css";
-import { Slide, ToastContainer } from "react-toastify";
 
 const openSans = localFont({
   src: "../../public/fonts/Open_Sans_Regular.ttf",
