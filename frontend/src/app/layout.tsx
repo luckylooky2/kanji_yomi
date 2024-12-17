@@ -7,6 +7,7 @@ import GlobalModal from "@/features/modal/components/GlobalModal";
 
 import pkg from "../../package.json";
 import "../../public/styles/globals.css";
+import { Slide, ToastContainer } from "react-toastify";
 
 const openSans = localFont({
   src: "../../public/fonts/Open_Sans_Regular.ttf",
@@ -49,11 +50,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${openSans.variable} ${openSansBold.variable}`}>
-        <GlobalModal>
-          <div>Global Modal</div>
-        </GlobalModal>
         <Header />
         <div className="margin-container">
+          <ToastContainer
+            position="top-right"
+            theme="colored"
+            transition={Slide}
+            autoClose={3000}
+            closeOnClick={true}
+          />
           <div className="content-box">{children}</div>
         </div>
         <footer>
