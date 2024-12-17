@@ -5,14 +5,16 @@ import { atomWithRefresh } from "jotai/utils";
 import { quizOptionDifficultyState } from "@/entities/quizOption/store";
 import { QuizService } from "@/features/quiz/api";
 
-import { QuizQuestionResponseDTO, QuizResult, QuizStatus } from "../types";
+import {
+  QuizAnswerResponseDTO,
+  QuizQuestionResponseDTO,
+  QuizResult,
+  QuizStatus,
+} from "../types";
 
 // Quiz
 export const quizStatusState = atom<QuizStatus>(QuizStatus.OPTION);
 export const quizCurrentRoundState = atom(0);
-// async read atom: 데이터를 가져올 수 있지만, 수정이 불가하다. suspense를 사용할 수는 있다.
-// async write atom: 데이터를 가져오고 수정이 가능하지만, suspense를 사용하지 못한다.
-// atomWithRefresh: 데이터를 원하시는 시점에 다시 가져올 수 있다. suspense도 사용 가능하다.
 export const quizCurrentKanjiState = atomWithRefresh(async (get) => {
   get(quizCurrentRoundState);
   const difficulty = get(quizOptionDifficultyState);
@@ -25,7 +27,22 @@ export const quizCurrentKanjiState = atomWithRefresh(async (get) => {
     return { error: { message: "Network Error" } };
   }
 });
-export const quizStartTime = atom<Dayjs | null>(null);
+export const quizStartTimeState = atom<Dayjs | null>(null);
+export const quizAnswerResultState = atom(
+  { data: null },
+  async (get, _set, ...args) => {
+    const { data: kanji } = await get(quizCurrentKanjiState);
+    try {
+      const data: QuizAnswerResponseDTO = await QuizService.getAnswer({
+        word: kanji!.word,
+        answer: args[0] as string,
+      });
+      return { data };
+    } catch {
+      return { error: { message: "Network Error" } };
+    }
+  }
+);
 
 // QuizResult
 export const quizResultState = atom<QuizResult[]>([]);
