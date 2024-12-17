@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import {
   quizResultState,
-  quizStartTime,
+  quizStartTimeState,
   quizStatusState,
   quizTotalRetriesState,
 } from "@/entities/quiz/store";
@@ -26,7 +26,7 @@ const QuizResult = () => {
   const [quizResult, setQuizResult] = useAtom(quizResultState);
   const [correct, totalRetries] = useAtomValue(quizTotalRetriesState);
   const accuracy = calculateAccuracy(correct, totalRetries);
-  const startTime = useAtomValue(quizStartTime);
+  const startTime = useAtomValue(quizStartTimeState);
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const imageList = getImageSourceList();
 

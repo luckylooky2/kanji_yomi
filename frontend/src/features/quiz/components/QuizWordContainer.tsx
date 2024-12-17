@@ -8,7 +8,10 @@ import { useAtom, useSetAtom } from "jotai";
 import Image from "next/image";
 import { useEffect } from "react";
 
-import { quizCurrentKanjiState, quizStartTime } from "@/entities/quiz/store";
+import {
+  quizCurrentKanjiState,
+  quizStartTimeState,
+} from "@/entities/quiz/store";
 // import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
 import { theme } from "@/shared/styles/theme";
 
@@ -16,7 +19,7 @@ import QuizWord from "./QuizWord";
 import QuizWordHint from "./QuizWordHint";
 
 const QuizWordContainer = () => {
-  const setStartTime = useSetAtom(quizStartTime);
+  const setStartTime = useSetAtom(quizStartTimeState);
   const [{ error }, refreshKanji] = useAtom(quizCurrentKanjiState);
 
   useEffect(() => {
