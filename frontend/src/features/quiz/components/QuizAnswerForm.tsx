@@ -3,24 +3,25 @@ import Button from "@mui/material/Button";
 import { useSetAtom, useAtomValue, useAtom } from "jotai";
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 import {
   quizCurrentRoundState,
   quizStatusState,
   quizCurrentKanjiState,
   quizResultState,
+  quizAnswerResultState,
 } from "@/entities/quiz/store";
 import {
   AnswerInputType,
   AnswerStatus,
-  QuizAnswerResponseDTO,
+  QuizResult,
   QuizStatus,
 } from "@/entities/quiz/types";
 import { quizOptionRoundState } from "@/entities/quizOption/store";
 import { theme } from "@/shared/styles/theme";
 
 import "../../../../public/styles/utils.css";
-import { QuizService } from "../api";
 
 const QuizAnswerForm = () => {
   const {
@@ -31,14 +32,20 @@ const QuizAnswerForm = () => {
   const [, setStatus] = useState(AnswerStatus.BEFORE);
   const setCurrentRound = useSetAtom(quizCurrentRoundState);
   const setQuizStatus = useSetAtom(quizStatusState);
+  const [, inquireAnswer] = useAtom(quizAnswerResultState);
   const maxRound = useAtomValue(quizOptionRoundState);
   const [quizResult, setQuizResult] = useAtom(quizResultState);
-  const { data: kanji, error } = useAtomValue(quizCurrentKanjiState);
+  const { data: kanji, error: errorCurrentKanji } = useAtomValue(
+    quizCurrentKanjiState
+  );
   const [shake, setShake] = useState(false);
   const timeId = useRef<NodeJS.Timeout | null>(null);
+  // 화면 전환시 초기화됨에 주의
   const retries = useRef(0);
 
-  const getNextQuestion = () => {
+  const getNextQuestion = (result: QuizResult) => {
+    setQuizResult([...quizResult, result]);
+    retries.current = 0;
     resetInput();
     setCurrentRound((prev) => {
       if (prev + 1 === maxRound) {
@@ -50,33 +57,30 @@ const QuizAnswerForm = () => {
 
   // handleSubmit이 data(input 값을) 인자로 호출
   const onSubmit = async ({ answer }: AnswerInputType) => {
-    if (error || !answer) {
+    if (!answer) {
+      toast.info("Please fill in the answer.");
       return;
     }
 
-    try {
-      const data: QuizAnswerResponseDTO = await QuizService.getAnswer({
-        word: kanji.word,
-        answer: answer,
+    // answer은 이 컴포넌트에 강하게 결합되어 있어, 상태값으로 사용할 경우 동기적으로 answer이 전달이 불가능하다.
+    const { data: answerResult, error: errorInquireAnswer } =
+      await inquireAnswer(answer);
+
+    if (errorInquireAnswer) {
+      toast.error("Network Error: Please try again.");
+      return;
+    }
+
+    if (answerResult?.result) {
+      getNextQuestion({
+        word: kanji!.word,
+        meaning: answerResult.meaning,
+        skipped: false,
+        retries: retries.current,
       });
-      if (data.result) {
-        setQuizResult([
-          ...quizResult,
-          {
-            word: kanji.word,
-            meaning: data.meaning,
-            skipped: false,
-            retries: retries.current,
-          },
-        ]);
-        retries.current = 0;
-        getNextQuestion();
-      } else {
-        triggerShake();
-        retries.current++;
-      }
-    } catch (error) {
-      console.log(error);
+    } else {
+      triggerShake();
+      retries.current++;
     }
   };
 
@@ -105,21 +109,12 @@ const QuizAnswerForm = () => {
   };
 
   const handleSkip = () => {
-    if (!kanji) {
-      return;
-    }
-
-    setQuizResult([
-      ...quizResult,
-      {
-        word: kanji.word,
-        meaning: null,
-        skipped: true,
-        retries: retries.current,
-      },
-    ]);
-    retries.current = 0;
-    getNextQuestion();
+    getNextQuestion({
+      word: kanji!.word,
+      meaning: null,
+      skipped: true,
+      retries: retries.current,
+    });
   };
 
   return (
@@ -137,11 +132,11 @@ const QuizAnswerForm = () => {
       <Button
         variant="contained"
         onClick={handleSubmit(onSubmit)}
-        disabled={!!error}
+        disabled={!!errorCurrentKanji}
       >
         submit
       </Button>
-      <Button onClick={handleSkip} disabled={!!error}>
+      <Button onClick={handleSkip} disabled={!!errorCurrentKanji}>
         skip
       </Button>
     </QuizAnswerSection>
