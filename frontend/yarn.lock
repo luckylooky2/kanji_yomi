@@ -753,6 +753,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/scrollreveal@npm:^0.0.11":
+  version: 0.0.11
+  resolution: "@types/scrollreveal@npm:0.0.11"
+  checksum: 10c0/b53262812797d901d18893534da940c5970c67f95dc40239227700b3ee01378f72d9fe2f2e3b05067ee1af1c0d3e6bdb98cec5f744eb5ee7e536a09e7e86a1fb
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:^5.4.2 || ^6.0.0 || ^7.0.0 || ^8.0.0":
   version: 8.13.0
   resolution: "@typescript-eslint/eslint-plugin@npm:8.13.0"
@@ -2316,6 +2323,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-dom-node-list@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "is-dom-node-list@npm:1.2.1"
+  dependencies:
+    is-dom-node: "npm:^1.0.4"
+  checksum: 10c0/2447811cb72a2f660ce213dc7c278005d3bb8599c4d5e31660fa2ca3e00b4b46b2a45e14b887e95e8e5edb5e83dc3df0ae3d23ab0e05ac43b51519116c619720
+  languageName: node
+  linkType: hard
+
+"is-dom-node@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "is-dom-node@npm:1.0.4"
+  checksum: 10c0/a27bd15c01c53dce1e926e37708a5af6aef7455cdae864a17c27f94d5e4a08718b9eee7f9de13ab2d95ffce6bbd54b10caa52bfe67357ddf6271ebb174a37f67
+  languageName: node
+  linkType: hard
+
 "is-extglob@npm:^2.1.1":
   version: 2.1.1
   resolution: "is-extglob@npm:2.1.1"
@@ -2617,6 +2640,7 @@ __metadata:
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
+    "@types/scrollreveal": "npm:^0.0.11"
     countup.js: "npm:^2.8.0"
     dayjs: "npm:^1.11.13"
     eslint: "npm:^8"
@@ -2627,6 +2651,7 @@ __metadata:
     react-dom: "npm:^18"
     react-hook-form: "npm:^7.53.0"
     react-toastify: "npm:^11.0.0"
+    scrollreveal: "npm:4.0.5"
     typescript: "npm:^5"
   languageName: unknown
   linkType: soft
@@ -2753,6 +2778,13 @@ __metadata:
   version: 7.1.2
   resolution: "minipass@npm:7.1.2"
   checksum: 10c0/b0fd20bb9fb56e5fa9a8bfac539e8915ae07430a619e4b86ff71f5fc757ef3924b23b2c4230393af1eda647ed3d75739e4e0acb250a6b1eb277cf7f8fe449557
+  languageName: node
+  linkType: hard
+
+"miniraf@npm:1.0.0":
+  version: 1.0.0
+  resolution: "miniraf@npm:1.0.0"
+  checksum: 10c0/b7ae36a85fa6a8901eae183c0be3b3ddc7ada520c678e021415626b3eb9c3c5140063b38395dbadd9bfac0ba96dcf25394a80aa7994d26a9cf83f11bdc199076
   languageName: node
   linkType: hard
 
@@ -3191,6 +3223,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rematrix@npm:0.3.0":
+  version: 0.3.0
+  resolution: "rematrix@npm:0.3.0"
+  checksum: 10c0/61ad954a9e27ca6965ef61653ada95e95fb3a19325db193bccdea7e3a909c75cbb5b993f1a6498ec148ab04e44564bff601e34ae2e6f7fc95b131b5bafb38966
+  languageName: node
+  linkType: hard
+
 "resolve-from@npm:^4.0.0":
   version: 4.0.0
   resolution: "resolve-from@npm:4.0.0"
@@ -3313,6 +3352,17 @@ __metadata:
   dependencies:
     loose-envify: "npm:^1.1.0"
   checksum: 10c0/26383305e249651d4c58e6705d5f8425f153211aef95f15161c151f7b8de885f24751b377e4a0b3dd42cce09aad3f87a61dab7636859c0d89b7daf1a1e2a5c78
+  languageName: node
+  linkType: hard
+
+"scrollreveal@npm:4.0.5":
+  version: 4.0.5
+  resolution: "scrollreveal@npm:4.0.5"
+  dependencies:
+    miniraf: "npm:1.0.0"
+    rematrix: "npm:0.3.0"
+    tealight: "npm:0.3.6"
+  checksum: 10c0/6d7145c3e526bca1a5110d1eb97ef77705cbb0c3d326361c568fe8396f922ff57e9b4adc180eae725271a1bb5901b61af895b8a64e95ece18930c547fb8e189d
   languageName: node
   linkType: hard
 
@@ -3588,6 +3638,16 @@ __metadata:
   version: 2.2.1
   resolution: "tapable@npm:2.2.1"
   checksum: 10c0/bc40e6efe1e554d075469cedaba69a30eeb373552aaf41caeaaa45bf56ffacc2674261b106245bd566b35d8f3329b52d838e851ee0a852120acae26e622925c9
+  languageName: node
+  linkType: hard
+
+"tealight@npm:0.3.6":
+  version: 0.3.6
+  resolution: "tealight@npm:0.3.6"
+  dependencies:
+    is-dom-node: "npm:^1.0.4"
+    is-dom-node-list: "npm:^1.2.1"
+  checksum: 10c0/e4a3fe8b55f0a0ba8be9af36f806e3227ed8eca18071ff97688ad0d434d8b0a18c83f5d3c8154a84df5b5f332a672160e39eaaf025217a0f0bbfc455a3c99c52
   languageName: node
   linkType: hard
 
