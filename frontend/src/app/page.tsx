@@ -56,7 +56,7 @@ const LandingPage = () => {
         window.mozRequestAnimationFrame ||
         window.oRequestAnimationFrame ||
         window.msRequestAnimationFrame ||
-        function (t) {
+        function (t: TimerHandler) {
           window.setTimeout(t, 1e3 / 60);
         };
     }
