@@ -58,17 +58,19 @@ class Bubble {
   };
 
   update = () => {
-    let t = this;
-    t.translateX = t.translateX - t.movementX;
-    t.translateY = t.translateY - t.movementY;
-    t.posX +=
-      (t.mouseX / (t.staticity / t.magnetism) - t.posX) / t.smoothFactor;
-    t.posY +=
-      (t.mouseY / (t.staticity / t.magnetism) - t.posY) / t.smoothFactor;
-    (t.translateY + t.posY < 0 ||
-      t.translateX + t.posX < 0 ||
-      t.translateX + t.posX > t.canvasWidth) &&
-      (t.randomise(), (t.translateY = t.canvasHeight));
+    this.translateX = this.translateX - this.movementX;
+    this.translateY = this.translateY - this.movementY;
+    this.posX +=
+      (this.mouseX / (this.staticity / this.magnetism) - this.posX) /
+      this.smoothFactor;
+    this.posY +=
+      (this.mouseY / (this.staticity / this.magnetism) - this.posY) /
+      this.smoothFactor;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    (this.translateY + this.posY < 0 ||
+      this.translateX + this.posX < 0 ||
+      this.translateX + this.posX > this.canvasWidth) &&
+      (this.randomise(), (this.translateY = this.canvasHeight));
   };
 
   randomise = () => {
@@ -108,16 +110,15 @@ export class CanvasAnimation {
   }
 
   start = () => {
-    let t = this;
-    t.canvasSize();
+    this.canvasSize();
 
-    window.addEventListener("resize", function () {
-      t.canvasSize();
+    window.addEventListener("resize", () => {
+      this.canvasSize();
     });
 
-    t.bubblesList = [];
-    t.generateBubbles();
-    t.animate();
+    this.bubblesList = [];
+    this.generateBubbles();
+    this.animate();
   };
 
   canvasSize = () => {
@@ -134,16 +135,15 @@ export class CanvasAnimation {
   };
 
   animate = () => {
-    let t = this;
-    t.ctx.clearRect(0, 0, t.canvas.clientWidth, t.canvas.clientHeight);
-    t.bubblesList.forEach(function (e) {
+    this.ctx.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
+    this.bubblesList.forEach((e) => {
       e.update();
-      t.ctx.translate(e.translateX, e.translateY);
-      t.ctx.beginPath();
-      t.ctx.arc(e.posX, e.posY, e.size, 0, 2 * Math.PI);
-      t.ctx.fillStyle = "rgba(" + e.color + "," + e.alpha + ")";
-      t.ctx.fill();
-      t.ctx.setTransform(t.dpr, 0, 0, t.dpr, 0, 0);
+      this.ctx.translate(e.translateX, e.translateY);
+      this.ctx.beginPath();
+      this.ctx.arc(e.posX, e.posY, e.size, 0, 2 * Math.PI);
+      this.ctx.fillStyle = "rgba(" + e.color + "," + e.alpha + ")";
+      this.ctx.fill();
+      this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     });
     requestAnimationFrame(this.animate.bind(this));
   };
@@ -153,8 +153,7 @@ export class CanvasAnimation {
   };
 
   generateBubbles = () => {
-    let t = this;
-    for (let e = 0; e < t.bubbleDensity; e++)
-      t.addBubble(new Bubble(t.container));
+    for (let e = 0; e < this.bubbleDensity; e++)
+      this.addBubble(new Bubble(this.container));
   };
 }
