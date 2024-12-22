@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import Button from "@mui/material/Button";
 import { useSetAtom, useAtomValue, useAtom } from "jotai";
-import React, { useState, useRef } from "react";
+import throttle from "lodash/throttle";
+import React, { useState, useRef, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -55,7 +56,6 @@ const QuizAnswerForm = () => {
     });
   };
 
-  // handleSubmit이 data(input 값을) 인자로 호출
   const onSubmit = async ({ answer }: AnswerInputType) => {
     if (!answer) {
       toast.info("Please fill in the answer.");
@@ -83,6 +83,8 @@ const QuizAnswerForm = () => {
       retries.current++;
     }
   };
+
+  const throttledOnSubmit = useMemo(() => throttle(onSubmit, 500), []);
 
   const triggerShake = () => {
     if (timeId.current) {
@@ -119,7 +121,7 @@ const QuizAnswerForm = () => {
 
   return (
     <QuizAnswerSection>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(throttledOnSubmit)}>
         <input
           {...register("answer")}
           className={shake ? "shake" : ""}
@@ -131,7 +133,7 @@ const QuizAnswerForm = () => {
       </form>
       <Button
         variant="contained"
-        onClick={handleSubmit(onSubmit)}
+        onClick={handleSubmit(throttledOnSubmit)}
         disabled={!!errorCurrentKanji}
       >
         submit
