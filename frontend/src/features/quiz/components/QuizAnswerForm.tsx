@@ -84,7 +84,10 @@ const QuizAnswerForm = () => {
     }
   };
 
-  const throttledOnSubmit = useMemo(() => throttle(onSubmit, 500), []);
+  const throttledOnSubmit = useMemo(
+    () => throttle(onSubmit, 500),
+    [quizResult]
+  );
 
   const triggerShake = () => {
     if (timeId.current) {
