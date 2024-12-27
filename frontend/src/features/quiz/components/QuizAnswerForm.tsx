@@ -45,7 +45,7 @@ const QuizAnswerForm = () => {
   const retries = useRef(0);
 
   const getNextQuestion = (result: QuizResult) => {
-    setQuizResult([...quizResult, result]);
+    setQuizResult((prev) => [...prev, result]);
     retries.current = 0;
     resetInput();
     setCurrentRound((prev) => {
@@ -84,10 +84,7 @@ const QuizAnswerForm = () => {
     }
   };
 
-  const throttledOnSubmit = useMemo(
-    () => throttle(onSubmit, 500),
-    [quizResult]
-  );
+  const throttledOnSubmit = useMemo(() => throttle(onSubmit, 500), [kanji]);
 
   const triggerShake = () => {
     if (timeId.current) {
