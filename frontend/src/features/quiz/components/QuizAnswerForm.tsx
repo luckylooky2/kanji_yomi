@@ -35,7 +35,7 @@ const QuizAnswerForm = () => {
   const setQuizStatus = useSetAtom(quizStatusState);
   const [, inquireAnswer] = useAtom(quizAnswerResultState);
   const maxRound = useAtomValue(quizOptionRoundState);
-  const [quizResult, setQuizResult] = useAtom(quizResultState);
+  const [, setQuizResult] = useAtom(quizResultState);
   const { data: kanji, error: errorCurrentKanji } = useAtomValue(
     quizCurrentKanjiState
   );
