@@ -126,7 +126,6 @@ const QuizAnswerForm = () => {
           {...register("answer")}
           className={shake ? "shake" : ""}
           autoComplete="off"
-          autoFocus
           placeholder="Type in Hiragana"
           onFocus={handlePullUpScrollToTarget}
         />
