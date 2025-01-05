@@ -58,7 +58,7 @@ const QuizWordLayout = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 100px;
+  height: 130px;
   font-size: 50px;
 
   @media (min-width: 480px) {
