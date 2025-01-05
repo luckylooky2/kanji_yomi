@@ -6,6 +6,7 @@ export type QuizQuestionResponseDTO = {
   id: number;
   word: string;
   difficulty: string;
+  correctRatio: number;
 };
 
 export type QuizAnswerRequestDTO = {
