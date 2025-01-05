@@ -16,7 +16,6 @@ import {
 import { theme } from "@/shared/styles/theme";
 
 import QuizWord from "./QuizWord";
-import QuizWordHint from "./QuizWordHint";
 
 const QuizWordContainer = () => {
   const setStartTime = useSetAtom(quizStartTimeState);
@@ -44,7 +43,6 @@ const QuizWordContainer = () => {
     <QuizWordSection>
       {/* <MywordRegisterToggle /> */}
       <QuizWord />
-      <QuizWordHint />
     </QuizWordSection>
   );
 };
