@@ -12,9 +12,23 @@ const QuizWord = () => {
   // error가 발생한 경우는 상위 컴포넌트에서 처리되었기 때문에 !를 사용하였다.
   const [{ data: kanji }] = useAtom(quizCurrentKanjiState);
 
+  const getMUIColorByCorrectRatio = (ratio: number) => {
+    if (ratio >= 80) {
+      return "success";
+    } else if (ratio >= 50) {
+      return "warning";
+    } else {
+      return "error";
+    }
+  };
+
   const categories: QuizWordCategory[] = [
     { kind: "difficulty", value: kanji!.difficulty, color: "primary" },
-    // { kind: "topic", value: "Transport", color: "secondary" },
+    {
+      kind: "correctRatio",
+      value: "Correct: " + kanji!.correctRatio + "%",
+      color: getMUIColorByCorrectRatio(kanji!.correctRatio),
+    },
   ];
 
   return (
