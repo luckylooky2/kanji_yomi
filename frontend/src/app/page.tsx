@@ -83,7 +83,7 @@ const LandingPage = () => {
         </header>
         <main>
           <section className="hero text-center text-light">
-            <div className="hero-bg"></div>
+            {/* <div className="hero-bg"></div> */}
             <div className="hero-particles-container">
               <canvas id="hero-particles"></canvas>
             </div>

@@ -8,7 +8,7 @@ const Header = () => {
     <AppBar style={{ position: "static" }}>
       <Toolbar style={{ justifyContent: "center" }}>
         <Typography variant="h6" component="div">
-          <Link href="/">Kanji Yomi</Link>
+          <Link href="/">漢字読み - Kanji Yomi</Link>
         </Typography>
       </Toolbar>
     </AppBar>

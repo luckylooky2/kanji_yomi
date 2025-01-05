@@ -18,11 +18,11 @@ const openSansBold = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Kanji Yomi",
-  description: "Kanji-Hiragana matching quiz for Japanese reading skills.",
+  title: "Kanji Yomi: Japanese quiz",
+  description: "Kanji-Hiragana typing quiz for Japanese reading skills.",
   openGraph: {
-    title: "Kanji Yomi - 漢字読み",
-    description: "Kanji-Hiragana matching quiz for Japanese reading skills.",
+    title: "Kanji Yomi Quiz - 漢字読み",
+    description: "Kanji-Hiragana typing quiz for Japanese reading skills.",
     url: process.env.NEXT_PUBLIC_FRONTEND_URL,
     images: [
       {
