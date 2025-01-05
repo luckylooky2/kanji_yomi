@@ -53,9 +53,19 @@ export class QuestionService {
       );
     }
 
+    const isCorrect = answerDAO.meaning === request.answer;
+
+    if (isCorrect) {
+      answerDAO.correctCount++;
+    } else {
+      answerDAO.incorrectCount++;
+    }
+
+    await this.questionRepository.save(answerDAO);
+
     return plainToInstance(
       AnswerDTO,
-      { ...answerDAO, result: answerDAO.meaning === request.answer },
+      { ...answerDAO, result: isCorrect },
       {
         excludeExtraneousValues: true,
       },
