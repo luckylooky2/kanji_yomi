@@ -34,7 +34,7 @@ export function getNavigationStatus(path: string) {
   }
 }
 
-export const difficulties = ["N5", "N4", "N3"];
+export const difficulties = ["N5", "N4", "N3", "N2", "N1"];
 export const roundMarks = [
   {
     value: 10,
