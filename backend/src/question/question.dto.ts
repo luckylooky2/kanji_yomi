@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 
 export class QuestionDTO {
   @Expose()
@@ -9,6 +9,15 @@ export class QuestionDTO {
 
   @Expose()
   difficulty: string;
+
+  @Expose()
+  @Transform(({ obj }) => {
+    const totalAttempts = obj.correctCount + obj.incorrectCount;
+    return totalAttempts > 0
+      ? Math.round((obj.correctCount / totalAttempts) * 100)
+      : 0;
+  })
+  correctRatio: number;
 }
 
 export class AnswerDTO {
