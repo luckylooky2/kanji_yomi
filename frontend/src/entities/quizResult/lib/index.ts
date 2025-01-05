@@ -1,15 +1,15 @@
 import dayjs, { Dayjs } from "dayjs";
 
-export const getColorByAccuracy = (rate: number | undefined) => {
-  if (rate === undefined) {
+export const getCSSColorByAccuracy = (ratio: number | undefined) => {
+  if (ratio === undefined) {
     return "black";
   }
 
-  if (75 <= rate) {
+  if (80 <= ratio) {
     return "green";
-  } else if (50 <= rate) {
+  } else if (50 <= ratio) {
     return "orange";
-  } else if (0 <= rate) {
+  } else if (0 <= ratio) {
     return "red";
   }
 

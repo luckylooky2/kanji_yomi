@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import {
   timeFormattingFn,
   percentFormattingFn,
-  getColorByAccuracy,
+  getCSSColorByAccuracy,
 } from "@/entities/quizResult/lib";
 import { theme } from "@/shared/styles/theme";
 
@@ -64,5 +64,5 @@ const QuizResultStatContent = styled.div<{ option?: number }>`
   text-align: center;
   font-size: ${theme.fontSize.large};
   font-weight: bold;
-  color: ${(props) => getColorByAccuracy(props.option)};
+  color: ${(props) => getCSSColorByAccuracy(props.option)};
 `;
