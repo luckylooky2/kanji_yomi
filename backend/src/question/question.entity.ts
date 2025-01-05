@@ -13,4 +13,10 @@ export class Question {
 
   @Column()
   difficulty: string;
+
+  @Column({ default: 0 })
+  incorrectCount: number;
+
+  @Column({ default: 0 })
+  correctCount: number;
 }
