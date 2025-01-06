@@ -22,8 +22,6 @@ import {
 import { quizOptionRoundState } from "@/entities/quizOption/store";
 import { theme } from "@/shared/styles/theme";
 
-import QuizWordHint from "./QuizWordHint";
-
 import "../../../../public/styles/utils.css";
 
 const QuizAnswerForm = () => {
@@ -123,7 +121,7 @@ const QuizAnswerForm = () => {
 
   return (
     <QuizAnswerSection>
-      <QuizAnswerFormSection onSubmit={handleSubmit(throttledOnSubmit)}>
+      <form onSubmit={handleSubmit(throttledOnSubmit)}>
         <input
           {...register("answer")}
           className={shake ? "shake" : ""}
@@ -131,8 +129,7 @@ const QuizAnswerForm = () => {
           placeholder="Type in Hiragana"
           onFocus={handlePullUpScrollToTarget}
         />
-        <QuizWordHint />
-      </QuizAnswerFormSection>
+      </form>
       <Button
         variant="contained"
         onClick={handleSubmit(throttledOnSubmit)}
@@ -152,10 +149,6 @@ const QuizAnswerForm = () => {
 };
 
 export default QuizAnswerForm;
-
-const QuizAnswerFormSection = styled.form`
-  display: flex;
-`;
 
 const QuizAnswerSection = styled.section`
   display: flex;

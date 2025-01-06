@@ -7,6 +7,8 @@ import { QuizWordCategory } from "@/entities/quiz/types";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { theme } from "@/shared/styles/theme";
 
+import QuizWordHint from "./QuizWordHint";
+
 const QuizWord = () => {
   const isMobile = useMediaQuery(theme.breakpoints.mobile);
   // error가 발생한 경우는 상위 컴포넌트에서 처리되었기 때문에 !를 사용하였다.
@@ -33,18 +35,21 @@ const QuizWord = () => {
 
   return (
     <QuizWordLayout>
-      <QuizWordCategoryLayout>
-        {categories.map((category, index) => (
-          <Chip
-            key={index}
-            variant="outlined"
-            color={category.color}
-            size={isMobile ? "small" : "medium"}
-            label={category.value}
-            aria-label={category.value}
-          />
-        ))}
-      </QuizWordCategoryLayout>
+      <QuizWordUtilityLayout>
+        <QuizWordCategoryLayout>
+          {categories.map((category, index) => (
+            <Chip
+              key={index}
+              variant="outlined"
+              color={category.color}
+              size={isMobile ? "small" : "medium"}
+              label={category.value}
+              aria-label={category.value}
+            />
+          ))}
+        </QuizWordCategoryLayout>
+        <QuizWordHint />
+      </QuizWordUtilityLayout>
       <QuizWordWrapper>{kanji!.word}</QuizWordWrapper>
     </QuizWordLayout>
   );
@@ -71,6 +76,11 @@ const QuizWordWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const QuizWordUtilityLayout = styled.div`
+  display: flex;
+  width: 100%;
 `;
 
 const QuizWordCategoryLayout = styled.div`
