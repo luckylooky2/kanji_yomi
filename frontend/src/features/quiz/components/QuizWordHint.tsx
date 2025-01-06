@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import MenuIcon from "@mui/icons-material/Menu";
+import ClearIcon from "@mui/icons-material/Clear";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Button, ButtonGroup, Popper } from "@mui/material";
@@ -36,10 +36,10 @@ const QuizWordHint = () => {
 
   return (
     <QuizWordHintLayout>
-      <Button variant="text" onClick={handleClick}>
-        {isOpen ? <RemoveIcon /> : <AddIcon />}
-      </Button>
-      <Popper open={isOpen} anchorEl={anchorEl} placement="top">
+      <QuizWordHintMenuButton variant="text" onClick={handleClick}>
+        {isOpen ? <ClearIcon /> : <MenuIcon />}
+      </QuizWordHintMenuButton>
+      <Popper open={isOpen} anchorEl={anchorEl} placement="bottom">
         <QuizButtonGroup
           variant="outlined"
           orientation="vertical"
@@ -65,5 +65,9 @@ const QuizWordHintLayout = styled.div`
 `;
 
 const QuizButtonGroup = styled(ButtonGroup)`
-  margin-bottom: 10px;
+  margin-top: 10px;
+`;
+
+const QuizWordHintMenuButton = styled(Button)`
+  padding: 0;
 `;
