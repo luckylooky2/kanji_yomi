@@ -11,31 +11,25 @@ class Bubble {
   movementX: number = 0;
   movementY: number = 0;
   color: string = "";
-  colors: string[] = [
-    // "85, 107, 139",
-    // "38, 141, 247",
-    // "66, 52, 248",
-    // "255, 108, 80",
-    // "243, 244, 255",
-    // "96, 100, 131",
-    "255, 182, 193",
-    "255, 192, 203",
-    "255, 150, 170",
-    "255, 204, 204",
-    "231, 84, 128",
-    "255, 105, 180",
-  ];
+  colors: string[];
   alpha: number = 0;
   size: number = 0;
   velocity: number = 30;
   smoothFactor: number = 50;
   staticity: number = 30;
   magnetism: number = 1;
+  flowDirection: "up" | "down";
 
-  constructor(element: HTMLElement) {
+  constructor(
+    element: HTMLElement,
+    flowDirection: "up" | "down",
+    colors: string[]
+  ) {
     this.parentNode = element;
     this.canvasWidth = element.clientWidth;
     this.canvasHeight = element.clientHeight;
+    this.flowDirection = flowDirection;
+    this.colors = colors;
     this.randomise();
 
     window.addEventListener("resize", () => {
@@ -59,18 +53,33 @@ class Bubble {
 
   update = () => {
     this.translateX = this.translateX - this.movementX;
-    this.translateY = this.translateY - this.movementY;
+    this.translateY += this.movementY * (this.flowDirection === "up" ? -1 : 1);
     this.posX +=
       (this.mouseX / (this.staticity / this.magnetism) - this.posX) /
       this.smoothFactor;
     this.posY +=
       (this.mouseY / (this.staticity / this.magnetism) - this.posY) /
       this.smoothFactor;
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    (this.translateY + this.posY < 0 ||
-      this.translateX + this.posX < 0 ||
-      this.translateX + this.posX > this.canvasWidth) &&
-      (this.randomise(), (this.translateY = this.canvasHeight));
+
+    if (
+      this.flowDirection === "up" &&
+      (this.translateY + this.posY < 0 ||
+        this.translateX + this.posX < 0 ||
+        this.translateX + this.posX > this.canvasWidth)
+    ) {
+      this.randomise();
+      this.translateY = this.canvasHeight;
+    }
+
+    if (
+      this.flowDirection === "down" &&
+      (this.translateY - this.posY > this.canvasHeight ||
+        this.translateX + this.posX < 0 ||
+        this.translateX + this.posX > this.canvasWidth)
+    ) {
+      this.randomise();
+      this.translateY = 0;
+    }
   };
 
   randomise = () => {
@@ -80,7 +89,7 @@ class Bubble {
     this.magnetism = 0.1 + 4 * Math.random();
     this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
     this.alpha = this.generateDecimalBetween(5, 10) / 10;
-    this.size = this.generateDecimalBetween(4, 5);
+    this.size = this.generateDecimalBetween(3, 6);
     this.posX = 0;
     this.posY = 0;
     this.movementX = this.generateDecimalBetween(-2, 2) / this.velocity;
@@ -101,12 +110,20 @@ export class CanvasAnimation {
   hdpi: number = 0;
   bubblesList: Bubble[] = [];
   bubbleDensity: number = 15;
+  flowDirection: "up" | "down";
+  bubbleColors: string[];
 
-  constructor(elementId: string) {
+  constructor(
+    elementId: string,
+    flowDirection: "up" | "down",
+    bubbleColors: string[]
+  ) {
     this.canvas = document.getElementById(elementId) as HTMLCanvasElement;
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
     this.dpr = window.devicePixelRatio;
     this.container = this.canvas.parentNode as HTMLElement;
+    this.flowDirection = flowDirection;
+    this.bubbleColors = bubbleColors;
   }
 
   start = () => {
@@ -154,6 +171,8 @@ export class CanvasAnimation {
 
   generateBubbles = () => {
     for (let e = 0; e < this.bubbleDensity; e++)
-      this.addBubble(new Bubble(this.container));
+      this.addBubble(
+        new Bubble(this.container, this.flowDirection, this.bubbleColors)
+      );
   };
 }

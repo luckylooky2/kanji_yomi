@@ -21,7 +21,25 @@ export function reveal(sr: scrollReveal.ScrollRevealObject) {
   });
 }
 
+const sakuraColors = [
+  "255, 182, 193",
+  "255, 192, 203",
+  "255, 150, 170",
+  "255, 204, 204",
+  "231, 84, 128",
+  "255, 105, 180",
+];
+
+const defaultColors = [
+  "85, 107, 139",
+  "38, 141, 247",
+  "66, 52, 248",
+  "255, 108, 80",
+  "243, 244, 255",
+  "96, 100, 131",
+];
+
 export function startBubbleAnimation() {
-  new CanvasAnimation("hero-particles").start();
-  new CanvasAnimation("footer-particles").start();
+  new CanvasAnimation("hero-particles", "down", sakuraColors).start();
+  new CanvasAnimation("footer-particles", "up", defaultColors).start();
 }
