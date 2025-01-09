@@ -92,12 +92,11 @@ const LandingPage = () => {
                 <div className="hero-copy">
                   <div className="blur">
                     <h2 className="hero-title mt-0">
-                      Boost Your Japanese <div className="word-break" />
-                      Reading Fluency
+                      Typing-based <div className="word-break" />
+                      Japanese Kanji Reading Quiz
                     </h2>
                     <p className="hero-paragraph sub-title-color">
-                      Typing-based learning that helps you master kanji
-                      effectively.
+                      Boost Your Japanese Reading Fluency!
                     </p>
                   </div>
                   <div className="hero-cta">

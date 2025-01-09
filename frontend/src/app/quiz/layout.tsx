@@ -7,10 +7,10 @@ import pkg from "../../../package.json";
 
 export const metadata: Metadata = {
   title: "Quiz - Kanji Yomi",
-  description: "Choose your options and start the Kanji quiz.",
+  description: "Choose your level and start the Kanji quiz.",
   openGraph: {
     title: "Quiz - Kanji Yomi",
-    description: "Choose your options and start the Kanji quiz.",
+    description: "Choose your level and start the Kanji quiz.",
     url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/quiz`,
     images: [
       {
