@@ -53,7 +53,9 @@ export class QuestionService {
       );
     }
 
-    const isCorrect = answerDAO.meaning === request.answer;
+    // 탁음이나 요음이 들어간 문자는 인코딩 또는 입력 방식의 차이로 NFC 정규화(조합하여 하나의 문자로 만듦)가 필요함
+    const isCorrect =
+      answerDAO.meaning.normalize('NFC') === request.answer.normalize('NFC');
 
     if (isCorrect) {
       answerDAO.correctCount++;
