@@ -9,6 +9,7 @@ import React, { useState } from "react";
 
 import { playTTS } from "@/entities/quiz/lib/playTTS";
 import { quizCurrentKanjiState } from "@/entities/quiz/store";
+import ResponsiveIcon from "@/widgets/ResponsiveIcon/ResponsiveIcon";
 
 const QuizWordHint = () => {
   const [{ data: kanji }] = useAtom(quizCurrentKanjiState);
@@ -37,21 +38,21 @@ const QuizWordHint = () => {
   return (
     <QuizWordHintLayout>
       <QuizWordHintMenuButton variant="text" onClick={handleClick}>
-        {isOpen ? <ClearIcon /> : <MenuIcon />}
+        <ResponsiveIcon icon={isOpen ? ClearIcon : MenuIcon} />
       </QuizWordHintMenuButton>
       <Popper open={isOpen} anchorEl={anchorEl} placement="bottom">
-        <QuizButtonGroup
+        <QuizWordHintButtonGroup
           variant="outlined"
           orientation="vertical"
           aria-label="Hint button group"
         >
-          <Button onClick={handleSpeakWord}>
-            <VolumeUpIcon />
-          </Button>
-          <Button onClick={handleRedirectDictionary}>
-            <TravelExploreIcon />
-          </Button>
-        </QuizButtonGroup>
+          <QuizWordHintButton onClick={handleSpeakWord}>
+            <ResponsiveIcon icon={VolumeUpIcon} />
+          </QuizWordHintButton>
+          <QuizWordHintButton onClick={handleRedirectDictionary}>
+            <ResponsiveIcon icon={TravelExploreIcon} />
+          </QuizWordHintButton>
+        </QuizWordHintButtonGroup>
       </Popper>
     </QuizWordHintLayout>
   );
@@ -64,10 +65,14 @@ const QuizWordHintLayout = styled.div`
   justify-content: center;
 `;
 
-const QuizButtonGroup = styled(ButtonGroup)`
+const QuizWordHintButtonGroup = styled(ButtonGroup)`
   margin-top: 10px;
 `;
 
 const QuizWordHintMenuButton = styled(Button)`
   padding: 0;
+`;
+
+const QuizWordHintButton = styled(Button)`
+  background-color: white;
 `;
