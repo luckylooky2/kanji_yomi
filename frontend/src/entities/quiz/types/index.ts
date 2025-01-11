@@ -55,3 +55,11 @@ export interface QuizWordCategory {
     | "success"
     | "warning";
 }
+
+export interface QuizHintSpeakSetting {
+  selectedVoice: string;
+  lang: string;
+  rate: number; // 빠르기, 0.1 ~ 10
+  pitch: number; // 음높이, 0 ~ 2
+  volume: number; // 음량, 0 ~ 1
+}
