@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import {
   defaultSpeakSetting,
   playTTS,
-  SSVLangJapanese,
+  SSULangJapanese,
 } from "@/entities/quiz/lib";
 import {
   quizCurrentKanjiState,
@@ -41,7 +41,7 @@ const QuizWordHint = () => {
     }
 
     const allVoices = window.speechSynthesis.getVoices();
-    const voices = allVoices.filter((voice) => voice.lang === SSVLangJapanese);
+    const voices = allVoices.filter((voice) => voice.lang === SSULangJapanese);
 
     if (voices.length !== 0) {
       setVoiceList(voices);

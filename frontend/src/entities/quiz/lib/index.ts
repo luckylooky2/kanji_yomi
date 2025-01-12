@@ -4,7 +4,7 @@ import { QuizHintSpeakSetting } from "../types";
 
 // quizHint
 
-export const SSVLangJapanese = "ja-JP";
+export const SSULangJapanese = "ja-JP";
 export const defaultSpeakSetting = {
   selectedVoice: "",
   lang: "ja-JP",
