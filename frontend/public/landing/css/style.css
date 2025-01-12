@@ -1100,11 +1100,10 @@ label {
   left: 0;
   right: 0;
 
-  canvas {
-    background-image: url("/landing/images/hero-canvas.jpg");
-    background-size: cover;
-    background-position: center;
-    /* filter: blur(0.5px); */
+  .hero-canvas {
+    object-fit: cover;
+    object-position: center;
+    z-index: -1;
   }
 }
 

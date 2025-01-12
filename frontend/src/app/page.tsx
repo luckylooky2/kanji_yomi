@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 import { addClass, startBubbleAnimation, reveal } from "@/entities/landing/lib";
@@ -71,12 +72,19 @@ const LandingPage = () => {
           <div className="container">
             <div className="site-header-inner">
               <div className="brand header-brand">
-                <img
-                  className="header-logo-image"
-                  src="/favicon/favicon-32x32.png"
-                  alt="favicon-32"
+                <Image
+                  src="/favicon/apple-touch-icon.png"
+                  alt="header-logo-image"
+                  width={40}
+                  height={40}
                 />
-                <img className="logo" src="/logo.png" alt="logo" />
+                <Image
+                  className="logo"
+                  src="/logo.png"
+                  alt="logo"
+                  width={100}
+                  height={40}
+                />
               </div>
             </div>
           </div>
@@ -85,6 +93,16 @@ const LandingPage = () => {
           <section className="hero text-center text-light">
             {/* <div className="hero-bg"></div> */}
             <div className="hero-particles-container">
+              <div className="hero-bg-wrapper">
+                <Image
+                  src="/landing/images/hero-canvas-winter.webp"
+                  alt="hero-canvas"
+                  className="hero-canvas"
+                  sizes="1080px"
+                  fill
+                  priority
+                />
+              </div>
               <canvas id="hero-particles"></canvas>
             </div>
             <div className="container-sm">
@@ -93,7 +111,7 @@ const LandingPage = () => {
                   <div className="blur">
                     <h2 className="hero-title mt-0">
                       Typing-based <div className="word-break" />
-                      Japanese Kanji Reading Quiz
+                      Japanese Kanji Quiz
                     </h2>
                     <p className="hero-paragraph sub-title-color">
                       Boost Your Japanese Reading Fluency!
@@ -109,10 +127,12 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <div className="mockup-container">
-                  <img
+                  <Image
                     className="device-mockup"
                     src="/landing/images/hero-image.png"
                     alt="iPhone Hero"
+                    width={350}
+                    height={680}
                   />
                 </div>
               </div>
@@ -125,9 +145,11 @@ const LandingPage = () => {
                 <h1 className="section-title">About App</h1>
                 <div className="feature-extended feature-grid">
                   <div className="feature-extended-body grid-content is-revealing">
-                    <img
+                    <Image
                       src="/landing/images/description-01.png"
                       alt="description-01"
+                      width={100}
+                      height={100}
                     />
                     <div className="grid-letter-box">
                       <h4 className="mt-0 mb-16">
@@ -141,9 +163,11 @@ const LandingPage = () => {
                     </div>
                   </div>
                   <div className="feature-extended-body grid-content is-revealing">
-                    <img
+                    <Image
                       src="/landing/images/description-02.png"
                       alt="description-02"
+                      width={100}
+                      height={100}
                     />
                     <div>
                       <h4 className="mt-0 mb-16">
@@ -157,9 +181,11 @@ const LandingPage = () => {
                     </div>
                   </div>
                   <div className="feature-extended-body grid-content is-revealing">
-                    <img
+                    <Image
                       src="/landing/images/description-03.png"
                       alt="description-03"
+                      width={100}
+                      height={100}
                     />
                     <div>
                       <h4 className="mt-0 mb-16">Type, Don’t Choose</h4>
@@ -176,15 +202,19 @@ const LandingPage = () => {
                   <div className="feature-extended">
                     <div className="feature-extended-image">
                       <div className="mockup-bg">
-                        <img
+                        <Image
                           src="/landing/images/feature-bg-02.svg"
                           alt="iPhone Feature 02 illustration"
+                          width={100}
+                          height={100}
                         />
                       </div>
-                      <img
+                      <Image
                         className="device-mockup is-revealing"
                         src="/landing/images/feature-option.png"
                         alt="feature-option"
+                        width={300}
+                        height={570}
                       />
                     </div>
                     <div className="feature-extended-body is-revealing">
@@ -193,8 +223,8 @@ const LandingPage = () => {
                         Difficulty Levels
                       </h3>
                       <p className="m-0">
-                        Quizzes are provided based on JLPT levels, from N5 to N1
-                        (coming soon). You can also select multiple levels for a
+                        Quizzes are provided based on JLPT levels, from N5 to
+                        N1. You can also select multiple levels for a
                         comprehensive learning experience.
                       </p>
                     </div>
@@ -202,15 +232,19 @@ const LandingPage = () => {
                   <div className="feature-extended">
                     <div className="feature-extended-image">
                       <div className="mockup-bg">
-                        <img
+                        <Image
                           src="/landing/images/feature-bg-03.svg"
                           alt="iPhone Feature 03 illustration"
+                          width={100}
+                          height={100}
                         />
                       </div>
-                      <img
+                      <Image
                         className="device-mockup is-revealing"
                         src="/landing/images/feature-hint.png"
                         alt="feature-hint"
+                        width={300}
+                        height={570}
                       />
                     </div>
                     <div className="feature-extended-body is-revealing">
@@ -229,15 +263,19 @@ const LandingPage = () => {
                   <div className="feature-extended">
                     <div className="feature-extended-image">
                       <div className="mockup-bg">
-                        <img
+                        <Image
                           src="/landing/images/feature-bg-04.svg"
                           alt="iPhone Feature 04 illustration"
+                          width={100}
+                          height={100}
                         />
                       </div>
-                      <img
+                      <Image
                         className="device-mockup is-revealing"
                         src="/landing/images/feature-result.png"
                         alt="feature-result"
+                        width={300}
+                        height={570}
                       />
                     </div>
                     <div className="feature-extended-body is-revealing">
