@@ -68,7 +68,7 @@ export const quizHintSpeakSettingState = atomWithStorage<QuizHintSpeakSetting>(
   "speakSetting",
   validateSpeakSettingAtom(
     typeof window !== "undefined"
-      ? localStorage.getItem("speakSetting") || "{}" // inifial value
+      ? localStorage.getItem("speakSetting") || "{}"
       : "{}"
   )
 );
