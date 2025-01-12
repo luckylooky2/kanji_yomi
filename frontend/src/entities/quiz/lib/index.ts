@@ -34,7 +34,9 @@ export function playTTS(
   onEnd = () => {}
 ) {
   function alertError() {
-    toast.error("입력 설정이 잘못되었습니다. 기본 설정으로 변경합니다.");
+    toast.error(
+      "The TTS input settings are invalid. Resetting to the default settings."
+    );
     reset();
   }
 
