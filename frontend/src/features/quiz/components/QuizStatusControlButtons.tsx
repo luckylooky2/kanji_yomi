@@ -1,11 +1,13 @@
 import styled from "@emotion/styled";
-import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import ArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import ArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { Button } from "@mui/material";
 import { useSetAtom } from "jotai";
+import React from "react";
 
 import { quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
+import ResponsiveIcon from "@/widgets/ResponsiveIcon/ResponsiveIcon";
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,7 +26,7 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
           setIsOpen(true);
         }}
       >
-        <KeyboardDoubleArrowLeftIcon /> Quit
+        <ResponsiveIcon icon={ArrowLeftIcon} /> Quit
       </Button>
       <Button
         variant="text"
@@ -33,7 +35,7 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
           setQuizStatus(QuizStatus.RESULT);
         }}
       >
-        Finish <KeyboardDoubleArrowRightIcon />
+        Finish <ResponsiveIcon icon={ArrowRightIcon} />
       </Button>
     </QuizStatusControlButtonsLayout>
   );

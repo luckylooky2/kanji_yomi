@@ -1,12 +1,14 @@
 import { Dayjs } from "dayjs";
 import { atom } from "jotai";
-import { atomWithRefresh } from "jotai/utils";
+import { atomWithRefresh, atomWithStorage } from "jotai/utils";
 
 import { quizOptionDifficultyState } from "@/entities/quizOption/store";
 import { QuizService } from "@/features/quiz/api";
 
+import { validateSpeakSettingAtom } from "../lib";
 import {
   QuizAnswerResponseDTO,
+  QuizHintSpeakSetting,
   QuizQuestionResponseDTO,
   QuizResult,
   QuizStatus,
@@ -59,3 +61,14 @@ export const quizTotalRetriesState = atom((get) => {
   }
   return [correct, totalRetries];
 });
+
+// QuizHint
+export const quizHintVoiceListState = atom<SpeechSynthesisVoice[]>([]);
+export const quizHintSpeakSettingState = atomWithStorage<QuizHintSpeakSetting>(
+  "speakSetting",
+  validateSpeakSettingAtom(
+    typeof window !== "undefined"
+      ? localStorage.getItem("speakSetting") || "{}"
+      : "{}"
+  )
+);

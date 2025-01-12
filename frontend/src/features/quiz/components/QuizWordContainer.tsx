@@ -14,6 +14,7 @@ import {
 } from "@/entities/quiz/store";
 // import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
 import { theme } from "@/shared/styles/theme";
+import ResponsiveIcon from "@/widgets/ResponsiveIcon/ResponsiveIcon";
 
 import QuizWord from "./QuizWord";
 
@@ -33,7 +34,7 @@ const QuizWordContainer = () => {
           {error?.message}
         </div>
         <IconButton aria-label="retry" onClick={() => refreshKanji()}>
-          <ReplayIcon />
+          <ResponsiveIcon icon={ReplayIcon} />
         </IconButton>
       </ErrorComponentContainer>
     );

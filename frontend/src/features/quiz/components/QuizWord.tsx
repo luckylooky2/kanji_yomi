@@ -1,16 +1,14 @@
 import styled from "@emotion/styled";
-import Chip from "@mui/material/Chip";
 import { useAtom } from "jotai";
 
 import { quizCurrentKanjiState } from "@/entities/quiz/store";
 import { QuizWordCategory } from "@/entities/quiz/types";
-import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { theme } from "@/shared/styles/theme";
 
+import QuizWordCategoryChip from "./QuizWordCategoryChip";
 import QuizWordHint from "./QuizWordHint";
 
 const QuizWord = () => {
-  const isMobile = useMediaQuery(theme.breakpoints.mobile);
   // error가 발생한 경우는 상위 컴포넌트에서 처리되었기 때문에 !를 사용하였다.
   const [{ data: kanji }] = useAtom(quizCurrentKanjiState);
 
@@ -38,14 +36,7 @@ const QuizWord = () => {
       <QuizWordUtilityLayout>
         <QuizWordCategoryLayout>
           {categories.map((category, index) => (
-            <Chip
-              key={index}
-              variant="outlined"
-              color={category.color}
-              size={isMobile ? "small" : "medium"}
-              label={category.value}
-              aria-label={category.value}
-            />
+            <QuizWordCategoryChip key={index} category={category} />
           ))}
         </QuizWordCategoryLayout>
         <QuizWordHint />
