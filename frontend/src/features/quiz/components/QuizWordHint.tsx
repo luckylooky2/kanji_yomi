@@ -57,14 +57,16 @@ const QuizWordHint = () => {
     if (!kanji) {
       return;
     }
-    playTTS(speakSetting, voiceList, kanji.word, resetSpeakSetting);
+    const hintWord = kanji.meanings[0].meaning;
+    playTTS(speakSetting, voiceList, hintWord, resetSpeakSetting);
   };
 
   const handleRedirectDictionary = () => {
     if (!kanji) {
       return;
     }
-    window.open(`https://jisho.org/search/${kanji.word}`, "_blank");
+    const hintWord = kanji.meanings[0].meaning;
+    window.open(`https://jisho.org/search/${hintWord}`, "_blank");
   };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
