@@ -22,14 +22,33 @@ const QuizWord = () => {
     }
   };
 
-  const categories: QuizWordCategory[] = [
-    { kind: "difficulty", value: kanji!.difficulty, color: "primary" },
+  const difficulties = kanji!.meanings.map((meaning) => meaning.difficulty);
+  const uniqueDifficulties = difficulties.filter(
+    (item, index) => difficulties.indexOf(item) === index
+  );
+  const meaningsCategories: QuizWordCategory[] = uniqueDifficulties.map(
+    (difficulty: string) => ({
+      kind: "difficulty",
+      value: difficulty,
+      color: "primary",
+    })
+  );
+
+  if (kanji!.meanings.length >= 2) {
+    meaningsCategories.push({
+      kind: "multianswer",
+      value: "Multi-answer",
+      color: "secondary",
+    });
+  }
+
+  const categories: QuizWordCategory[] = meaningsCategories.concat([
     {
       kind: "correctRatio",
       value: "Correct: " + kanji!.correctRatio + "%",
       color: getMUIColorByCorrectRatio(kanji!.correctRatio),
     },
-  ];
+  ]);
 
   return (
     <QuizWordLayout>
