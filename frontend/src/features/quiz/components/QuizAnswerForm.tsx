@@ -16,7 +16,6 @@ import {
 import {
   AnswerInputType,
   AnswerStatus,
-  QuizResult,
   QuizStatus,
 } from "@/entities/quiz/types";
 import { quizOptionRoundState } from "@/entities/quizOption/store";
@@ -44,8 +43,16 @@ const QuizAnswerForm = () => {
   // 화면 전환시 초기화됨에 주의
   const retries = useRef(0);
 
-  const getNextQuestion = (result: QuizResult) => {
-    setQuizResult((prev) => [...prev, result]);
+  const getNextQuestion = (isSkipped: boolean) => {
+    setQuizResult((prev) => [
+      ...prev,
+      {
+        word: kanji!.word,
+        meanings: kanji!.meanings,
+        skipped: isSkipped,
+        retries: retries.current,
+      },
+    ]);
     retries.current = 0;
     resetInput();
     setCurrentRound((prev) => {
@@ -72,12 +79,7 @@ const QuizAnswerForm = () => {
     }
 
     if (answerResult?.result) {
-      getNextQuestion({
-        word: kanji!.word,
-        meaning: answerResult.meaning,
-        skipped: false,
-        retries: retries.current,
-      });
+      getNextQuestion(false);
     } else {
       triggerShake();
       retries.current++;
@@ -111,12 +113,7 @@ const QuizAnswerForm = () => {
   };
 
   const handleSkip = () => {
-    getNextQuestion({
-      word: kanji!.word,
-      meaning: null,
-      skipped: true,
-      retries: retries.current,
-    });
+    getNextQuestion(true);
   };
 
   return (
