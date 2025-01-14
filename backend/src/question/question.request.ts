@@ -1,4 +1,4 @@
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 import { IsArrayOfValues } from './decorator/IsArrayOfValues';
 
 export class QuestionByFilterRequest {
@@ -11,6 +11,9 @@ export class QuestionByFilterRequest {
 }
 
 export class AnswerRequest {
+  @IsNumber()
+  id: number;
+
   @IsString()
   word: string;
 
