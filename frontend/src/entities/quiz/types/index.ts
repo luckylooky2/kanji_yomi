@@ -5,19 +5,20 @@ export type QuizQuestionRequestDTO = {
 export type QuizQuestionResponseDTO = {
   id: number;
   word: string;
-  difficulty: string;
+  meanings: MeaningInfo[];
   correctRatio: number;
 };
 
 export type QuizAnswerRequestDTO = {
+  id: number;
   word: string;
   answer: string;
 };
 
 export type QuizAnswerResponseDTO = {
   id: number;
+  word: string;
   result: boolean;
-  meaning: string;
 };
 
 export enum AnswerStatus {
@@ -38,9 +39,14 @@ export enum QuizStatus {
 
 export type QuizResult = {
   word: string;
-  meaning: string | null;
+  meanings: MeaningInfo[];
   skipped: boolean;
   retries: number;
+};
+
+export type MeaningInfo = {
+  meaning: string;
+  difficulty: string;
 };
 
 export interface QuizWordCategory {

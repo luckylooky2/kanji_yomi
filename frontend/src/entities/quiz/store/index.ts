@@ -36,6 +36,7 @@ export const quizAnswerResultState = atom(
     const { data: kanji } = await get(quizCurrentKanjiState);
     try {
       const data: QuizAnswerResponseDTO = await QuizService.getAnswer({
+        id: kanji!.id,
         word: kanji!.word,
         answer: args[0] as string,
       });
