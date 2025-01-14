@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, Param } from '@nestjs/common';
 import { AnswerRequest, QuestionByFilterRequest } from './question.request';
 import { QuestionService } from './question.service';
 import logger from 'src/middleware/Logger';
@@ -13,6 +13,20 @@ export class QuestionController {
     const questionDto = await this.questionService.randomQuestion(request);
     const resBody = questionDto || {};
     logger.debug('Question:', { ...resBody });
+    return resBody;
+  }
+
+  @Post('/question/:id')
+  @HttpCode(200)
+  async getQuestion(@Param('id') id: string) {
+    const questionId = parseInt(id, 10);
+    if (isNaN(questionId)) {
+      throw new Error('Invalid ID');
+    }
+
+    const questionDto = await this.questionService.getQuestionById(questionId);
+    const resBody = questionDto || {};
+    logger.debug('Question/:id:', { ...resBody });
     return resBody;
   }
 
