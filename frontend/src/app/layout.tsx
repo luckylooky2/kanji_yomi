@@ -1,3 +1,4 @@
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -45,15 +46,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${openSans.variable} ${openSansBold.variable}`}>
-        <Analytics />
-        <ToastContainer
-          position="top-right"
-          theme="colored"
-          transition={Slide}
-          autoClose={3000}
-          closeOnClick={true}
-        />
-        {children}
+        <AppRouterCacheProvider>
+          <Analytics />
+          <ToastContainer
+            position="top-right"
+            theme="colored"
+            transition={Slide}
+            autoClose={3000}
+            closeOnClick={true}
+          />
+          {children}
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
