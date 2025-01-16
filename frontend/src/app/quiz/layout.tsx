@@ -3,8 +3,6 @@ import React from "react";
 
 import Header from "@/features/header/components/Header";
 
-import pkg from "../../../package.json";
-
 export const metadata: Metadata = {
   title: "Quiz - Kanji Yomi",
   description: "Choose your level and start the Kanji quiz.",
@@ -24,39 +22,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function QuizLayout({
-  children,
-}: Readonly<{
+interface Props {
   children: React.ReactNode;
-}>) {
-  const currVersion = `v${pkg.version}`;
-  const url = `https://github.com/luckylooky2/kanji_yomi/releases/tag/${currVersion}`;
+}
 
+export default function QuizLayout({ children }: Readonly<Props>) {
   return (
-    <>
+    <div className="margin-container">
       <Header />
-      <div className="margin-container">
-        <div className="content-box">{children}</div>
-      </div>
-      <footer>
-        <div>
-          <a className="footer-item" href="mailto:dev.chanhyung@gmail.com">
-            <i>Contact</i>
-          </a>
-          <span> | </span>
-          <a
-            className="footer-item"
-            href="https://github.com/luckylooky2/kanji_yomi/issues/new/choose"
-            target="_blank"
-          >
-            <i>Suggestion</i>
-          </a>
-          <span> | </span>
-          <a className="footer-item" href={url} target="_blank">
-            <i>{currVersion}</i>
-          </a>
-        </div>
-      </footer>
-    </>
+      <div className="content-box">{children}</div>
+    </div>
   );
 }
