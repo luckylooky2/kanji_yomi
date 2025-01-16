@@ -3,13 +3,6 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* --background: #0a0a0a; */
-    /* --foreground: #ededed; */
-  }
-}
-
 /* vh는 브라우저에서 주소 표시줄을 고려하지 않기 때문에 스크롤이 발생하는 단점이 있다. */
 html {
   height: 100%;
@@ -27,13 +20,6 @@ body {
   /* 아이폰 SE 기준 */
   min-width: 375px;
   min-height: 667px;
-}
-
-@media (min-width: 480px) {
-  body {
-    /* max-height: 950px; */
-    /* min-height: 667px; */
-  }
 }
 
 .margin-container {
@@ -55,7 +41,7 @@ body {
 
 @media (min-width: 480px) {
   .content-box {
-    height: 700px;
+    height: 600px;
   }
 }
 

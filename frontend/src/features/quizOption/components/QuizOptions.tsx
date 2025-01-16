@@ -93,6 +93,7 @@ const QuizOptionContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: ${theme.spacing.medium};
   height: 100%;
 `;
 
@@ -102,6 +103,7 @@ const QuizOptionSection = styled.section`
   margin-top: ${theme.spacing.large};
   gap: ${theme.spacing.small};
   height: 100%;
+  overflow: auto;
 `;
 
 const SliderWrapper = styled(Slider)`
