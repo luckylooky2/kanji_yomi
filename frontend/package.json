@@ -10,10 +10,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.6",
+    "@mui/material-nextjs": "^6.3.1",
     "@vercel/analytics": "^1.4.1",
     "countup.js": "^2.8.0",
     "dayjs": "^1.11.13",

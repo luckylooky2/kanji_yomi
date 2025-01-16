@@ -963,6 +963,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mui/material-nextjs@npm:^6.3.1":
+  version: 6.3.1
+  resolution: "@mui/material-nextjs@npm:6.3.1"
+  dependencies:
+    "@babel/runtime": "npm:^7.26.0"
+  peerDependencies:
+    "@emotion/cache": ^11.11.0
+    "@emotion/react": ^11.11.4
+    "@emotion/server": ^11.11.0
+    "@types/react": ^17.0.0 || ^18.0.0 || ^19.0.0
+    next: ^13.0.0 || ^14.0.0 || ^15.0.0
+    react: ^17.0.0 || ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/cache":
+      optional: true
+    "@emotion/server":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 10c0/09052eaccdef12ad5013b733db10cec2c87080a5a9ac68b65fe572c86477252bc4621d8dfe56c465ec6fbad7e275253fd9e2fcace1ec110e14d2a24c7c509df1
+  languageName: node
+  linkType: hard
+
 "@mui/material@npm:^6.1.6":
   version: 6.3.1
   resolution: "@mui/material@npm:6.3.1"
@@ -4704,10 +4727,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "kanji_yomi@workspace:."
   dependencies:
+    "@emotion/cache": "npm:^11.14.0"
     "@emotion/react": "npm:^11.13.3"
     "@emotion/styled": "npm:^11.13.0"
     "@mui/icons-material": "npm:^6.1.6"
     "@mui/material": "npm:^6.1.6"
+    "@mui/material-nextjs": "npm:^6.3.1"
     "@types/jest": "npm:^29.5.14"
     "@types/lodash": "npm:^4"
     "@types/node": "npm:^20"
