@@ -17,18 +17,21 @@ export function responseInterceptor(response: Response) {
 const enum NavigationStatus {
   ROOT = -1,
   QUIZ = 0,
-  COMMUNITY = 1,
+  WORDS = 1,
   MYPAGE = 2,
+  COMMUNITY = 3,
 }
 
 export function getNavigationStatus(path: string) {
   switch (path) {
     case "quiz":
       return NavigationStatus.QUIZ;
-    case "community":
-      return NavigationStatus.COMMUNITY;
+    case "words":
+      return NavigationStatus.WORDS;
     case "mypage":
       return NavigationStatus.MYPAGE;
+    case "community":
+      return NavigationStatus.COMMUNITY;
     default:
       return NavigationStatus.ROOT;
   }
