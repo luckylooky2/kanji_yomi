@@ -64,13 +64,12 @@ const QuizOptions = () => {
             ))}
           </Stack>
         </QuizOptionLayout>
-        <QuizOptionLayout title="Rounds" spacing="large">
+        <QuizOptionLayout title="Rounds">
           <SliderWrapper
             aria-label="quiz-round"
             defaultValue={round}
             step={10}
             min={10}
-            valueLabelDisplay="on"
             marks={roundMarks}
             onChange={handleRoundChange}
           />

@@ -38,17 +38,7 @@ export function getNavigationStatus(path: string) {
 }
 
 export const difficulties = ["N5", "N4", "N3", "N2", "N1"];
-export const roundMarks = [
-  {
-    value: 10,
-    label: 10,
-  },
-  {
-    value: 30,
-    label: 30,
-  },
-  {
-    value: 100,
-    label: 100,
-  },
-];
+export const roundMarks = [10, 30, 50, 70, 90, 100].map((v) => ({
+  value: v,
+  label: v,
+}));
