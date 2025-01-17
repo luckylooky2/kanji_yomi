@@ -160,3 +160,7 @@ footer {
   padding: 10px;
   background-color: white;
 }
+
+.header-toolbar {
+  justify-content: center;
+}

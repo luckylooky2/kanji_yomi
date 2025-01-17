@@ -6,7 +6,7 @@ import Link from "next/link";
 const Header = () => {
   return (
     <AppBar>
-      <Toolbar style={{ justifyContent: "center" }}>
+      <Toolbar className="header-toolbar">
         <Typography variant="h6" component="div">
           <Link href="/">漢字読み - Kanji Yomi</Link>
         </Typography>
