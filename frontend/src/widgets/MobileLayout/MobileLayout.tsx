@@ -1,8 +1,7 @@
 import React from "react";
 
 import Header from "@/features/header/components/Header";
-
-import BottomNavigation from "../navigation/BottomNavigation";
+import BottomNavigation from "@/features/navigation/components/BottomNavigation";
 
 interface Props {
   children: React.ReactNode;
