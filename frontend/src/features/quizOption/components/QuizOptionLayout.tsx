@@ -27,7 +27,7 @@ const QuizOptionWrapper = styled.article<{
   display: flex;
   flex-direction: column;
   gap: ${(props) => theme.spacing[props.spacing]};
-  padding: ${theme.spacing.medium};
+  padding: ${theme.spacing.small};
   border-radius: ${theme.radius.large};
 
   div {
