@@ -19,9 +19,8 @@ import QuizWordContainer from "@/features/quiz/components/QuizWordContainer";
 import QuizOptions from "@/features/quizOption/components/QuizOptions";
 import QuizResult from "@/features/quizResult/components/QuizResult";
 import { theme } from "@/shared/styles/theme";
-import PageWithBottomNav from "@/widgets/navigation/PageWithBottomNav";
 
-function QuizPageBase() {
+const QuizPage = () => {
   const quizStatus = useAtomValue(quizStatusState);
   const setCurrentRound = useSetAtom(quizCurrentRoundState);
   const setQuizResult = useSetAtom(quizResultState);
@@ -52,15 +51,9 @@ function QuizPageBase() {
       <QuizAnswerForm />
     </QuizQuestionContainer>
   );
-}
+};
 
-export default function QuizPage() {
-  return (
-    <PageWithBottomNav path="quiz">
-      <QuizPageBase />
-    </PageWithBottomNav>
-  );
-}
+export default QuizPage;
 
 const QuizQuestionContainer = styled.div`
   display: flex;

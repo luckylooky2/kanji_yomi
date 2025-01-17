@@ -1,7 +1,6 @@
 import { Metadata } from "next";
-import React from "react";
 
-import Header from "@/features/header/components/Header";
+import MobileLayout from "@/widgets/MobileLayout/MobileLayout";
 
 export const metadata: Metadata = {
   title: "Quiz - Kanji Yomi",
@@ -22,15 +21,4 @@ export const metadata: Metadata = {
   },
 };
 
-interface Props {
-  children: React.ReactNode;
-}
-
-export default function QuizLayout({ children }: Readonly<Props>) {
-  return (
-    <div className="margin-container">
-      <Header />
-      <div className="content-box">{children}</div>
-    </div>
-  );
-}
+export default MobileLayout;

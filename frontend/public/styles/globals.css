@@ -146,3 +146,13 @@ footer {
     box-shadow: none; /* 비활성화 상태에서는 그림자가 없음 */
   }
 }
+
+.nav-position {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  background-color: white;
+}
