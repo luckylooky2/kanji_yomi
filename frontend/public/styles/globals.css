@@ -19,7 +19,7 @@ body {
   flex-direction: column;
   /* 아이폰 SE 기준 */
   min-width: 375px;
-  min-height: 667px;
+  min-height: 567px; /* 667 - 100 */
 }
 
 .margin-container {
@@ -33,10 +33,14 @@ body {
 .content-box {
   width: 85%;
   max-width: 30rem;
-  height: 500px;
+  height: min(calc(100% - 167px), 500px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  main {
+    height: 100%;
+  }
 }
 
 @media (min-width: 480px) {
