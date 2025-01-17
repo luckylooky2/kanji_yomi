@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import NextImage from "next/image";
 import { useEffect, useState } from "react";
 
 import {
@@ -23,7 +24,7 @@ import QuizResultStatItem from "./QuizResultStatItem";
 
 const QuizResult = () => {
   const setQuizStatus = useSetAtom(quizStatusState);
-  const [quizResult, setQuizResult] = useAtom(quizResultState);
+  const [quizResult] = useAtom(quizResultState);
   const [correct, totalRetries] = useAtomValue(quizTotalRetriesState);
   const accuracy = calculateAccuracy(correct, totalRetries);
   const startTime = useAtomValue(quizStartTimeState);
@@ -32,7 +33,6 @@ const QuizResult = () => {
 
   const handleGoToQuizOption = () => {
     setQuizStatus(QuizStatus.OPTION);
-    setQuizResult([]);
   };
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const QuizResult = () => {
                 );
                 return (
                   <QuizResultWordItem key={`${item} + ${index}`}>
-                    <img src={src} alt={alt} width="20" height="20" />
+                    <NextImage src={src} alt={alt} width="20" height="20" />
                     <strong>{item.word}</strong>
                   </QuizResultWordItem>
                 );
@@ -102,7 +102,7 @@ const QuizResult = () => {
         <QuizResultLegend>
           {imageList.map(({ src, alt, description }) => (
             <QuizResultWordItem key={`${alt} + ${description}`}>
-              <img src={src} alt={alt} width="20" height="20" />
+              <NextImage src={src} alt={alt} width="20" height="20" />
               <span>{description}</span>
             </QuizResultWordItem>
           ))}
@@ -173,5 +173,6 @@ const QuizResultWordItem = styled.article`
 
 const QuizResultLegend = styled.div`
   display: flex;
+  justify-content: center;
   gap: ${theme.spacing.medium};
 `;
