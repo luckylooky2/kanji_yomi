@@ -62,7 +62,7 @@ const QuizResult = () => {
 
   return (
     <QuizResultContainer>
-      <h1>Result</h1>
+      <h2>Result</h2>
       <QuizResultStat>
         <QuizResultStatItem
           title="Accuracy"

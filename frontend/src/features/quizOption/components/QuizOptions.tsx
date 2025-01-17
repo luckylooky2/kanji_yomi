@@ -46,7 +46,7 @@ const QuizOptions = () => {
 
   return (
     <QuizOptionContainer>
-      <h1>Options</h1>
+      <h2>Options</h2>
       <QuizOptionSection>
         <QuizOptionLayout title="Difficulties">
           <Stack direction="row" spacing={1}>
