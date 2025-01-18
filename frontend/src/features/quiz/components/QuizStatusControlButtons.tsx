@@ -2,10 +2,11 @@ import styled from "@emotion/styled";
 import ArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { Button } from "@mui/material";
-import { useSetAtom } from "jotai";
+import dayjs from "dayjs";
+import { useAtom, useSetAtom } from "jotai";
 import React from "react";
 
-import { quizStatusState } from "@/entities/quiz/store";
+import { quizStatusState, quizTimerState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import ResponsiveIcon from "@/widgets/ResponsiveIcon/ResponsiveIcon";
 
@@ -15,6 +16,16 @@ interface Props {
 
 const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
   const setQuizStatus = useSetAtom(quizStatusState);
+  const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
+
+  const handleQuit = () => {
+    setIsOpen(true);
+  };
+
+  const handleFinish = () => {
+    setQuizTimer({ ...quizTimer, quizEndTime: dayjs(new Date()) });
+    setQuizStatus(QuizStatus.RESULT);
+  };
 
   return (
     <QuizStatusControlButtonsLayout>
@@ -22,19 +33,11 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
         id="scrollTarget"
         variant="text"
         color="error"
-        onClick={() => {
-          setIsOpen(true);
-        }}
+        onClick={handleQuit}
       >
         <ResponsiveIcon icon={ArrowLeftIcon} /> Quit
       </Button>
-      <Button
-        variant="text"
-        color="error"
-        onClick={() => {
-          setQuizStatus(QuizStatus.RESULT);
-        }}
-      >
+      <Button variant="text" color="error" onClick={handleFinish}>
         Finish <ResponsiveIcon icon={ArrowRightIcon} />
       </Button>
     </QuizStatusControlButtonsLayout>

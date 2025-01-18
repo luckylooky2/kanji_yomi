@@ -8,6 +8,7 @@ import {
   quizCurrentRoundState,
   quizResultState,
   quizStatusState,
+  quizTimerState,
 } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import { useModal } from "@/features/modal/hooks/useModal";
@@ -25,11 +26,13 @@ const QuizPage = () => {
   const setCurrentRound = useSetAtom(quizCurrentRoundState);
   const setQuizResult = useSetAtom(quizResultState);
   const refreshKanji = useSetAtom(quizCurrentKanjiState);
+  const setQuizTimer = useSetAtom(quizTimerState);
   const { isOpen, setIsOpen } = useModal();
 
   function resetQuizState() {
     setCurrentRound(0);
     setQuizResult([]);
+    setQuizTimer({ quizStartTime: null, quizEndTime: null });
     refreshKanji();
   }
 

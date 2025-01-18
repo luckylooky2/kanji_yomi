@@ -3,9 +3,10 @@ import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Slider from "@mui/material/Slider";
 import Stack from "@mui/material/Stack";
+import dayjs from "dayjs";
 import { useAtom, useSetAtom } from "jotai";
 
-import { quizStatusState } from "@/entities/quiz/store";
+import { quizStatusState, quizTimerState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import {
   quizOptionRoundState,
@@ -20,6 +21,7 @@ const QuizOptions = () => {
   const [difficulty, setDifficulty] = useAtom(quizOptionDifficultyState);
   const [round, setRound] = useAtom(quizOptionRoundState);
   const setQuizStatus = useSetAtom(quizStatusState);
+  const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
 
   const handleDifficultyChange = ({
     currentTarget,
@@ -41,6 +43,7 @@ const QuizOptions = () => {
   };
 
   const startQuiz = () => {
+    setQuizTimer({ ...quizTimer, quizStartTime: dayjs(new Date()) });
     setQuizStatus(QuizStatus.ONGOING);
   };
 
@@ -93,7 +96,11 @@ const QuizOptionContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: ${theme.spacing.medium};
-  height: 100%;
+  height: 95%;
+
+  h2 {
+    margin-top: 30px;
+  }
 `;
 
 const QuizOptionSection = styled.section`

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import Button from "@mui/material/Button";
+import dayjs from "dayjs";
 import { useSetAtom, useAtomValue, useAtom } from "jotai";
 import throttle from "lodash/throttle";
 import React, { useState, useRef, useMemo } from "react";
@@ -12,6 +13,7 @@ import {
   quizCurrentKanjiState,
   quizResultState,
   quizAnswerResultState,
+  quizTimerState,
 } from "@/entities/quiz/store";
 import {
   AnswerInputType,
@@ -38,6 +40,7 @@ const QuizAnswerForm = () => {
   const { data: kanji, error: errorCurrentKanji } = useAtomValue(
     quizCurrentKanjiState
   );
+  const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
   const [shake, setShake] = useState(false);
   const timeId = useRef<NodeJS.Timeout | null>(null);
   // 화면 전환시 초기화됨에 주의
@@ -58,6 +61,7 @@ const QuizAnswerForm = () => {
     setCurrentRound((prev) => {
       if (prev + 1 === maxRound) {
         setQuizStatus(QuizStatus.RESULT);
+        setQuizTimer({ ...quizTimer, quizEndTime: dayjs(new Date()) });
       }
       return prev + 1;
     });
