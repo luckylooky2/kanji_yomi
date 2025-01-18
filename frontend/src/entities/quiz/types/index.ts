@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export type QuizQuestionRequestDTO = {
   difficulty: string[];
 };
@@ -69,3 +71,5 @@ export interface QuizHintSpeakSetting {
   pitch: number; // 음높이, 0 ~ 2
   volume: number; // 음량, 0 ~ 1
 }
+
+export type QuizTimer = Record<"quizStartTime" | "quizEndTime", Dayjs | null>;

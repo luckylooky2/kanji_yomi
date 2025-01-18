@@ -1,4 +1,3 @@
-import { Dayjs } from "dayjs";
 import { atom } from "jotai";
 import { atomWithRefresh, atomWithStorage } from "jotai/utils";
 
@@ -12,6 +11,7 @@ import {
   QuizQuestionResponseDTO,
   QuizResult,
   QuizStatus,
+  QuizTimer,
 } from "../types";
 
 // Quiz
@@ -29,7 +29,12 @@ export const quizCurrentKanjiState = atomWithRefresh(async (get) => {
     return { error: { message: "Network Error" } };
   }
 });
-export const quizStartTimeState = atom<Dayjs | null>(null);
+
+export const quizTimerState = atom<QuizTimer>({
+  quizStartTime: null,
+  quizEndTime: null,
+});
+
 export const quizAnswerResultState = atom(
   { data: null },
   async (get, _set, ...args) => {
