@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="not-found">
+    <div className="notfound">
       <div>
         <Image src="/404.jpg" width="350" height="225" alt="not found" />
         <h1>Page Not Found</h1>

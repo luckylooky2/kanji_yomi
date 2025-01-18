@@ -101,13 +101,15 @@ footer {
   text-decoration: none;
 }
 
-.not-found {
+.notfound {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   text-align: center;
   align-items: center;
+  width: 300px;
   height: 100%;
+  margin: 0 auto;
 
   a {
     width: 100%;
