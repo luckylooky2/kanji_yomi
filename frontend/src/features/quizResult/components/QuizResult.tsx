@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import {
   quizResultState,
-  quizStartTimeState,
+  quizTimerState,
   quizStatusState,
   quizTotalRetriesState,
 } from "@/entities/quiz/store";
@@ -27,7 +27,7 @@ const QuizResult = () => {
   const [quizResult] = useAtom(quizResultState);
   const [correct, totalRetries] = useAtomValue(quizTotalRetriesState);
   const accuracy = calculateAccuracy(correct, totalRetries);
-  const startTime = useAtomValue(quizStartTimeState);
+  const { quizStartTime, quizEndTime } = useAtomValue(quizTimerState);
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const imageList = getImageSourceList();
 
@@ -72,7 +72,7 @@ const QuizResult = () => {
         />
         <QuizResultStatItem
           title="Time"
-          content={getTotalSeconds(startTime)}
+          content={getTotalSeconds(quizStartTime, quizEndTime)}
           format="time"
         />
       </QuizResultStat>
@@ -121,7 +121,11 @@ const QuizResultContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  height: 95%;
+
+  h2 {
+    margin-top: 30px;
+  }
 `;
 
 const QuizResultStat = styled.section`
