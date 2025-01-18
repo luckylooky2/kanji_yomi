@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <AppBar>
+    <AppBar className="header-appbar">
       <Toolbar className="header-toolbar">
         <Typography variant="h6" component="div">
           <Link href="/">漢字読み - Kanji Yomi</Link>

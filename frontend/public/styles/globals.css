@@ -157,10 +157,14 @@ footer {
   left: 0;
   width: 100%;
   text-align: center;
-  padding: 10px;
   background-color: white;
+}
+
+.header-appbar {
+  height: 64px;
 }
 
 .header-toolbar {
   justify-content: center;
+  height: 64px;
 }

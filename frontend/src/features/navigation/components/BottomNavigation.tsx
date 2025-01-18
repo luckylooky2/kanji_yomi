@@ -11,8 +11,8 @@ const BottomNavigation = () => {
   const headerPathname = (headersList.get("x-pathname") || "/").slice(1);
 
   const menus = [
-    { label: "Quiz", href: "quiz", icon: <QuizIcon /> },
-    { label: "Words", href: "words", icon: <AppsIcon /> },
+    { label: "Quiz", href: "quiz", icon: <QuizIcon fontSize="small" /> },
+    { label: "Words", href: "words", icon: <AppsIcon fontSize="small" /> },
     // { label: "Community", href: "community", icon: <ForumIcon /> },
     // { label: "My Page", href: "mypage", icon: <AccountCircleIcon /> },
   ];
