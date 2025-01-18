@@ -23,12 +23,12 @@ const NavigationAction = ({ menu, headerPathname }: Props) => {
     []
   );
 
-  const isSelected = headerPathname === menu.label.toLowerCase();
+  const isActive = headerPathname === menu.label.toLowerCase();
 
   return (
     <NavigationActionWrapper
       showLabel
-      isSelected={isSelected}
+      isActive={isActive}
       label={menu.label}
       icon={<Link href={menu.href}>{menu.icon}</Link>}
       onClick={handleClick}
@@ -38,9 +38,11 @@ const NavigationAction = ({ menu, headerPathname }: Props) => {
 
 export default NavigationAction;
 
-const NavigationActionWrapper = styled(BottomNavigationAction)<{
-  isSelected: boolean;
+const NavigationActionWrapper = styled(BottomNavigationAction, {
+  shouldForwardProp: (prop) => prop !== "isActive",
+})<{
+  isActive: boolean;
 }>`
-  color: ${(props) => (props.isSelected ? "#1976d2" : "gray")};
-  font-weight: ${(props) => (props.isSelected ? "bold" : "normal")};
+  color: ${(props) => (props.isActive ? "#1976d2" : "gray")};
+  font-weight: ${(props) => (props.isActive ? "bold" : "normal")};
 `;
