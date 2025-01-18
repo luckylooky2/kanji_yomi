@@ -33,7 +33,7 @@ body {
 .content-box {
   width: 85%;
   max-width: 30rem;
-  height: min(calc(100% - 167px), 500px);
+  height: min(calc(100% - 120px), 600px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
