@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
 export const getCSSColorByAccuracy = (ratio: number | undefined) => {
   if (ratio === undefined) {
@@ -33,13 +33,20 @@ export const findImageSource = (isSkipped: boolean, retries: number) => {
   }
 };
 
-export const getTotalSeconds = (startTime: Dayjs | null) => {
-  if (startTime === null) {
+export const getTotalSeconds = (
+  startTime: Dayjs | null,
+  endTime: Dayjs | null
+) => {
+  if (startTime === null || endTime === null) {
+    // TODO: 로깅
     return 0;
   }
 
-  const endTime = dayjs(new Date());
   const totalSeconds = endTime.diff(startTime, "second");
+  if (totalSeconds < 0) {
+    // TODO: 로깅
+    return 0;
+  }
   return totalSeconds;
 };
 
