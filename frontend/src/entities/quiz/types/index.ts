@@ -1,15 +1,12 @@
 import { Dayjs } from "dayjs";
 
+import { MeaningInfo, MUIChipColorType, WordInfo } from "@/shared/types";
+
 export type QuizQuestionRequestDTO = {
   difficulty: string[];
 };
 
-export type QuizQuestionResponseDTO = {
-  id: number;
-  word: string;
-  meanings: MeaningInfo[];
-  correctRatio: number;
-};
+export type QuizQuestionResponseDTO = WordInfo;
 
 export type QuizAnswerRequestDTO = {
   id: number;
@@ -46,22 +43,10 @@ export type QuizResult = {
   retries: number;
 };
 
-export type MeaningInfo = {
-  meaning: string;
-  difficulty: string;
-};
-
 export interface QuizWordCategory {
   kind: string;
   value: string;
-  color:
-    | "primary"
-    | "secondary"
-    | "default"
-    | "error"
-    | "info"
-    | "success"
-    | "warning";
+  color: MUIChipColorType;
 }
 
 export interface QuizHintSpeakSetting {

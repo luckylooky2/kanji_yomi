@@ -1,9 +1,9 @@
-import { CorrectRate, Difficulty } from "@/shared/types";
+import { CorrectRatioType, DifficultyType } from "@/shared/types";
 
 export type WordsSearchInputType = {
   target: string;
 };
 
-export type WordsSearchFilterDifficulty = Difficulty | "All";
+export type WordsSearchFilterDifficultyType = DifficultyType | "All";
 
-export type WordsSearchFilterCorrectRate = CorrectRate | "All";
+export type WordsSearchFilterCorrectRatioType = CorrectRatioType | "All";
