@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 
 import { quizCurrentKanjiState } from "@/entities/quiz/store";
 import { QuizWordCategory } from "@/entities/quiz/types";
+import { getMUIColorByCorrectRatio } from "@/shared/lib";
 import { theme } from "@/shared/styles/theme";
 
 import QuizWordCategoryChip from "./QuizWordCategoryChip";
@@ -11,16 +12,6 @@ import QuizWordHint from "./QuizWordHint";
 const QuizWord = () => {
   // error가 발생한 경우는 상위 컴포넌트에서 처리되었기 때문에 !를 사용하였다.
   const [{ data: kanji }] = useAtom(quizCurrentKanjiState);
-
-  const getMUIColorByCorrectRatio = (ratio: number) => {
-    if (ratio >= 80) {
-      return "success";
-    } else if (ratio >= 50) {
-      return "warning";
-    } else {
-      return "error";
-    }
-  };
 
   const difficulties = kanji!.meanings.map((meaning) => meaning.difficulty);
   const uniqueDifficulties = difficulties.filter(
@@ -45,7 +36,7 @@ const QuizWord = () => {
   const categories: QuizWordCategory[] = meaningsCategories.concat([
     {
       kind: "correctRatio",
-      value: "Correct: " + kanji!.correctRatio + "%",
+      value: kanji!.correctRatio + "%",
       color: getMUIColorByCorrectRatio(kanji!.correctRatio),
     },
   ]);
