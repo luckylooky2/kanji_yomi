@@ -1,20 +1,22 @@
 import styled from "@emotion/styled";
-import { Button, FormControlLabel } from "@mui/material";
+import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useAtom } from "jotai";
 
 import {
-  wordsSearchFilterCorrectRate,
-  wordsSearchFilterCorrectRateDefaultValues,
+  wordsSearchFilterCorrectRatio,
+  wordsSearchFilterCorrectRatioDefaultValues,
   wordsSearchFilterDifficulty,
   wordsSearchFilterDifficultyDefaultValues,
 } from "@/entities/words/store";
 import {
-  WordsSearchFilterCorrectRate,
-  WordsSearchFilterDifficulty,
+  WordsSearchFilterCorrectRatioType,
+  WordsSearchFilterDifficultyType,
 } from "@/entities/words/types";
-import { correctRate, difficulties } from "@/shared/model";
+import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
+import { correctRatio, difficulties } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
+import ResponsiveButton from "@/widgets/Responsive/ResponsiveButton";
 
 interface Props {
   toggleHandler: () => void;
@@ -24,20 +26,21 @@ const WordsSearchFilter = ({ toggleHandler }: Props) => {
   const [selectedDifficulty, setSelectedDifficulty] = useAtom(
     wordsSearchFilterDifficulty
   );
-  const [selectedCorrectRate, setSelectedCorrectRate] = useAtom(
-    wordsSearchFilterCorrectRate
+  const [selectedCorrectRatio, setSelectedCorrectRatio] = useAtom(
+    wordsSearchFilterCorrectRatio
   );
+  const isMobile = useMediaQuery(theme.breakpoints.mobile);
 
-  const difficultyList: WordsSearchFilterDifficulty[] = [
+  const difficultyList: WordsSearchFilterDifficultyType[] = [
     "All",
     ...difficulties,
   ];
-  const correctRateList: WordsSearchFilterCorrectRate[] = [
+  const correctRatioList: WordsSearchFilterCorrectRatioType[] = [
     "All",
-    ...correctRate,
+    ...correctRatio,
   ];
 
-  function handleDifficultyChange(difficulty: WordsSearchFilterDifficulty) {
+  function handleDifficultyChange(difficulty: WordsSearchFilterDifficultyType) {
     setSelectedDifficulty((prev) => {
       const isAllSelected = difficulty === "All";
       const isCurrentlyAll = prev["All"];
@@ -72,8 +75,10 @@ const WordsSearchFilter = ({ toggleHandler }: Props) => {
     });
   }
 
-  const handleCorrectRateChange = (rate: WordsSearchFilterCorrectRate) => {
-    setSelectedCorrectRate((prev) => {
+  const handleCorrectRatioChange = (
+    rate: WordsSearchFilterCorrectRatioType
+  ) => {
+    setSelectedCorrectRatio((prev) => {
       const isAllSelected = rate === "All";
       const isCurrentlyAll = prev["All"];
 
@@ -86,7 +91,7 @@ const WordsSearchFilter = ({ toggleHandler }: Props) => {
       }
 
       if (isAllSelected) {
-        return { ...wordsSearchFilterCorrectRateDefaultValues };
+        return { ...wordsSearchFilterCorrectRatioDefaultValues };
       }
 
       const nextState = {
@@ -109,7 +114,7 @@ const WordsSearchFilter = ({ toggleHandler }: Props) => {
 
   const resetFilter = () => {
     setSelectedDifficulty({ ...wordsSearchFilterDifficultyDefaultValues });
-    setSelectedCorrectRate({ ...wordsSearchFilterCorrectRateDefaultValues });
+    setSelectedCorrectRatio({ ...wordsSearchFilterCorrectRatioDefaultValues });
   };
 
   return (
@@ -121,7 +126,7 @@ const WordsSearchFilter = ({ toggleHandler }: Props) => {
             <FormControlLabel
               key={index}
               checked={selectedDifficulty[difficulty]}
-              control={<Checkbox />}
+              control={<Checkbox size={isMobile ? "small" : "medium"} />}
               label={difficulty}
               onChange={() => handleDifficultyChange(difficulty)}
             />
@@ -129,24 +134,24 @@ const WordsSearchFilter = ({ toggleHandler }: Props) => {
         </WordsSearchFilterOption>
         <WordsSearchFilterOption>
           <h3>Correct Rate</h3>
-          {correctRateList.map((rate, index) => (
+          {correctRatioList.map((rate, index) => (
             <FormControlLabel
-              checked={selectedCorrectRate[rate]}
+              checked={selectedCorrectRatio[rate]}
               key={index}
-              control={<Checkbox />}
+              control={<Checkbox size={isMobile ? "small" : "medium"} />}
               label={rate}
-              onChange={() => handleCorrectRateChange(rate)}
+              onChange={() => handleCorrectRatioChange(rate)}
             />
           ))}
         </WordsSearchFilterOption>
       </WordsSearchFilterOptionLayout>
       <WordsSearchFilterButtonGroup>
-        <Button variant="contained" onClick={resetFilter}>
+        <ResponsiveButton variant="contained" onClick={resetFilter}>
           Reset
-        </Button>
-        <Button variant="outlined" onClick={toggleHandler}>
+        </ResponsiveButton>
+        <ResponsiveButton variant="outlined" onClick={toggleHandler}>
           Close
-        </Button>
+        </ResponsiveButton>
       </WordsSearchFilterButtonGroup>
     </WordsSearchFilterConatiner>
   );
@@ -165,7 +170,7 @@ const WordsSearchFilterConatiner = styled.div`
   top: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: ${theme.spacing.small};
+  margin-top: 2px;
   padding: ${theme.spacing.medium};
   gap: ${theme.spacing.small};
 `;
@@ -173,7 +178,9 @@ const WordsSearchFilterConatiner = styled.div`
 const WordsSearchFilterOptionLayout = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${theme.spacing.medium};
+  gap: ${theme.spacing.small};
+  max-height: 150px;
+  overflow: auto;
 `;
 
 const WordsSearchFilterOption = styled.div``;
