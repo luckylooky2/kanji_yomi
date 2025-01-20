@@ -14,7 +14,7 @@ export const wordsSearchFilterDifficultyDefaultValues = {
   N1: false,
 };
 
-export const WordsSearchFilterCorrectRatioDefaultValues = {
+export const wordsSearchFilterCorrectRatioDefaultValues = {
   All: true,
   High: false,
   Mid: false,
@@ -25,8 +25,8 @@ export const wordsSearchFilterDifficulty = atom<
   Record<WordsSearchFilterDifficultyType, boolean>
 >(wordsSearchFilterDifficultyDefaultValues);
 
-export const WordsSearchFilterCorrectRatio = atom<
+export const wordsSearchFilterCorrectRatio = atom<
   Record<WordsSearchFilterCorrectRatioType, boolean>
->(WordsSearchFilterCorrectRatioDefaultValues);
+>(wordsSearchFilterCorrectRatioDefaultValues);
 
 export const wordsCurrentWordIndex = atom<number | null>(null);
