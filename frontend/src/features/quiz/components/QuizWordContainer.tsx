@@ -9,7 +9,7 @@ import Image from "next/image";
 import { quizCurrentKanjiState } from "@/entities/quiz/store";
 // import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
 import { theme } from "@/shared/styles/theme";
-import ResponsiveIcon from "@/widgets/ResponsiveIcon/ResponsiveIcon";
+import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 import QuizWord from "./QuizWord";
 

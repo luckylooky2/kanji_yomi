@@ -8,7 +8,7 @@ import React from "react";
 
 import { quizStatusState, quizTimerState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
-import ResponsiveIcon from "@/widgets/ResponsiveIcon/ResponsiveIcon";
+import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
