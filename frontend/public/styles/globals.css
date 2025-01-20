@@ -77,7 +77,7 @@ input {
   padding: 10px 15px;
   outline: none;
   /* 모바일에서 가상 키보드가 올라올 때, 16px 미만이라면 페이지가 자동으로 확대되는 현상을 해결 */
-  font-size: 20px;
+  font-size: 16px;
   background-color: white;
   color: black;
 }
