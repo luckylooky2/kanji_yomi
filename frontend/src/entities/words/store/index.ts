@@ -1,8 +1,8 @@
 import { atom } from "jotai";
 
 import {
-  WordsSearchFilterCorrectRate,
-  WordsSearchFilterDifficulty,
+  WordsSearchFilterCorrectRatioType,
+  WordsSearchFilterDifficultyType,
 } from "../types";
 
 export const wordsSearchFilterDifficultyDefaultValues = {
@@ -14,7 +14,7 @@ export const wordsSearchFilterDifficultyDefaultValues = {
   N1: false,
 };
 
-export const wordsSearchFilterCorrectRateDefaultValues = {
+export const WordsSearchFilterCorrectRatioDefaultValues = {
   All: true,
   High: false,
   Mid: false,
@@ -22,9 +22,11 @@ export const wordsSearchFilterCorrectRateDefaultValues = {
 };
 
 export const wordsSearchFilterDifficulty = atom<
-  Record<WordsSearchFilterDifficulty, boolean>
+  Record<WordsSearchFilterDifficultyType, boolean>
 >(wordsSearchFilterDifficultyDefaultValues);
 
-export const wordsSearchFilterCorrectRate = atom<
-  Record<WordsSearchFilterCorrectRate, boolean>
->(wordsSearchFilterCorrectRateDefaultValues);
+export const WordsSearchFilterCorrectRatio = atom<
+  Record<WordsSearchFilterCorrectRatioType, boolean>
+>(WordsSearchFilterCorrectRatioDefaultValues);
+
+export const wordsCurrentWordIndex = atom<number | null>(null);
