@@ -59,11 +59,11 @@ const WordsCurrentWordContainer = styled.div<{ isWordSelected: boolean }>`
   border: 2px solid rgba(25, 118, 210, 0.5);
   border-radius: 12px;
   background-color: white;
-  margin: ${theme.spacing.small};
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.small};
   padding: 16px;
+
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   animation: slideUp 0.1s ease-out;
   position: relative;
@@ -77,6 +77,10 @@ const WordsCurrentWordContainer = styled.div<{ isWordSelected: boolean }>`
       transform: translateY(0);
       opacity: 1;
     }
+  }
+
+  > div {
+    margin-left: ${theme.spacing.small};
   }
 `;
 
@@ -99,11 +103,9 @@ const WordsCurrentWordMeaningLayout = styled.div`
 
 const WordsCurrentWordMeaning = styled.div`
   display: flex;
-  gap: ${theme.spacing.medium};
-  margin-left: ${theme.spacing.small};
 
   h2 {
-    margin: auto 0;
+    margin: auto ${theme.spacing.small};
     font-weight: normal;
   }
 

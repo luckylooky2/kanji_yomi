@@ -119,7 +119,7 @@ const WordsSearchFilter = ({ toggleHandler }: Props) => {
 
   return (
     <WordsSearchFilterConatiner>
-      <WordsSearchFilterOptionLayout>
+      <WordsSearchFilterOptionLayout isMobile={isMobile}>
         <WordsSearchFilterOption>
           <h3>Difficulty</h3>
           {difficultyList.map((difficulty, index) => (
@@ -175,12 +175,12 @@ const WordsSearchFilterConatiner = styled.div`
   gap: ${theme.spacing.small};
 `;
 
-const WordsSearchFilterOptionLayout = styled.div`
+const WordsSearchFilterOptionLayout = styled.div<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.small};
-  max-height: 150px;
-  overflow: auto;
+  max-height: ${(props) => (props.isMobile ? "100px" : "150px")};
+  overflow: scroll;
 `;
 
 const WordsSearchFilterOption = styled.div``;
