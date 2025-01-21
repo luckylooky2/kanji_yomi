@@ -1,4 +1,5 @@
 import { useAtom } from "jotai";
+import { useEffect } from "react";
 
 import {
   defaultSpeakSetting,
@@ -41,5 +42,9 @@ export function useTTS() {
     playTTS(speakSetting, voiceList, text, resetSpeakSetting);
   };
 
-  return { playTTS: playTTSWrapper, loadVoices };
+  useEffect(() => {
+    loadVoices();
+  }, []);
+
+  return { playTTS: playTTSWrapper };
 }
