@@ -178,7 +178,9 @@ const WordsPage = () => {
       </WordsSearchContainer>
       <WordsUtilityBar wordCount={words.length} />
       <WordsDisplay words={words} />
-      {isWordSelected && <WordsCurrentWord word={words[currentWordIndex]} />}
+      {isWordSelected && (
+        <WordsCurrentWord word={{ ...words[currentWordIndex] }} />
+      )}
     </WordsContainer>
   );
 };
