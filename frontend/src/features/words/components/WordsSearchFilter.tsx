@@ -180,7 +180,7 @@ const WordsSearchFilterOptionLayout = styled.div<{ isMobile: boolean }>`
   flex-direction: column;
   gap: ${theme.spacing.small};
   max-height: ${(props) => (props.isMobile ? "100px" : "150px")};
-  overflow: scroll;
+  overflow: auto;
 `;
 
 const WordsSearchFilterOption = styled.div``;
