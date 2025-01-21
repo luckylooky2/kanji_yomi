@@ -9,21 +9,22 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
+  wordsCurrentWordIndex,
   wordsSearchFilterCorrectRatio,
   wordsSearchFilterDifficulty,
 } from "@/entities/words/store";
 import { WordsSearchInputType } from "@/entities/words/types";
-import WordsGrid from "@/features/words/components/WordsGrid";
+import WordsCurrentWord from "@/features/words/components/WordsCurrentWord";
+import WordsDisplay from "@/features/words/components/WordsDisplay";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
+import WordsUtilityBar from "@/features/words/components/WordsUtilityBar";
 import { theme } from "@/shared/styles/theme";
 import { WordInfo } from "@/shared/types";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
-const words: WordInfo[] = [];
-
-for (let i = 0; i < 100; i += 6) {
-  words.push({
-    id: i,
+const wordsDefaultValue: WordInfo[] = [
+  {
+    id: 0,
     word: "秋",
     meanings: [
       {
@@ -32,9 +33,9 @@ for (let i = 0; i < 100; i += 6) {
       },
     ],
     correctRatio: 0,
-  });
-  words.push({
-    id: i + 1,
+  },
+  {
+    id: 1,
     word: "開く",
     meanings: [
       {
@@ -47,9 +48,9 @@ for (let i = 0; i < 100; i += 6) {
       },
     ],
     correctRatio: 50,
-  });
-  words.push({
-    id: i + 2,
+  },
+  {
+    id: 2,
     word: "朝御飯",
     meanings: [
       {
@@ -58,9 +59,9 @@ for (let i = 0; i < 100; i += 6) {
       },
     ],
     correctRatio: 90,
-  });
-  words.push({
-    id: i + 3,
+  },
+  {
+    id: 3,
     word: "伯母さん",
     meanings: [
       {
@@ -69,9 +70,9 @@ for (let i = 0; i < 100; i += 6) {
       },
     ],
     correctRatio: 30,
-  });
-  words.push({
-    id: i + 4,
+  },
+  {
+    id: 4,
     word: "お巡りさん",
     meanings: [
       {
@@ -80,9 +81,9 @@ for (let i = 0; i < 100; i += 6) {
       },
     ],
     correctRatio: 60,
-  });
-  words.push({
-    id: i + 5,
+  },
+  {
+    id: 5,
     word: "待ち合わせる",
     meanings: [
       {
@@ -91,14 +92,50 @@ for (let i = 0; i < 100; i += 6) {
       },
     ],
     correctRatio: 100,
-  });
-}
+  },
+  {
+    id: 6,
+    word: "待ち合わせる",
+    meanings: [
+      {
+        meaning: "まちあわせる",
+        difficulty: "N3",
+      },
+    ],
+    correctRatio: 100,
+  },
+  {
+    id: 7,
+    word: "待ち合わせる",
+    meanings: [
+      {
+        meaning: "まちあわせる",
+        difficulty: "N3",
+      },
+    ],
+    correctRatio: 100,
+  },
+  {
+    id: 8,
+    word: "待ち合わせる",
+    meanings: [
+      {
+        meaning: "まちあわせる",
+        difficulty: "N3",
+      },
+    ],
+    correctRatio: 100,
+  },
+];
 
 const WordsPage = () => {
   const [isSearchPageOpen, setIsSearchPageOpen] = useState(false);
   const { register, handleSubmit } = useForm<WordsSearchInputType>();
   const [selectedDifficulty] = useAtom(wordsSearchFilterDifficulty);
   const [selectedCorrectRatio] = useAtom(wordsSearchFilterCorrectRatio);
+  const [currentWordIndex] = useAtom(wordsCurrentWordIndex);
+  const [words] = useState<WordInfo[]>(wordsDefaultValue);
+  const isWordSelected = currentWordIndex !== null;
 
   const onSubmit = async ({ target }: WordsSearchInputType) => {
     console.log(target);
@@ -139,7 +176,9 @@ const WordsPage = () => {
           <WordsSearchFilter toggleHandler={toggleSearchFilter} />
         )}
       </WordsSearchContainer>
-      <WordsGrid words={words} />
+      <WordsUtilityBar wordCount={words.length} />
+      <WordsDisplay words={words} />
+      {isWordSelected && <WordsCurrentWord word={words[currentWordIndex]} />}
     </WordsContainer>
   );
 };
@@ -151,6 +190,7 @@ const WordsContainer = styled.div`
   height: 100%;
   overflow: hidden;
   padding-top: 30px;
+  z-index: 0;
 `;
 
 const WordsSearchContainer = styled.div`
@@ -158,6 +198,7 @@ const WordsSearchContainer = styled.div`
   position: sticky;
   margin-bottom: ${theme.spacing.xsmall};
   width: 100%;
+  z-index: 100;
 `;
 
 const WordsSearchForm = styled.form`
