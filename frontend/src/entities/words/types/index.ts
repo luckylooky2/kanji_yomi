@@ -5,5 +5,5 @@ export type WordsSearchInputType = {
 };
 
 export type WordsSearchFilterDifficultyType = DifficultyType | "All";
-
 export type WordsSearchFilterCorrectRatioType = CorrectRatioType | "All";
+export type WordsViewType = "list" | "grid";

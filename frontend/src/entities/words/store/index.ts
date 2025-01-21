@@ -3,6 +3,7 @@ import { atom } from "jotai";
 import {
   WordsSearchFilterCorrectRatioType,
   WordsSearchFilterDifficultyType,
+  WordsViewType,
 } from "../types";
 
 export const wordsSearchFilterDifficultyDefaultValues = {
@@ -21,6 +22,8 @@ export const wordsSearchFilterCorrectRatioDefaultValues = {
   Low: false,
 };
 
+export const wordsViewDefaultValues = "grid";
+
 export const wordsSearchFilterDifficulty = atom<
   Record<WordsSearchFilterDifficultyType, boolean>
 >(wordsSearchFilterDifficultyDefaultValues);
@@ -30,3 +33,4 @@ export const wordsSearchFilterCorrectRatio = atom<
 >(wordsSearchFilterCorrectRatioDefaultValues);
 
 export const wordsCurrentWordIndex = atom<number | null>(null);
+export const wordsView = atom<WordsViewType>(wordsViewDefaultValues);
