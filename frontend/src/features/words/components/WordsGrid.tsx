@@ -33,6 +33,14 @@ const WordsGrid = ({ words }: Props) => {
     }, 200);
   }, [currentWordIndex]);
 
+  if (words.length === 0) {
+    return (
+      <WordsNotFound>
+        <h3>No words found :(</h3>
+      </WordsNotFound>
+    );
+  }
+
   return (
     <>
       <WordsSearchResultGrid
@@ -42,7 +50,7 @@ const WordsGrid = ({ words }: Props) => {
         isWordSelected={isWordSelected}
       >
         {words.map((item, index) => (
-          <Item
+          <WordItem
             size={isMobile ? 12 : 8}
             key={item.id}
             ref={(el: HTMLDivElement) => {
@@ -58,7 +66,7 @@ const WordsGrid = ({ words }: Props) => {
             }}
           >
             <h3>{item.word}</h3>
-          </Item>
+          </WordItem>
         ))}
       </WordsSearchResultGrid>
       {isWordSelected && <WordsCurrentWord word={words[currentWordIndex]} />}
@@ -68,7 +76,16 @@ const WordsGrid = ({ words }: Props) => {
 
 export default WordsGrid;
 
-const Item = styled(Grid)<{ isActive?: boolean }>`
+const WordsSearchResultGrid = styled(Grid)<{ isWordSelected: boolean }>`
+  overflow: auto;
+  height: ${({ isWordSelected }) =>
+    isWordSelected ? "calc(90% - 200px)" : "90%"};
+  padding: ${theme.spacing.medium};
+  scroll-behavior: smooth;
+  transition: height 0.1s ease-out;
+`;
+
+const WordItem = styled(Grid)<{ isActive?: boolean }>`
   background: #fff;
   border: 1px solid #ddd;
   border-style: solid;
@@ -85,11 +102,13 @@ const Item = styled(Grid)<{ isActive?: boolean }>`
   }
 `;
 
-const WordsSearchResultGrid = styled(Grid)<{ isWordSelected: boolean }>`
-  overflow: auto;
-  height: ${({ isWordSelected }) =>
-    isWordSelected ? "calc(90% - 200px)" : "90%"};
-  padding: ${theme.spacing.medium};
-  scroll-behavior: smooth;
-  transition: height 0.1s ease-out;
+const WordsNotFound = styled.div`
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h3 {
+    color: gray;
+  }
 `;
