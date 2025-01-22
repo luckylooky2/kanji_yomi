@@ -65,7 +65,8 @@ const WordsCurrentWordContainer = styled.div<{ isWordSelected: boolean }>`
   padding: 16px;
 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  animation: slideUp 0.1s ease-out;
+  animation: ${(props) =>
+    props.isWordSelected ? "" : "slideUp 0.1s ease-out"};
   position: relative;
 
   @keyframes slideUp {
