@@ -38,5 +38,5 @@ export const ratioCondition = (correctRatios: string[]) => {
     .filter(Boolean); // Null 조건 제거
 
   // 조건을 OR로 연결
-  return conditions.length > 0 ? `(${conditions.join(' OR ')})` : null;
+  return conditions.length > 0 ? `(${conditions.join(' OR ')})` : '1=1';
 };
