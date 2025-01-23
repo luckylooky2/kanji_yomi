@@ -21,10 +21,10 @@ const openSansBold = localFont({
 
 export const metadata: Metadata = {
   title: "Kanji Yomi: Japanese Kanji Quiz",
-  description: "Improve your Japanese with our kanji reading quiz.",
+  description: "Improve your Japanese with our kanji reading quiz",
   openGraph: {
     title: "Kanji Yomi: Japanese Kanji Quiz",
-    description: "Improve your Japanese with our kanji reading quiz.",
+    description: "Improve your Japanese with our kanji reading quiz",
     url: process.env.NEXT_PUBLIC_FRONTEND_URL,
     images: [
       {

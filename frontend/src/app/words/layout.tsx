@@ -4,10 +4,10 @@ import MobileLayout from "../quiz/layout";
 
 export const metadata: Metadata = {
   title: "Words - Kanji Yomi",
-  description: "",
+  description: "Search the Kanji words from the quiz",
   openGraph: {
     title: "Words - Kanji Yomi",
-    description: "",
+    description: "Search the Kanji words from the quiz",
     url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/quiz`,
     images: [
       {
