@@ -133,7 +133,7 @@ const WordsSearchFilter = ({ toggleHandler }: Props) => {
           ))}
         </WordsSearchFilterOption>
         <WordsSearchFilterOption>
-          <h3>Correct Rate</h3>
+          <h3>Correct Ratio</h3>
           {correctRatioList.map((rate, index) => (
             <FormControlLabel
               checked={selectedCorrectRatio[rate]}
