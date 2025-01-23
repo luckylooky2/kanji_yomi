@@ -163,7 +163,7 @@ const WordsPage = () => {
           <WordsSearchInput
             {...register("target")}
             autoComplete="off"
-            placeholder="Type in Kanji or Hiragana"
+            placeholder="Search words (e.g., 日, ひ)"
           />
         </WordsSearchForm>
         <WordsSearchFilterButton onClick={toggleSearchFilter}>
@@ -219,12 +219,13 @@ const WordsSearchInput = styled.input`
 `;
 
 const WordsSearchButton = styled(Button)`
+  min-width: 40px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 `;
 
 const WordsSearchFilterButton = styled(Button)`
-  min-width: 0;
+  min-width: 40px;
   border-radius: 0;
   border: 2px solid #1976d2;
   border-left: none;
