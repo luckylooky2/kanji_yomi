@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import MobileLayout from "../quiz/layout";
+import MobileLayout from "@/widgets/MobileLayout/MobileLayout";
 
 export const metadata: Metadata = {
   title: "Words - Kanji Yomi",
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Words - Kanji Yomi",
     description: "Search the Kanji words from the quiz",
-    url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/quiz`,
+    url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/words`,
     images: [
       {
         url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/og_image.png`,
