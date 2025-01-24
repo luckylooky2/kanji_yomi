@@ -1,5 +1,6 @@
 import { useAtom } from "jotai";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 import {
   defaultSpeakSetting,
@@ -14,8 +15,10 @@ import {
 export function useTTS() {
   const [speakSetting, setSpeakSetting] = useAtom(quizHintSpeakSettingState);
   const [voiceList, setVoiceList] = useAtom(quizHintVoiceListState);
+  const MAX_RETRIES = 5;
+  const RETRY_DELAY = 100;
 
-  const loadVoices = (onComplete = () => {}) => {
+  const loadVoices = (onComplete = () => {}, retryCount = 0) => {
     if (typeof window === "undefined") {
       return;
     }
@@ -26,11 +29,19 @@ export function useTTS() {
     if (voices.length !== 0) {
       setVoiceList(voices);
       onComplete();
-    } else {
-      return setTimeout(function () {
-        loadVoices(onComplete);
-      }, 100);
+      return;
     }
+
+    if (retryCount >= MAX_RETRIES) {
+      toast.error("Failed to load voices");
+      return;
+    }
+
+    const timeoutId = setTimeout(function () {
+      loadVoices(onComplete, retryCount + 1);
+    }, RETRY_DELAY);
+
+    return () => clearTimeout(timeoutId);
   };
 
   const resetSpeakSetting = () => {
@@ -43,7 +54,8 @@ export function useTTS() {
   };
 
   useEffect(() => {
-    loadVoices();
+    const cleanup = loadVoices();
+    return cleanup;
   }, []);
 
   return { playTTS: playTTSWrapper };
