@@ -11,7 +11,6 @@ import {
 import logger from 'src/middleware/Logger';
 import { WordsService } from './words.service';
 import { WordsQueryRequest } from './words.request';
-import { WordsQueryCountDTO, WordsQueryDto } from './words.dto';
 
 @Controller('words')
 export class WordsController {
@@ -31,9 +30,7 @@ export class WordsController {
   @Get('/')
   @HttpCode(200)
   @UsePipes(new ValidationPipe({ transform: true }))
-  async getWordsByFilter(
-    @Query() query: WordsQueryRequest,
-  ): Promise<WordsQueryDto> {
+  async getWordsByFilter(@Query() query: WordsQueryRequest) {
     const allowedParams = [
       'search',
       'difficulty',
@@ -57,9 +54,7 @@ export class WordsController {
   @Get('/count')
   @HttpCode(200)
   @UsePipes(new ValidationPipe({ transform: true }))
-  async getWordsCountByFilter(
-    @Query() query: WordsQueryRequest,
-  ): Promise<WordsQueryCountDTO> {
+  async getWordsCountByFilter(@Query() query: WordsQueryRequest) {
     const allowedParams = ['search', 'difficulty', 'correctRatio'];
     this.validateAllowedParams(query, allowedParams);
 
