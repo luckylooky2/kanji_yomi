@@ -25,6 +25,7 @@ const WordsDisplayGrid = ({ words, allocateRef, handleWordClick }: Props) => {
       columns={24}
       isWordSelected={isWordSelected}
       alignContent="flex-start"
+      tabIndex={0}
     >
       {words.map((word, index) => (
         <WordItem
