@@ -21,7 +21,7 @@ const WordsDisplay = ({ words }: Props) => {
   const isWordSelected = currentWordIndex !== null;
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       if (isWordSelected && itemRefs.current[currentWordIndex]) {
         itemRefs.current[currentWordIndex].scrollIntoView({
           behavior: "smooth",
@@ -29,6 +29,8 @@ const WordsDisplay = ({ words }: Props) => {
         });
       }
     }, 200);
+
+    return () => clearTimeout(timeoutId);
   }, [currentWordIndex]);
 
   const handleWordClick = (index: number) => () => {
