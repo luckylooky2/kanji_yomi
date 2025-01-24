@@ -1,12 +1,11 @@
 import Button, { ButtonProps } from "@mui/material/Button";
 
-import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
-import { theme } from "@/shared/styles/theme";
+import { useResponsiveSize } from "@/shared/hooks/useResponsiveSize";
 
 const ResponsiveButton = (props: ButtonProps) => {
-  const isMobile = useMediaQuery(theme.breakpoints.mobile);
+  const size = useResponsiveSize();
 
-  return <Button size={isMobile ? "small" : "medium"} {...props} />;
+  return <Button size={size} {...props} />;
 };
 
 export default ResponsiveButton;

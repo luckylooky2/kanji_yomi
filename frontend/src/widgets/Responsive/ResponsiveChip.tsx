@@ -1,12 +1,11 @@
 import Chip, { ChipProps } from "@mui/material/Chip";
 
-import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
-import { theme } from "@/shared/styles/theme";
+import { useResponsiveSize } from "@/shared/hooks/useResponsiveSize";
 
 const ResponsiveChip = (props: ChipProps) => {
-  const isMobile = useMediaQuery(theme.breakpoints.mobile);
+  const size = useResponsiveSize();
 
-  return <Chip size={isMobile ? "small" : "medium"} {...props} />;
+  return <Chip size={size} {...props} />;
 };
 
 export default ResponsiveChip;
