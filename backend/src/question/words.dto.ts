@@ -7,5 +7,10 @@ export class WordsQueryDto {
   words: QuestionDTO[];
 
   @Expose()
-  searchTotalCount: number;
+  count: number;
+}
+
+export class WordsQueryCountDTO {
+  @Expose()
+  totalCount: number;
 }

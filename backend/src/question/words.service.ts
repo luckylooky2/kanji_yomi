@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Word } from './word.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Repository } from 'typeorm';
-import { WordsQueryDto } from './words.dto';
+import { WordsQueryCountDTO, WordsQueryDto } from './words.dto';
 import { plainToInstance } from 'class-transformer';
 import { WordsQueryRequest } from './words.request';
 import { ratioCondition } from 'src/utils/utils';
@@ -13,8 +13,8 @@ export class WordsService {
     @InjectRepository(Word) private wordRepository: Repository<Word>,
   ) {}
 
-  async searchWordsByFilter(query: WordsQueryRequest): Promise<WordsQueryDto> {
-    const subQuery = this.wordRepository
+  private getQueryBuilderByFilter(query: WordsQueryRequest) {
+    return this.wordRepository
       .createQueryBuilder('word')
       .select('DISTINCT word.id') // word.id만 고유하게 선택
       .innerJoin('word.meanings', 'meaning')
@@ -41,6 +41,12 @@ export class WordsService {
       .andWhere(
         query.correctRatio.length ? ratioCondition(query.correctRatio) : '1=1',
       )
+      .orderBy('word.id', 'ASC')
+      .clone();
+  }
+
+  async searchWordsByFilter(query: WordsQueryRequest): Promise<WordsQueryDto> {
+    const subQuery = this.getQueryBuilderByFilter(query)
       .offset(query.offset)
       .limit(query.limit);
 
@@ -90,7 +96,23 @@ export class WordsService {
 
     return plainToInstance(
       WordsQueryDto,
-      { words, searchTotalCount: words.length },
+      { words, count: words.length },
+      { excludeExtraneousValues: true },
+    );
+  }
+
+  async searchWordsCountByFilter(
+    query: WordsQueryRequest,
+  ): Promise<WordsQueryCountDTO> {
+    const queryBuilder = this.getQueryBuilderByFilter(query);
+    const totalCount = await queryBuilder
+      .select('COUNT(DISTINCT word.id)', 'count')
+      .getRawOne()
+      .then((result) => parseInt(result.count, 10));
+
+    return plainToInstance(
+      WordsQueryCountDTO,
+      { totalCount },
       { excludeExtraneousValues: true },
     );
   }
