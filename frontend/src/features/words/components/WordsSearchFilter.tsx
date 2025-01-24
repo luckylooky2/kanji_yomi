@@ -5,15 +5,16 @@ import { useAtom } from "jotai";
 
 import {
   wordsSearchFilterCorrectRatio,
-  wordsSearchFilterCorrectRatioDefaultValues,
+  wordsSearchFilterCorrectRatioDefaultValues as correctRatioDefaultValues,
   wordsSearchFilterDifficulty,
-  wordsSearchFilterDifficultyDefaultValues,
+  wordsSearchFilterDifficultyDefaultValues as difficultyDefaultValues,
 } from "@/entities/words/store";
 import {
   WordsSearchFilterCorrectRatioType,
   WordsSearchFilterDifficultyType,
 } from "@/entities/words/types";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
+import { useResponsiveSize } from "@/shared/hooks/useResponsiveSize";
 import { correctRatio, difficulties } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 import ResponsiveButton from "@/widgets/Responsive/ResponsiveButton";
@@ -30,91 +31,67 @@ const WordsSearchFilter = ({ toggleHandler }: Props) => {
     wordsSearchFilterCorrectRatio
   );
   const isMobile = useMediaQuery(theme.breakpoints.mobile);
+  const size = useResponsiveSize();
 
-  const difficultyList: WordsSearchFilterDifficultyType[] = [
-    "All",
+  const difficultyList = [
+    "All" as WordsSearchFilterDifficultyType,
     ...difficulties,
   ];
-  const correctRatioList: WordsSearchFilterCorrectRatioType[] = [
-    "All",
+  const correctRatioList = [
+    "All" as WordsSearchFilterCorrectRatioType,
     ...correctRatio,
   ];
 
-  function handleDifficultyChange(difficulty: WordsSearchFilterDifficultyType) {
-    setSelectedDifficulty((prev) => {
-      const isAllSelected = difficulty === "All";
-      const isCurrentlyAll = prev["All"];
+  function createHandleCheckboxChange<
+    T extends
+      | WordsSearchFilterDifficultyType
+      | WordsSearchFilterCorrectRatioType
+  >(
+    setter: (
+      _updater: (_prev: Record<T, boolean>) => Record<T, boolean>
+    ) => void,
+    value: T,
+    defaultState: Record<T, boolean>
+  ) {
+    return () => {
+      setter((prev) => {
+        const isAllSelected = value === "All";
+        const isCurrentlyAll = prev["All" as T];
 
-      if (!isAllSelected && isCurrentlyAll) {
-        return {
+        if (!isAllSelected && isCurrentlyAll) {
+          return {
+            ...prev,
+            All: false,
+            [value]: !prev[value],
+          };
+        }
+
+        if (isAllSelected) {
+          return { ...defaultState };
+        }
+
+        const nextState = {
           ...prev,
-          All: false,
-          [difficulty]: !prev[difficulty],
+          [value]: !prev[value],
         };
-      }
 
-      if (isAllSelected) {
-        return { ...wordsSearchFilterDifficultyDefaultValues };
-      }
+        const noSelection = Object.values(nextState).every((value) => !value);
 
-      const nextState = {
-        ...prev,
-        [difficulty]: !prev[difficulty],
-      };
+        if (noSelection) {
+          return {
+            ...nextState,
+            All: true,
+          };
+        }
 
-      const noSelection = Object.values(nextState).every((value) => !value);
-
-      if (noSelection) {
-        return {
-          ...nextState,
-          All: true,
-        };
-      }
-
-      return nextState;
-    });
+        return nextState;
+      });
+    };
   }
 
-  const handleCorrectRatioChange = (
-    rate: WordsSearchFilterCorrectRatioType
-  ) => {
-    setSelectedCorrectRatio((prev) => {
-      const isAllSelected = rate === "All";
-      const isCurrentlyAll = prev["All"];
-
-      if (!isAllSelected && isCurrentlyAll) {
-        return {
-          ...prev,
-          All: false,
-          [rate]: !prev[rate],
-        };
-      }
-
-      if (isAllSelected) {
-        return { ...wordsSearchFilterCorrectRatioDefaultValues };
-      }
-
-      const nextState = {
-        ...prev,
-        [rate]: !prev[rate],
-      };
-
-      const noSelection = Object.values(nextState).every((value) => !value);
-
-      if (noSelection) {
-        return {
-          ...nextState,
-          All: true,
-        };
-      }
-
-      return nextState;
-    });
-  };
-
   const resetFilter = () => {
-    setSelectedDifficulty({ ...wordsSearchFilterDifficultyDefaultValues });
-    setSelectedCorrectRatio({ ...wordsSearchFilterCorrectRatioDefaultValues });
+    setSelectedDifficulty({ ...difficultyDefaultValues });
+    setSelectedCorrectRatio({ ...correctRatioDefaultValues });
   };
 
   return (
@@ -126,21 +103,29 @@ const WordsSearchFilter = ({ toggleHandler }: Props) => {
             <FormControlLabel
               key={index}
               checked={selectedDifficulty[difficulty]}
-              control={<Checkbox size={isMobile ? "small" : "medium"} />}
+              control={<Checkbox size={size} />}
               label={difficulty}
-              onChange={() => handleDifficultyChange(difficulty)}
+              onChange={createHandleCheckboxChange<WordsSearchFilterDifficultyType>(
+                setSelectedDifficulty,
+                difficulty,
+                difficultyDefaultValues
+              )}
             />
           ))}
         </WordsSearchFilterOption>
         <WordsSearchFilterOption>
           <h3>Correct Ratio</h3>
-          {correctRatioList.map((rate, index) => (
+          {correctRatioList.map((ratio, index) => (
             <FormControlLabel
-              checked={selectedCorrectRatio[rate]}
+              checked={selectedCorrectRatio[ratio]}
               key={index}
-              control={<Checkbox size={isMobile ? "small" : "medium"} />}
-              label={rate}
-              onChange={() => handleCorrectRatioChange(rate)}
+              control={<Checkbox size={size} />}
+              label={ratio}
+              onChange={createHandleCheckboxChange<WordsSearchFilterCorrectRatioType>(
+                setSelectedCorrectRatio,
+                ratio,
+                correctRatioDefaultValues
+              )}
             />
           ))}
         </WordsSearchFilterOption>
