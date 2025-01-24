@@ -6,19 +6,11 @@ import TuneIcon from "@mui/icons-material/Tune";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Button, ButtonGroup, Popper } from "@mui/material";
 import { useAtom } from "jotai";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-import {
-  defaultSpeakSetting,
-  playTTS,
-  SSULangJapanese,
-} from "@/entities/quiz/lib";
-import {
-  quizCurrentKanjiState,
-  quizHintSpeakSettingState,
-  quizHintVoiceListState,
-} from "@/entities/quiz/store";
-import ResponsiveIcon from "@/widgets/ResponsiveIcon/ResponsiveIcon";
+import { quizCurrentKanjiState } from "@/entities/quiz/store";
+import { useTTS } from "@/shared/hooks/useTTS";
+import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 import QuizWordHintSpeakSetting from "./QuizWordHintSpeakSetting";
 
@@ -27,38 +19,14 @@ const QuizWordHint = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [isSpeakSettingOpen, setIsSpeakSettingOpen] = useState(false);
-  const [speakSetting, setSpeakSetting] = useAtom(quizHintSpeakSettingState);
-  const [voiceList, setVoiceList] = useAtom(quizHintVoiceListState);
-
-  const resetSpeakSetting = () => {
-    setSpeakSetting(defaultSpeakSetting);
-    loadVoices();
-  };
-
-  const loadVoices = (onComplete = () => {}) => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    const allVoices = window.speechSynthesis.getVoices();
-    const voices = allVoices.filter((voice) => voice.lang === SSULangJapanese);
-
-    if (voices.length !== 0) {
-      setVoiceList(voices);
-      onComplete();
-    } else {
-      return setTimeout(function () {
-        loadVoices(onComplete);
-      }, 100);
-    }
-  };
+  const { playTTS } = useTTS();
 
   const handleSpeakWord = () => {
     if (!kanji) {
       return;
     }
     const hintWord = kanji.meanings[0].meaning;
-    playTTS(speakSetting, voiceList, hintWord, resetSpeakSetting);
+    playTTS(hintWord);
   };
 
   const handleRedirectDictionary = () => {
@@ -74,10 +42,6 @@ const QuizWordHint = () => {
     setIsMenuOpen((previousOpen) => !previousOpen);
     setIsSpeakSettingOpen(false);
   };
-
-  useEffect(() => {
-    loadVoices();
-  }, []);
 
   return (
     <QuizWordHintLayout>

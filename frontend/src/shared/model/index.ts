@@ -1,3 +1,5 @@
+import { CorrectRatioType, DifficultyType } from "../types";
+
 export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 export const BASE_OPTIONS = {
@@ -37,7 +39,8 @@ export function getNavigationStatus(path: string) {
   }
 }
 
-export const difficulties = ["N5", "N4", "N3", "N2", "N1"];
+export const correctRatio: CorrectRatioType[] = ["High", "Mid", "Low"];
+export const difficulties: DifficultyType[] = ["N5", "N4", "N3", "N2", "N1"];
 export const roundMarks = [10, 30, 50, 70, 90, 100].map((v) => ({
   value: v,
   label: v,
