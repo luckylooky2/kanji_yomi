@@ -7,11 +7,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { plainToInstance } from 'class-transformer';
 import { AnswerRequest, QuestionByFilterRequest } from './question.request';
-import { AnswerDTO, QuestionDTO } from './question.dto';
+import { AnswerDTO, MeaningDTO, QuestionDTO } from './question.dto';
 import { Word } from './word.entity';
 import { Meaning } from './meaning.entity';
 import { calculateCorrectRatio, compareNFCSafe } from 'src/utils/utils';
-import { MeaningDTO } from './question';
 
 @Injectable()
 export class QuestionService {

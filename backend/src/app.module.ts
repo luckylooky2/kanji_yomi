@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Word } from './question/word.entity';
 import { Meaning } from './question/meaning.entity';
 import { QuestionModule } from './question/question.module';
+import { WordsModule } from './question/words.module';
 import 'dotenv/config';
 
 @Module({
@@ -24,6 +25,7 @@ import 'dotenv/config';
       autoLoadEntities: true,
     }),
     QuestionModule,
+    WordsModule,
   ],
 })
 export class AppModule {}

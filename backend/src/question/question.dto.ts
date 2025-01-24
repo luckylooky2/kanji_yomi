@@ -1,5 +1,4 @@
-import { Expose } from 'class-transformer';
-import { MeaningDTO } from './question';
+import { Expose, Type } from 'class-transformer';
 
 export class QuestionDTO {
   @Expose()
@@ -9,6 +8,7 @@ export class QuestionDTO {
   word: string;
 
   @Expose()
+  @Type(() => MeaningDTO)
   meanings: MeaningDTO[];
 
   @Expose()
@@ -24,4 +24,12 @@ export class AnswerDTO {
 
   @Expose()
   result: boolean;
+}
+
+export class MeaningDTO {
+  @Expose()
+  meaning: string;
+
+  @Expose()
+  difficulty: string;
 }
