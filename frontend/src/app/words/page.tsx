@@ -137,16 +137,13 @@ const WordsPage = () => {
   const [words] = useState<WordInfo[]>(wordsDefaultValue);
   const isWordSelected = currentWordIndex !== null;
 
+  // TODO: API와 함께 구현 필요
   const onSubmit = async ({ target }: WordsSearchInputType) => {
     console.log(target);
     setIsSearchPageOpen(false);
   };
 
   const determineFilterIcon = () => {
-    // if (isSearchPageOpen) {
-    //   return ClearIcon;
-    // }
-
     if (selectedDifficulty.All && selectedCorrectRatio.All) {
       return FilterAltOutlinedIcon;
     }
