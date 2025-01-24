@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import logger from 'src/middleware/Logger';
 import { WordsService } from './words.service';
-import { WordsQueryRequest } from './words.request';
+import { WordsQueryCountRequest, WordsQueryRequest } from './words.request';
 
 @Controller('words')
 export class WordsController {
@@ -54,7 +54,7 @@ export class WordsController {
   @Get('/count')
   @HttpCode(200)
   @UsePipes(new ValidationPipe({ transform: true }))
-  async getWordsCountByFilter(@Query() query: WordsQueryRequest) {
+  async getWordsCountByFilter(@Query() query: WordsQueryCountRequest) {
     const allowedParams = ['search', 'difficulty', 'correctRatio'];
     this.validateAllowedParams(query, allowedParams);
 

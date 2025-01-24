@@ -20,7 +20,7 @@ function checkNumberRegex({ value }: { value: string }) {
   throw new BadRequestException('Invalid number format');
 }
 
-export class WordsQueryRequest {
+class IWordsQueryRequest {
   @IsOptional()
   @IsString()
   search?: string;
@@ -36,7 +36,9 @@ export class WordsQueryRequest {
   @IsIn(['High', 'Mid', 'Low'], { each: true })
   @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
   correctRatio?: string[] = [];
+}
 
+export class WordsQueryRequest extends IWordsQueryRequest {
   @IsOptional()
   @IsNumber()
   @IsInt()
@@ -53,3 +55,5 @@ export class WordsQueryRequest {
   @Transform(checkNumberRegex)
   limit?: number = 50;
 }
+
+export class WordsQueryCountRequest extends IWordsQueryRequest {}
