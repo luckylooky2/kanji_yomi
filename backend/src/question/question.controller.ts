@@ -1,4 +1,11 @@
-import { Controller, Post, Body, HttpCode, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpCode,
+  Param,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { AnswerRequest, QuestionByFilterRequest } from './question.request';
 import { QuestionService } from './question.service';
 import logger from 'src/middleware/Logger';
@@ -10,10 +17,14 @@ export class QuestionController {
   @Post('/question')
   @HttpCode(200)
   async getRandomQuestionByFilter(@Body() request: QuestionByFilterRequest) {
-    const questionDto = await this.questionService.randomQuestion(request);
-    const resBody = questionDto || {};
-    logger.debug('Question:', { ...resBody });
-    return resBody;
+    try {
+      const questionDto = await this.questionService.randomQuestion(request);
+      const resBody = questionDto;
+      logger.debug('Question:', { ...resBody });
+      return resBody;
+    } catch {
+      throw new InternalServerErrorException('Failed to get question');
+    }
   }
 
   @Post('/question/:id')
@@ -24,18 +35,27 @@ export class QuestionController {
       throw new Error('Invalid ID');
     }
 
-    const questionDto = await this.questionService.getQuestionById(questionId);
-    const resBody = questionDto || {};
-    logger.debug('Question/:id:', { ...resBody });
-    return resBody;
+    try {
+      const questionDto =
+        await this.questionService.getQuestionById(questionId);
+      const resBody = questionDto;
+      logger.debug('Question/:id:', { ...resBody });
+      return resBody;
+    } catch {
+      throw new InternalServerErrorException('Failed to get question by ID');
+    }
   }
 
   @Post('/answer')
   @HttpCode(200)
   async checkAnswer(@Body() request: AnswerRequest) {
-    const answerDto = await this.questionService.findAnswer(request);
-    const resBody = answerDto || {};
-    logger.debug('Answer:', { ...resBody });
-    return resBody;
+    try {
+      const answerDto = await this.questionService.findAnswer(request);
+      const resBody = answerDto;
+      logger.debug('Answer:', { ...resBody });
+      return resBody;
+    } catch {
+      throw new InternalServerErrorException('Failed to check answer');
+    }
   }
 }
