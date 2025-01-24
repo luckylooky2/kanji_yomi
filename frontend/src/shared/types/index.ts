@@ -19,5 +19,5 @@ export type WordInfo = {
 
 export type MeaningInfo = {
   meaning: string;
-  difficulty: string;
+  difficulty: DifficultyType;
 };
