@@ -33,7 +33,7 @@ const WordsDisplayList = ({ allocateRef, handleWordClick }: Props) => {
               isActive={currentWordIndex === index}
             >
               <TableCell component="th" scope="row" ref={allocateRef(index)}>
-                <h3>{word.word}</h3>
+                <h2>{word.word}</h2>
               </TableCell>
             </TableRowContainer>
           ))}

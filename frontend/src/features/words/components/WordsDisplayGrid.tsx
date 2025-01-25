@@ -69,11 +69,9 @@ const WordItem = styled(Grid)<{ isActive?: boolean }>`
   background-color: ${({ isActive }) =>
     isActive ? "rgba(25, 118, 210, 0.5)" : "white"};
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 16px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   font-weight: bold;
-
-  h3 {
-    text-align: center;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
