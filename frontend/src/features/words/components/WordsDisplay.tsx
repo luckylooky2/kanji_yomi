@@ -3,20 +3,18 @@ import { useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 
 import { wordsCurrentWordIndex, wordsView } from "@/entities/words/store";
-import { WordInfo } from "@/shared/types";
+import { useFecthWords } from "@/shared/hooks/useFetchWords";
+import Loading from "@/widgets/Loading/Loading";
 
 import WordsDisplayGrid from "./WordsDisplayGrid";
 import WordsDisplayList from "./WordsDisplayList";
 
-interface Props {
-  words: WordInfo[];
-}
-
-const WordsDisplay = ({ words }: Props) => {
+const WordsDisplay = () => {
   const [currentWordIndex, setCurrentWordIndex] = useAtom(
     wordsCurrentWordIndex
   );
   const [view] = useAtom(wordsView);
+  const { words, isLoading } = useFecthWords();
   const itemRefs = useRef<HTMLDivElement[]>([]);
   const isWordSelected = currentWordIndex !== null;
 
@@ -32,6 +30,10 @@ const WordsDisplay = ({ words }: Props) => {
 
     return () => clearTimeout(timeoutId);
   }, [currentWordIndex]);
+
+  if (isLoading || !words) {
+    return <Loading />;
+  }
 
   const handleWordClick = (index: number) => () => {
     const nextIndex = index === currentWordIndex ? null : index;
@@ -57,7 +59,6 @@ const WordsDisplay = ({ words }: Props) => {
 
   return (
     <DisplayComponent
-      words={words}
       allocateRef={allocateRef}
       handleWordClick={handleWordClick}
     />

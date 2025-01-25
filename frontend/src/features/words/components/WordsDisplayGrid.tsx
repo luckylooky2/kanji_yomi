@@ -3,23 +3,30 @@ import Grid from "@mui/material/Grid2";
 import { useAtom } from "jotai";
 
 import { wordsCurrentWordIndex } from "@/entities/words/store";
+import { useFecthWords } from "@/shared/hooks/useFetchWords";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
+import { useScroll } from "@/shared/hooks/useScroll";
 import { theme } from "@/shared/styles/theme";
-import { WordInfo } from "@/shared/types";
 
 interface Props {
-  words: WordInfo[];
   allocateRef: (_index: number) => (_el: HTMLDivElement) => void;
   handleWordClick: (_index: number) => () => void;
 }
 
-const WordsDisplayGrid = ({ words, allocateRef, handleWordClick }: Props) => {
+const WordsDisplayGrid = ({ allocateRef, handleWordClick }: Props) => {
   const [currentWordIndex] = useAtom(wordsCurrentWordIndex);
   const isMobile = useMediaQuery(theme.breakpoints.mobile);
+  const { words, fetchNextPage } = useFecthWords();
+  const { scrollRef } = useScroll(fetchNextPage);
   const isWordSelected = currentWordIndex !== null;
+
+  if (!words) {
+    return;
+  }
 
   return (
     <WordsDisplayGridContainer
+      ref={scrollRef}
       container
       spacing={2}
       columns={24}
@@ -32,7 +39,7 @@ const WordsDisplayGrid = ({ words, allocateRef, handleWordClick }: Props) => {
           size={isMobile ? 12 : 8}
           key={word.id}
           ref={allocateRef(index)}
-          isActive={currentWordIndex === word.id}
+          isActive={currentWordIndex === index}
           onClick={handleWordClick(index)}
         >
           <h3>{word.word}</h3>
