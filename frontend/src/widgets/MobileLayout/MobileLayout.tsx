@@ -1,5 +1,6 @@
 import React from "react";
 
+import ReactQueryProviders from "@/ReactQueryProviders";
 import Header from "@/features/header/components/Header";
 import BottomNavigation from "@/features/navigation/components/BottomNavigation";
 
@@ -9,12 +10,14 @@ interface Props {
 
 export default function MobileLayout({ children }: Readonly<Props>) {
   return (
-    <div className="margin-container">
-      <Header />
-      <div className="content-box">
-        <main>{children}</main>
+    <ReactQueryProviders>
+      <div className="margin-container">
+        <Header />
+        <div className="content-box">
+          <main>{children}</main>
+        </div>
+        <BottomNavigation />
       </div>
-      <BottomNavigation />
-    </div>
+    </ReactQueryProviders>
   );
 }
