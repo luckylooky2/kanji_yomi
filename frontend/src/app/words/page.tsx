@@ -12,6 +12,7 @@ import {
   wordsCurrentWordIndex,
   wordsSearchFilterCorrectRatio,
   wordsSearchFilterDifficulty,
+  wordsSearchFilterSearchInput,
 } from "@/entities/words/store";
 import { WordsSearchInputType } from "@/entities/words/types";
 import WordsCurrentWord from "@/features/words/components/WordsCurrentWord";
@@ -19,132 +20,39 @@ import WordsDisplay from "@/features/words/components/WordsDisplay";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
 import WordsUtilityBar from "@/features/words/components/WordsUtilityBar";
 import { theme } from "@/shared/styles/theme";
-import { WordInfo } from "@/shared/types";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
-
-const wordsDefaultValue: WordInfo[] = [
-  {
-    id: 0,
-    word: "秋",
-    meanings: [
-      {
-        meaning: "あき",
-        difficulty: "N5",
-      },
-    ],
-    correctRatio: 0,
-  },
-  {
-    id: 1,
-    word: "開く",
-    meanings: [
-      {
-        meaning: "あく",
-        difficulty: "N5",
-      },
-      {
-        meaning: "ひらく",
-        difficulty: "N4",
-      },
-    ],
-    correctRatio: 50,
-  },
-  {
-    id: 2,
-    word: "朝御飯",
-    meanings: [
-      {
-        meaning: "あさごはん",
-        difficulty: "N5",
-      },
-    ],
-    correctRatio: 90,
-  },
-  {
-    id: 3,
-    word: "伯母さん",
-    meanings: [
-      {
-        meaning: "おばさん",
-        difficulty: "N5",
-      },
-    ],
-    correctRatio: 30,
-  },
-  {
-    id: 4,
-    word: "お巡りさん",
-    meanings: [
-      {
-        meaning: "おまわりさん",
-        difficulty: "N5",
-      },
-    ],
-    correctRatio: 60,
-  },
-  {
-    id: 5,
-    word: "待ち合わせる",
-    meanings: [
-      {
-        meaning: "まちあわせる",
-        difficulty: "N3",
-      },
-    ],
-    correctRatio: 100,
-  },
-  {
-    id: 6,
-    word: "待ち合わせる",
-    meanings: [
-      {
-        meaning: "まちあわせる",
-        difficulty: "N3",
-      },
-    ],
-    correctRatio: 100,
-  },
-  {
-    id: 7,
-    word: "待ち合わせる",
-    meanings: [
-      {
-        meaning: "まちあわせる",
-        difficulty: "N3",
-      },
-    ],
-    correctRatio: 100,
-  },
-  {
-    id: 8,
-    word: "待ち合わせる",
-    meanings: [
-      {
-        meaning: "まちあわせる",
-        difficulty: "N3",
-      },
-    ],
-    correctRatio: 100,
-  },
-];
 
 const WordsPage = () => {
   const [isSearchPageOpen, setIsSearchPageOpen] = useState(false);
-  const { register, handleSubmit } = useForm<WordsSearchInputType>();
-  const [selectedDifficulty] = useAtom(wordsSearchFilterDifficulty);
-  const [selectedCorrectRatio] = useAtom(wordsSearchFilterCorrectRatio);
-  const [currentWordIndex] = useAtom(wordsCurrentWordIndex);
-  const [words] = useState<WordInfo[]>(wordsDefaultValue);
+  const {
+    register,
+    handleSubmit,
+    reset: resetInput,
+  } = useForm<WordsSearchInputType>();
+  const [difficulty, setDifficulty] = useAtom(wordsSearchFilterDifficulty);
+  const [correctRatio, setCorrectRatio] = useAtom(
+    wordsSearchFilterCorrectRatio
+  );
+  const [selectedDifficulty, setSelectedDifficulty] = useState(difficulty);
+  const [selectedCorrectRatio, setSelectedCorrectRatio] =
+    useState(correctRatio);
+  const [currentWordIndex, setCurrentWordIndex] = useAtom(
+    wordsCurrentWordIndex
+  );
+  const [, setSearchInput] = useAtom(wordsSearchFilterSearchInput);
   const isWordSelected = currentWordIndex !== null;
 
   // TODO: API와 함께 구현 필요
   const onSubmit = async ({ target }: WordsSearchInputType) => {
-    console.log(target);
+    setDifficulty({ ...selectedDifficulty });
+    setCorrectRatio({ ...selectedCorrectRatio });
+    setSearchInput(target);
     setIsSearchPageOpen(false);
+    setCurrentWordIndex(null);
   };
 
   const determineFilterIcon = () => {
-    if (selectedDifficulty.All && selectedCorrectRatio.All) {
+    if (difficulty.All && correctRatio.All) {
       return FilterAltOutlinedIcon;
     }
 
@@ -170,17 +78,19 @@ const WordsPage = () => {
           <ResponsiveIcon icon={SearchIcon} />
         </WordsSearchButton>
         {isSearchPageOpen && (
-          <WordsSearchFilter toggleHandler={toggleSearchFilter} />
+          <WordsSearchFilter
+            toggleHandler={toggleSearchFilter}
+            resetInput={resetInput}
+            selectedDifficulty={selectedDifficulty}
+            selectedCorrectRatio={selectedCorrectRatio}
+            setSelectedDifficulty={setSelectedDifficulty}
+            setSelectedCorrectRatio={setSelectedCorrectRatio}
+          />
         )}
       </WordsSearchContainer>
-      <WordsUtilityBar wordCount={words.length} />
-      <WordsDisplay words={words} />
-      {isWordSelected && (
-        <WordsCurrentWord
-          key={currentWordIndex}
-          word={words[currentWordIndex]}
-        />
-      )}
+      <WordsUtilityBar />
+      <WordsDisplay />
+      {isWordSelected && <WordsCurrentWord key={currentWordIndex} />}
     </WordsContainer>
   );
 };

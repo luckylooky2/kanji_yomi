@@ -1,12 +1,10 @@
 import styled from "@emotion/styled";
 import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import { useAtom } from "jotai";
+import { Dispatch, SetStateAction } from "react";
 
 import {
-  wordsSearchFilterCorrectRatio,
   wordsSearchFilterCorrectRatioDefaultValues as correctRatioDefaultValues,
-  wordsSearchFilterDifficulty,
   wordsSearchFilterDifficultyDefaultValues as difficultyDefaultValues,
 } from "@/entities/words/store";
 import {
@@ -15,32 +13,35 @@ import {
 } from "@/entities/words/types";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { useResponsiveSize } from "@/shared/hooks/useResponsiveSize";
-import { correctRatio, difficulties } from "@/shared/model";
+import { correctRatio as cr, difficulties as d } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 import ResponsiveButton from "@/widgets/Responsive/ResponsiveButton";
 
 interface Props {
   toggleHandler: () => void;
+  resetInput: () => void;
+  selectedDifficulty: Record<WordsSearchFilterDifficultyType, boolean>;
+  setSelectedDifficulty: Dispatch<
+    SetStateAction<Record<WordsSearchFilterDifficultyType, boolean>>
+  >;
+  selectedCorrectRatio: Record<WordsSearchFilterCorrectRatioType, boolean>;
+  setSelectedCorrectRatio: Dispatch<
+    SetStateAction<Record<WordsSearchFilterCorrectRatioType, boolean>>
+  >;
 }
 
-const WordsSearchFilter = ({ toggleHandler }: Props) => {
-  const [selectedDifficulty, setSelectedDifficulty] = useAtom(
-    wordsSearchFilterDifficulty
-  );
-  const [selectedCorrectRatio, setSelectedCorrectRatio] = useAtom(
-    wordsSearchFilterCorrectRatio
-  );
+const WordsSearchFilter = ({
+  toggleHandler,
+  resetInput,
+  selectedDifficulty,
+  setSelectedDifficulty,
+  selectedCorrectRatio,
+  setSelectedCorrectRatio,
+}: Props) => {
   const isMobile = useMediaQuery(theme.breakpoints.mobile);
   const size = useResponsiveSize();
-
-  const difficultyList = [
-    "All" as WordsSearchFilterDifficultyType,
-    ...difficulties,
-  ];
-  const correctRatioList = [
-    "All" as WordsSearchFilterCorrectRatioType,
-    ...correctRatio,
-  ];
+  const difficultyList = ["All" as WordsSearchFilterDifficultyType, ...d];
+  const correctRatioList = ["All" as WordsSearchFilterCorrectRatioType, ...cr];
 
   function createHandleCheckboxChange<
     T extends
@@ -92,6 +93,7 @@ const WordsSearchFilter = ({ toggleHandler }: Props) => {
   const resetFilter = () => {
     setSelectedDifficulty({ ...difficultyDefaultValues });
     setSelectedCorrectRatio({ ...correctRatioDefaultValues });
+    resetInput();
   };
 
   return (
