@@ -19,7 +19,9 @@ import WordsCurrentWord from "@/features/words/components/WordsCurrentWord";
 import WordsDisplay from "@/features/words/components/WordsDisplay";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
 import WordsUtilityBar from "@/features/words/components/WordsUtilityBar";
+import { useFecthWords } from "@/shared/hooks/useFetchWords";
 import { theme } from "@/shared/styles/theme";
+import Loading from "@/widgets/Loading/Loading";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 const WordsPage = () => {
@@ -41,6 +43,7 @@ const WordsPage = () => {
   );
   const [, setSearchInput] = useAtom(wordsSearchFilterSearchInput);
   const isWordSelected = currentWordIndex !== null;
+  const { isLoading } = useFecthWords();
 
   // TODO: API와 함께 구현 필요
   const onSubmit = async ({ target }: WordsSearchInputType) => {
@@ -88,8 +91,14 @@ const WordsPage = () => {
           />
         )}
       </WordsSearchContainer>
-      <WordsUtilityBar />
-      <WordsDisplay />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <WordsUtilityBar />
+          <WordsDisplay />
+        </>
+      )}
       {isWordSelected && <WordsCurrentWord key={currentWordIndex} />}
     </WordsContainer>
   );
