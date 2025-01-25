@@ -2,16 +2,36 @@ import styled from "@emotion/styled";
 import GridViewSharpIcon from "@mui/icons-material/GridViewSharp";
 import TableRowsSharpIcon from "@mui/icons-material/TableRowsSharp";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { MouseEvent } from "react";
 
-import { wordsCurrentWordIndex, wordsView } from "@/entities/words/store";
+import {
+  wordsCurrentWordIndex,
+  wordsSearchFilterState,
+  wordsView,
+} from "@/entities/words/store";
 import { WordsViewType } from "@/entities/words/types";
 import { theme } from "@/shared/styles/theme";
+
+import { WordsService } from "../api";
 
 const WordsUtilityBar = () => {
   const [view, setView] = useAtom(wordsView);
   const [, setCurrentWordIndex] = useAtom(wordsCurrentWordIndex);
+  const [{ searchInput, difficulty, correctRatio }] = useAtom(
+    wordsSearchFilterState
+  );
+  const { data, isLoading } = useQuery({
+    queryKey: ["wordsCount", searchInput, difficulty, correctRatio],
+    queryFn: async function () {
+      return await WordsService.searchWordsCount(
+        searchInput,
+        difficulty,
+        correctRatio
+      );
+    },
+  });
 
   const handleChange = ({ currentTarget }: MouseEvent<HTMLElement>) => {
     const target = currentTarget as HTMLButtonElement;
@@ -20,11 +40,9 @@ const WordsUtilityBar = () => {
     setCurrentWordIndex(null);
   };
 
-  // TODO: count API 생성 및 호출
-
   return (
     <WordsUtilityBarContainer>
-      <span>Found 0 items</span>
+      <span>Found {isLoading ? "..." : data.totalCount} items.</span>
       <WordsViewButtonGroup value={view} exclusive onChange={handleChange}>
         <ToggleButton value="grid" aria-label="grid">
           <GridViewSharpIcon fontSize="small" />
