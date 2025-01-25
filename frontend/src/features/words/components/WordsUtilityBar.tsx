@@ -9,11 +9,7 @@ import { wordsCurrentWordIndex, wordsView } from "@/entities/words/store";
 import { WordsViewType } from "@/entities/words/types";
 import { theme } from "@/shared/styles/theme";
 
-interface Props {
-  wordCount: number;
-}
-
-const WordsUtilityBar = ({ wordCount }: Props) => {
+const WordsUtilityBar = () => {
   const [view, setView] = useAtom(wordsView);
   const [, setCurrentWordIndex] = useAtom(wordsCurrentWordIndex);
 
@@ -24,9 +20,11 @@ const WordsUtilityBar = ({ wordCount }: Props) => {
     setCurrentWordIndex(null);
   };
 
+  // TODO: count API 생성 및 호출
+
   return (
     <WordsUtilityBarContainer>
-      <span>Found {wordCount} items</span>
+      <span>Found 0 items</span>
       <WordsViewButtonGroup value={view} exclusive onChange={handleChange}>
         <ToggleButton value="grid" aria-label="grid">
           <GridViewSharpIcon fontSize="small" />
