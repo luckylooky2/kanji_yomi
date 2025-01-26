@@ -41,7 +41,7 @@ const WordsPage = () => {
   const [currentWordIndex, setCurrentWordIndex] = useAtom(
     wordsCurrentWordIndex
   );
-  const [, setSearchInput] = useAtom(wordsSearchFilterSearchInput);
+  const [searchInput, setSearchInput] = useAtom(wordsSearchFilterSearchInput);
   const isWordSelected = currentWordIndex !== null;
   const { isLoading } = useFecthWords();
 
@@ -72,6 +72,7 @@ const WordsPage = () => {
             {...register("target")}
             autoComplete="off"
             placeholder="Search words (e.g., 日, ひ)"
+            defaultValue={searchInput}
           />
         </WordsSearchForm>
         <WordsSearchFilterButton onClick={toggleSearchFilter}>
