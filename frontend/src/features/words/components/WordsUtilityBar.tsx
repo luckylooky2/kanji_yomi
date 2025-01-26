@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import GridViewSharpIcon from "@mui/icons-material/GridViewSharp";
 import TableRowsSharpIcon from "@mui/icons-material/TableRowsSharp";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { MouseEvent } from "react";
 
@@ -22,16 +22,20 @@ const WordsUtilityBar = () => {
   const [{ searchInput, difficulty, correctRatio }] = useAtom(
     wordsSearchFilterState
   );
-  const { data, isLoading } = useQuery({
-    queryKey: ["wordsCount", searchInput, difficulty, correctRatio],
-    queryFn: async function () {
-      return await WordsService.searchWordsCount(
-        searchInput,
-        difficulty,
-        correctRatio
-      );
-    },
-  });
+  const { data, isLoading } = useQuery(queryOption());
+
+  function queryOption() {
+    return queryOptions({
+      queryKey: ["wordsCount", searchInput, difficulty, correctRatio],
+      queryFn: async function () {
+        return await WordsService.searchWordsCount(
+          searchInput,
+          difficulty,
+          correctRatio
+        );
+      },
+    });
+  }
 
   const handleChange = ({ currentTarget }: MouseEvent<HTMLElement>) => {
     const target = currentTarget as HTMLButtonElement;

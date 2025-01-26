@@ -1,4 +1,8 @@
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  infiniteQueryOptions,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useAtom } from "jotai";
 
 import { wordsSearchFilterState } from "@/entities/words/store";
@@ -12,18 +16,23 @@ export function useFecthWords() {
   );
   const queryClient = useQueryClient();
   const queryKey = ["words", searchInput, difficulty, correctRatio];
-  const { data, isLoading, fetchNextPage } = useInfiniteQuery({
-    queryKey,
-    queryFn: fetchWordsFn,
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, _pages, lastPageParam) => {
-      if (lastPage.words.length < 50) {
-        return undefined;
-      }
+  const { data, isLoading, fetchNextPage } = useInfiniteQuery(queryOption());
 
-      return lastPageParam + 50;
-    },
-  });
+  function queryOption() {
+    return infiniteQueryOptions({
+      queryKey,
+      queryFn: fetchWordsFn,
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, _pages, lastPageParam) => {
+        if (lastPage.words.length < 50) {
+          return undefined;
+        }
+
+        return lastPageParam + 50;
+      },
+      staleTime: Infinity,
+    });
+  }
 
   async function fetchWordsFn({ pageParam }: { pageParam: number }) {
     return await WordsService.searchWords(
