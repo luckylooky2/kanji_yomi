@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import { useAtom } from "jotai";
 
 import { wordsCurrentWordIndex } from "@/entities/words/store";
-import { useFecthWords } from "@/shared/hooks/useFetchWords";
+import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { useScroll } from "@/shared/hooks/useScroll";
 import { theme } from "@/shared/styles/theme";
 
@@ -13,13 +13,13 @@ interface Props {
 }
 
 const WordsDisplayList = ({ allocateRef, handleWordClick }: Props) => {
-  const { words, fetchNextPage } = useFecthWords();
+  const { words, fetchNextPage } = useFetchWords();
   const { scrollRef } = useScroll(fetchNextPage);
   const [currentWordIndex] = useAtom(wordsCurrentWordIndex);
   const isWordSelected = currentWordIndex !== null;
 
   if (!words) {
-    return;
+    return null;
   }
 
   return (
@@ -33,7 +33,7 @@ const WordsDisplayList = ({ allocateRef, handleWordClick }: Props) => {
               isActive={currentWordIndex === index}
             >
               <TableCell component="th" scope="row" ref={allocateRef(index)}>
-                <h2>{word.word}</h2>
+                <h3>{word.word}</h3>
               </TableCell>
             </TableRowContainer>
           ))}

@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { useAtom } from "jotai";
 
 import { wordsCurrentWordIndex } from "@/entities/words/store";
-import { useFecthWords } from "@/shared/hooks/useFetchWords";
+import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { useTTS } from "@/shared/hooks/useTTS";
 import { getMUIColorByCorrectRatio } from "@/shared/lib";
 import { theme } from "@/shared/styles/theme";
@@ -18,7 +18,7 @@ const WordsCurrentWord = () => {
     wordsCurrentWordIndex
   );
   const { playTTS } = useTTS();
-  const { words, isLoading } = useFecthWords();
+  const { words, isLoading } = useFetchWords();
   const isWordSelected = currentWordIndex !== null;
 
   if (isLoading || !words || currentWordIndex === null) {

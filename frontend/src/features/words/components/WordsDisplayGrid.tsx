@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid2";
 import { useAtom } from "jotai";
 
 import { wordsCurrentWordIndex } from "@/entities/words/store";
-import { useFecthWords } from "@/shared/hooks/useFetchWords";
+import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { useScroll } from "@/shared/hooks/useScroll";
 import { theme } from "@/shared/styles/theme";
@@ -16,12 +16,12 @@ interface Props {
 const WordsDisplayGrid = ({ allocateRef, handleWordClick }: Props) => {
   const [currentWordIndex] = useAtom(wordsCurrentWordIndex);
   const isMobile = useMediaQuery(theme.breakpoints.mobile);
-  const { words, fetchNextPage } = useFecthWords();
+  const { words, fetchNextPage } = useFetchWords();
   const { scrollRef } = useScroll(fetchNextPage);
   const isWordSelected = currentWordIndex !== null;
 
   if (!words) {
-    return;
+    return null;
   }
 
   return (
