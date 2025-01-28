@@ -4,10 +4,16 @@ import { useCallback, useEffect, useRef } from "react";
 
 import { wordsSearchFilterState } from "@/entities/words/store";
 
-export function useScroll(callback: () => void = () => {}) {
-  const throttledCallback = useCallback(throttle(callback, 300), []);
+export function useScroll(callback: () => void) {
+  const throttledCallback = useCallback(throttle(callback, 300), [callback]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [searchFilter] = useAtom(wordsSearchFilterState);
+
+  useEffect(() => {
+    return () => {
+      throttledCallback.cancel();
+    };
+  }, [throttledCallback]);
 
   useEffect(() => {
     const handleScroll = () => {
