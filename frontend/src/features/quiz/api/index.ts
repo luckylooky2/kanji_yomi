@@ -12,9 +12,7 @@ export const QuizService = {
       ...BASE_OPTIONS,
     };
 
-    return responseInterceptor(
-      await fetch(`${API_URL}/quiz/question`, options)
-    );
+    return responseInterceptor(`${API_URL}/quiz/question`, options);
   },
 
   getAnswer: async (body: QuizAnswerRequestDTO) => {
@@ -25,6 +23,6 @@ export const QuizService = {
       ...BASE_OPTIONS,
     };
 
-    return responseInterceptor(await fetch(`${API_URL}/quiz/answer`, options));
+    return responseInterceptor(`${API_URL}/quiz/answer`, options);
   },
 };

@@ -51,7 +51,7 @@ export const WordsService = {
       correctRatio,
       pageParams
     );
-    return responseInterceptor(await fetch(`${API_URL}/words${queryString}`));
+    return responseInterceptor(`${API_URL}/words${queryString}`);
   },
 
   searchWordsCount: async (
@@ -64,8 +64,6 @@ export const WordsService = {
       difficulty,
       correctRatio
     );
-    return responseInterceptor(
-      await fetch(`${API_URL}/words/count${queryString}`)
-    );
+    return responseInterceptor(`${API_URL}/words/count${queryString}`);
   },
 };
