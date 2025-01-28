@@ -19,7 +19,7 @@ import WordsCurrentWord from "@/features/words/components/WordsCurrentWord";
 import WordsDisplay from "@/features/words/components/WordsDisplay";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
 import WordsUtilityBar from "@/features/words/components/WordsUtilityBar";
-import { useFecthWords } from "@/shared/hooks/useFetchWords";
+import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { theme } from "@/shared/styles/theme";
 import Loading from "@/widgets/Loading/Loading";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
@@ -43,7 +43,7 @@ const WordsPage = () => {
   );
   const [searchInput, setSearchInput] = useAtom(wordsSearchFilterSearchInput);
   const isWordSelected = currentWordIndex !== null;
-  const { isLoading } = useFecthWords();
+  const { isLoading, isError } = useFetchWords();
 
   // TODO: API와 함께 구현 필요
   const onSubmit = async ({ target }: WordsSearchInputType) => {
@@ -64,6 +64,20 @@ const WordsPage = () => {
 
   const toggleSearchFilter = () => setIsSearchPageOpen(!isSearchPageOpen);
 
+  if (isError) {
+    return (
+      <WordsErrorContainer>
+        <h3>Failed to fetch words :(</h3>
+        <Button
+          size="small"
+          variant="contained"
+          onClick={() => window.location.reload()}
+        >
+          Reload
+        </Button>
+      </WordsErrorContainer>
+    );
+  }
   return (
     <WordsContainer>
       <WordsSearchContainer>
@@ -92,14 +106,8 @@ const WordsPage = () => {
           />
         )}
       </WordsSearchContainer>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          <WordsUtilityBar />
-          <WordsDisplay />
-        </>
-      )}
+      <WordsUtilityBar />
+      {isLoading ? <Loading /> : <WordsDisplay />}
       {isWordSelected && <WordsCurrentWord key={currentWordIndex} />}
     </WordsContainer>
   );
@@ -147,4 +155,17 @@ const WordsSearchFilterButton = styled(Button)`
   border: 2px solid #1976d2;
   border-left: none;
   border-right: none;
+`;
+
+const WordsErrorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: ${theme.spacing.medium};
+
+  button {
+    width: 50%;
+  }
 `;

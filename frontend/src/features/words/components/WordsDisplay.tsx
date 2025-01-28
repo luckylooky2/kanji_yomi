@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 
 import { wordsCurrentWordIndex, wordsView } from "@/entities/words/store";
-import { useFecthWords } from "@/shared/hooks/useFetchWords";
+import { useFetchWords } from "@/shared/hooks/useFetchWords";
 
 import WordsDisplayGrid from "./WordsDisplayGrid";
 import WordsDisplayList from "./WordsDisplayList";
@@ -13,7 +13,7 @@ const WordsDisplay = () => {
     wordsCurrentWordIndex
   );
   const [view] = useAtom(wordsView);
-  const { words } = useFecthWords();
+  const { words, isError } = useFetchWords();
   const itemRefs = useRef<HTMLDivElement[]>([]);
   const isWordSelected = currentWordIndex !== null;
 
@@ -30,8 +30,6 @@ const WordsDisplay = () => {
     return () => clearTimeout(timeoutId);
   }, [currentWordIndex]);
 
-  // TODO: 네트워크 에러 처리
-
   const handleWordClick = (index: number) => () => {
     const nextIndex = index === currentWordIndex ? null : index;
     setCurrentWordIndex(nextIndex);
@@ -42,6 +40,14 @@ const WordsDisplay = () => {
       itemRefs.current[index] = el;
     }
   };
+
+  if (isError || !words) {
+    return (
+      <WordsNotFound>
+        <h3>Failed to fetch words :(</h3>
+      </WordsNotFound>
+    );
+  }
 
   if (words.length === 0) {
     return (
