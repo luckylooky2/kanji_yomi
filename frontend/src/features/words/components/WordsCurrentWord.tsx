@@ -5,24 +5,28 @@ import Button from "@mui/material/Button";
 import { useAtom } from "jotai";
 
 import { wordsCurrentWordIndex } from "@/entities/words/store";
+import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { useTTS } from "@/shared/hooks/useTTS";
 import { getMUIColorByCorrectRatio } from "@/shared/lib";
 import { theme } from "@/shared/styles/theme";
-import { WordInfo } from "@/shared/types";
 import ResponsiveButton from "@/widgets/Responsive/ResponsiveButton";
 import ResponsiveChip from "@/widgets/Responsive/ResponsiveChip";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
-interface Props {
-  word: WordInfo;
-}
-
-const WordsCurrentWord = ({ word }: Props) => {
+const WordsCurrentWord = () => {
   const [currentWordIndex, setCurrentWordIndex] = useAtom(
     wordsCurrentWordIndex
   );
   const { playTTS } = useTTS();
+  const { words, isLoading } = useFetchWords();
   const isWordSelected = currentWordIndex !== null;
+
+  if (isLoading || !words || currentWordIndex === null) {
+    return;
+  }
+
+  const word = words[currentWordIndex];
+  const correctRatio = Math.ceil(word.correctRatio * 100);
 
   return (
     <WordsCurrentWordContainer isWordSelected={isWordSelected}>
@@ -30,8 +34,8 @@ const WordsCurrentWord = ({ word }: Props) => {
         <h1>{word.word}</h1>
         <ResponsiveChip
           // variant="outlined"
-          color={getMUIColorByCorrectRatio(word.correctRatio)}
-          label={word.correctRatio + "%"}
+          color={getMUIColorByCorrectRatio(correctRatio)}
+          label={correctRatio + "%"}
         />
       </WordsCurrentWordTitle>
       <WordsCurrentWordMeaningLayout>

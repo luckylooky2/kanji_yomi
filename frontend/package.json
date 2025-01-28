@@ -16,6 +16,7 @@
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.6",
     "@mui/material-nextjs": "^6.3.1",
+    "@tanstack/react-query": "^5.64.2",
     "@vercel/analytics": "^1.4.1",
     "countup.js": "^2.8.0",
     "dayjs": "^1.11.13",
@@ -29,6 +30,8 @@
     "scrollreveal": "4.0.5"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.64.2",
+    "@tanstack/react-query-devtools": "^5.64.2",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4",
     "@types/node": "^20",

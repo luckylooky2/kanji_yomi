@@ -1,40 +1,85 @@
 import styled from "@emotion/styled";
 import GridViewSharpIcon from "@mui/icons-material/GridViewSharp";
 import TableRowsSharpIcon from "@mui/icons-material/TableRowsSharp";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {
+  CircularProgress,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { MouseEvent } from "react";
 
-import { wordsCurrentWordIndex, wordsView } from "@/entities/words/store";
+import { wordsSearchFilterState, wordsView } from "@/entities/words/store";
 import { WordsViewType } from "@/entities/words/types";
+import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { theme } from "@/shared/styles/theme";
 
-interface Props {
-  wordCount: number;
-}
+import { WordsService } from "../api";
 
-const WordsUtilityBar = ({ wordCount }: Props) => {
+const WordsUtilityBar = () => {
   const [view, setView] = useAtom(wordsView);
-  const [, setCurrentWordIndex] = useAtom(wordsCurrentWordIndex);
+  const { isLoading } = useFetchWords();
 
   const handleChange = ({ currentTarget }: MouseEvent<HTMLElement>) => {
     const target = currentTarget as HTMLButtonElement;
     const value = target.value as WordsViewType;
     setView(value);
-    setCurrentWordIndex(null);
+  };
+
+  const TotalCount = () => {
+    const [{ searchInput, difficulty, correctRatio }] = useAtom(
+      wordsSearchFilterState
+    );
+    const { data, isLoading, isError } = useQuery(queryOption());
+
+    function queryOption() {
+      return queryOptions({
+        queryKey: ["wordsCount", searchInput, difficulty, correctRatio],
+        queryFn: async function () {
+          return await WordsService.searchWordsCount(
+            searchInput,
+            difficulty,
+            correctRatio
+          );
+        },
+        staleTime: Infinity,
+        retry: 2,
+      });
+    }
+
+    if (isLoading) {
+      return (
+        <TotalCountLoadingWrapper>
+          <CircularProgress size={20} />
+        </TotalCountLoadingWrapper>
+      );
+    }
+
+    if (isError) {
+      return <span>Failed to load count.</span>;
+    }
+
+    return (
+      <span>
+        Found <i>{data.totalCount}</i> items.
+      </span>
+    );
   };
 
   return (
     <WordsUtilityBarContainer>
-      <span>Found {wordCount} items</span>
-      <WordsViewButtonGroup value={view} exclusive onChange={handleChange}>
-        <ToggleButton value="grid" aria-label="grid">
-          <GridViewSharpIcon fontSize="small" />
-        </ToggleButton>
-        <ToggleButton value="list" aria-label="list">
-          <TableRowsSharpIcon fontSize="small" />
-        </ToggleButton>
-      </WordsViewButtonGroup>
+      <TotalCount />
+      {!isLoading && (
+        <WordsViewButtonGroup value={view} exclusive onChange={handleChange}>
+          <ToggleButton value="grid" aria-label="grid">
+            <GridViewSharpIcon fontSize="small" />
+          </ToggleButton>
+          <ToggleButton value="list" aria-label="list">
+            <TableRowsSharpIcon fontSize="small" />
+          </ToggleButton>
+        </WordsViewButtonGroup>
+      )}
     </WordsUtilityBarContainer>
   );
 };
@@ -57,4 +102,11 @@ const WordsUtilityBarContainer = styled.div`
 const WordsViewButtonGroup = styled(ToggleButtonGroup)`
   height: 30px;
   z-index: 1;
+`;
+
+const TotalCountLoadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
 `;

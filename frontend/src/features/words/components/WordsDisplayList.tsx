@@ -3,28 +3,34 @@ import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import { useAtom } from "jotai";
 
 import { wordsCurrentWordIndex } from "@/entities/words/store";
+import { useFetchWords } from "@/shared/hooks/useFetchWords";
+import { useScroll } from "@/shared/hooks/useScroll";
 import { theme } from "@/shared/styles/theme";
-import { WordInfo } from "@/shared/types";
 
 interface Props {
-  words: WordInfo[];
   allocateRef: (_index: number) => (_el: HTMLDivElement) => void;
   handleWordClick: (_index: number) => () => void;
 }
 
-const WordsDisplayList = ({ words, allocateRef, handleWordClick }: Props) => {
+const WordsDisplayList = ({ allocateRef, handleWordClick }: Props) => {
+  const { words, fetchNextPage } = useFetchWords();
+  const { scrollRef } = useScroll(fetchNextPage);
   const [currentWordIndex] = useAtom(wordsCurrentWordIndex);
   const isWordSelected = currentWordIndex !== null;
 
+  if (!words) {
+    return null;
+  }
+
   return (
-    <WordsDisplayListContainer isWordSelected={isWordSelected}>
+    <WordsDisplayListContainer isWordSelected={isWordSelected} ref={scrollRef}>
       <Table>
         <TableBody>
           {words.map((word, index) => (
             <TableRowContainer
               key={word.id}
               onClick={handleWordClick(index)}
-              isActive={currentWordIndex === word.id}
+              isActive={currentWordIndex === index}
             >
               <TableCell component="th" scope="row" ref={allocateRef(index)}>
                 <h3>{word.word}</h3>

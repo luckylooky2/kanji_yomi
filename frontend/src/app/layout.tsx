@@ -5,6 +5,8 @@ import localFont from "next/font/local";
 import React from "react";
 import { Slide, ToastContainer } from "react-toastify";
 
+import ReactQueryProviders from "@/ReactQueryProviders";
+
 import "../../public/styles/globals.css";
 
 const openSans = localFont({
@@ -47,15 +49,17 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${openSans.variable} ${openSansBold.variable}`}>
         <AppRouterCacheProvider>
-          <Analytics />
-          <ToastContainer
-            position="top-right"
-            theme="colored"
-            transition={Slide}
-            autoClose={3000}
-            closeOnClick={true}
-          />
-          {children}
+          <ReactQueryProviders>
+            <Analytics />
+            <ToastContainer
+              position="top-right"
+              theme="colored"
+              transition={Slide}
+              autoClose={3000}
+              closeOnClick={true}
+            />
+            {children}
+          </ReactQueryProviders>
         </AppRouterCacheProvider>
       </body>
     </html>

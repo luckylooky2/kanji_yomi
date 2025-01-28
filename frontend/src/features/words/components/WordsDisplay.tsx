@@ -3,20 +3,17 @@ import { useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 
 import { wordsCurrentWordIndex, wordsView } from "@/entities/words/store";
-import { WordInfo } from "@/shared/types";
+import { useFetchWords } from "@/shared/hooks/useFetchWords";
 
 import WordsDisplayGrid from "./WordsDisplayGrid";
 import WordsDisplayList from "./WordsDisplayList";
 
-interface Props {
-  words: WordInfo[];
-}
-
-const WordsDisplay = ({ words }: Props) => {
+const WordsDisplay = () => {
   const [currentWordIndex, setCurrentWordIndex] = useAtom(
     wordsCurrentWordIndex
   );
   const [view] = useAtom(wordsView);
+  const { words, isError } = useFetchWords();
   const itemRefs = useRef<HTMLDivElement[]>([]);
   const isWordSelected = currentWordIndex !== null;
 
@@ -31,7 +28,7 @@ const WordsDisplay = ({ words }: Props) => {
     }, 200);
 
     return () => clearTimeout(timeoutId);
-  }, [currentWordIndex]);
+  }, [currentWordIndex, view]);
 
   const handleWordClick = (index: number) => () => {
     const nextIndex = index === currentWordIndex ? null : index;
@@ -43,6 +40,14 @@ const WordsDisplay = ({ words }: Props) => {
       itemRefs.current[index] = el;
     }
   };
+
+  if (isError || !words) {
+    return (
+      <WordsNotFound>
+        <h3>Failed to fetch words :(</h3>
+      </WordsNotFound>
+    );
+  }
 
   if (words.length === 0) {
     return (
@@ -57,7 +62,6 @@ const WordsDisplay = ({ words }: Props) => {
 
   return (
     <DisplayComponent
-      words={words}
       allocateRef={allocateRef}
       handleWordClick={handleWordClick}
     />

@@ -8,12 +8,39 @@ export const BASE_OPTIONS = {
   },
 };
 
-export function responseInterceptor(response: Response) {
-  if (!response.ok) {
-    throw new Error(`Error: ${response.status}`);
+export async function responseInterceptor(
+  url: string,
+  options: RequestInit = {}
+) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+  function isAbortError(error: unknown): error is DOMException {
+    return error instanceof DOMException && error.name === "AbortError";
   }
 
-  return response.json();
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    clearTimeout(timeoutId);
+
+    if (isAbortError(error)) {
+      throw new Error("Request timed out");
+    }
+
+    throw error;
+  }
 }
 
 const enum NavigationStatus {
