@@ -31,7 +31,8 @@ function createQueryStringWithFilters(
     }
   }
   if (pageParams !== null) {
-    qs.append("offset", String(pageParams));
+    qs.append("offset", pageParams.toString());
+    qs.append("limit", "50");
   }
 
   return qs.toString() ? `?${qs.toString()}` : "";
