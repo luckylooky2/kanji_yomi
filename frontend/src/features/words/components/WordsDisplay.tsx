@@ -28,7 +28,7 @@ const WordsDisplay = () => {
     }, 200);
 
     return () => clearTimeout(timeoutId);
-  }, [currentWordIndex]);
+  }, [currentWordIndex, view]);
 
   const handleWordClick = (index: number) => () => {
     const nextIndex = index === currentWordIndex ? null : index;
