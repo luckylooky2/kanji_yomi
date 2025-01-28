@@ -45,7 +45,6 @@ const WordsPage = () => {
   const isWordSelected = currentWordIndex !== null;
   const { isLoading, isError } = useFetchWords();
 
-  // TODO: API와 함께 구현 필요
   const onSubmit = async ({ target }: WordsSearchInputType) => {
     setDifficulty({ ...selectedDifficulty });
     setCorrectRatio({ ...selectedCorrectRatio });
