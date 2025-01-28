@@ -10,27 +10,25 @@ import { WordsService } from "@/features/words/api";
 
 import { WordInfo } from "../types";
 
-export function useFecthWords() {
+export function useFetchWords() {
   const [{ searchInput, difficulty, correctRatio }] = useAtom(
     wordsSearchFilterState
   );
   const queryClient = useQueryClient();
   const queryKey = ["words", searchInput, difficulty, correctRatio];
-  const { data, isLoading, fetchNextPage } = useInfiniteQuery(queryOption());
+  const { data, isLoading, fetchNextPage, isError } = useInfiniteQuery(
+    queryOption()
+  );
 
   function queryOption() {
     return infiniteQueryOptions({
       queryKey,
       queryFn: fetchWordsFn,
       initialPageParam: 0,
-      getNextPageParam: (lastPage, _pages, lastPageParam) => {
-        if (lastPage.words.length < 50) {
-          return undefined;
-        }
-
-        return lastPageParam + 50;
-      },
+      getNextPageParam: (lastPage, _pages, lastPageParam) =>
+        lastPage.words.length < 50 ? undefined : lastPageParam + 50,
       staleTime: Infinity,
+      retry: 2,
     });
   }
 
@@ -49,6 +47,7 @@ export function useFecthWords() {
 
   return {
     isLoading,
+    isError,
     words: data?.pages.map((page) => page.words).flat() as WordInfo[],
     fetchNextPage,
     reset: removeQueryKey,
