@@ -41,7 +41,7 @@ const WordsPage = () => {
   const isWordSelected = currentWordIndex !== null;
   const { isLoading, isError } = useFetchWords();
 
-  const onSubmit = async ({ search }: WordsSearchInputType) => {
+  const onSubmit = ({ search }: WordsSearchInputType) => {
     setDifficulty({ ...selectedDifficulty });
     setCorrectRatio({ ...selectedCorrectRatio });
     setSearchInput(search);
