@@ -1,7 +1,8 @@
 import { CorrectRatioType, DifficultyType } from "@/shared/types";
 
+export const SearchInputKey = "search";
 export type WordsSearchInputType = {
-  target: string;
+  search: string;
 };
 
 export type WordsSearchFilterDifficultyType = DifficultyType | "All";
