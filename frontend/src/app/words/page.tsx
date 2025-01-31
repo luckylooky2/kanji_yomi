@@ -14,7 +14,7 @@ import {
   wordsSearchFilterDifficulty,
   wordsSearchFilterSearchInput,
 } from "@/entities/words/store";
-import { WordsSearchInputType } from "@/entities/words/types";
+import { SearchInputKey, WordsSearchInputType } from "@/entities/words/types";
 import WordsCurrentWord from "@/features/words/components/WordsCurrentWord";
 import WordsDisplay from "@/features/words/components/WordsDisplay";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
@@ -26,11 +26,7 @@ import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 const WordsPage = () => {
   const [isSearchPageOpen, setIsSearchPageOpen] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    reset: resetInput,
-  } = useForm<WordsSearchInputType>();
+  const { register, handleSubmit, reset } = useForm<WordsSearchInputType>();
   const [difficulty, setDifficulty] = useAtom(wordsSearchFilterDifficulty);
   const [correctRatio, setCorrectRatio] = useAtom(
     wordsSearchFilterCorrectRatio
@@ -45,10 +41,10 @@ const WordsPage = () => {
   const isWordSelected = currentWordIndex !== null;
   const { isLoading, isError } = useFetchWords();
 
-  const onSubmit = async ({ target }: WordsSearchInputType) => {
+  const onSubmit = ({ search }: WordsSearchInputType) => {
     setDifficulty({ ...selectedDifficulty });
     setCorrectRatio({ ...selectedCorrectRatio });
-    setSearchInput(target);
+    setSearchInput(search);
     setIsSearchPageOpen(false);
     setCurrentWordIndex(null);
   };
@@ -82,7 +78,7 @@ const WordsPage = () => {
       <WordsSearchContainer>
         <WordsSearchForm onSubmit={handleSubmit(onSubmit)}>
           <WordsSearchInput
-            {...register("target")}
+            {...register(SearchInputKey)}
             autoComplete="off"
             placeholder="Search words (e.g., 日, ひ)"
             defaultValue={searchInput}
@@ -97,7 +93,7 @@ const WordsPage = () => {
         {isSearchPageOpen && (
           <WordsSearchFilter
             toggleHandler={toggleSearchFilter}
-            resetInput={resetInput}
+            resetInput={reset}
             selectedDifficulty={selectedDifficulty}
             selectedCorrectRatio={selectedCorrectRatio}
             setSelectedDifficulty={setSelectedDifficulty}
