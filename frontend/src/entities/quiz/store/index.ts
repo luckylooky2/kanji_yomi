@@ -2,6 +2,7 @@ import { atom } from "jotai";
 import { atomWithRefresh, atomWithStorage } from "jotai/utils";
 
 import { quizOptionDifficultyState } from "@/entities/quizOption/store";
+import { QuizResultLegendType } from "@/entities/quizResult/type";
 import { QuizService } from "@/features/quiz/api";
 
 import { validateSpeakSettingAtom } from "../lib";
@@ -55,6 +56,19 @@ export const quizAnswerResultState = atom(
 
 // QuizResult
 export const quizResultState = atom<QuizResult[]>([]);
+export const quizResultFilter = atom<QuizResultLegendType | "All">("All");
+export const quizResultFilteredState = atom((get) => {
+  const quizResult = get(quizResultState);
+  const filter = get(quizResultFilter);
+
+  if (filter === null) {
+    return quizResult;
+  }
+
+  return quizResult.filter(({ type }) =>
+    filter === "All" ? true : filter === type
+  );
+});
 
 export const quizTotalRetriesState = atom((get) => {
   const quizResult = get(quizResultState);
