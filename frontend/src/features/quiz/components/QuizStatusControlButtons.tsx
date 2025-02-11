@@ -3,10 +3,11 @@ import ArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { Button } from "@mui/material";
 import dayjs from "dayjs";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React from "react";
 
 import {
+  quizCurrentKanjiState,
   quizCurrentRetries,
   quizResultState,
   quizStatusState,
@@ -24,6 +25,7 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
   const [, setQuizResult] = useAtom(quizResultState);
   const [retries, setRetries] = useAtom(quizCurrentRetries);
+  const { data: kanji } = useAtomValue(quizCurrentKanjiState);
 
   const handleQuit = () => {
     setIsOpen(true);
