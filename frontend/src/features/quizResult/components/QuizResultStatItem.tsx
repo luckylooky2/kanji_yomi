@@ -1,28 +1,29 @@
 import styled from "@emotion/styled";
 import { useEffect, useRef } from "react";
 
-import {
-  timeFormattingFn,
-  percentFormattingFn,
-  getCSSColorByAccuracy,
-} from "@/entities/quizResult/lib";
+import { getCSSColorByAccuracy } from "@/entities/quizResult/lib";
 import { theme } from "@/shared/styles/theme";
 
 interface Props {
   title: string;
   content: number;
-  format: "percent" | "time";
-  option?: number;
+  formattingFn?: (_n: number) => string;
+  colorOption?: boolean;
 }
 
-const QuizResultStatItem = ({ title, content, format, option }: Props) => {
+const QuizResultStatItem = ({
+  title,
+  content,
+  formattingFn = (n: number) => n.toString(),
+  colorOption = false,
+}: Props) => {
   const countupRef = useRef(null);
   let countUpAnim;
 
   async function initCountUp() {
     const countUpModule = await import("countup.js");
     countUpAnim = new countUpModule.CountUp(countupRef.current!, content, {
-      formattingFn: format === "time" ? timeFormattingFn : percentFormattingFn,
+      formattingFn,
     });
     if (!countUpAnim.error) {
       countUpAnim.start();
@@ -38,7 +39,11 @@ const QuizResultStatItem = ({ title, content, format, option }: Props) => {
   return (
     <QuizResultStatItemLayout>
       <span>{title}</span>
-      <QuizResultStatContent ref={countupRef} option={option}>
+      <QuizResultStatContent
+        ref={countupRef}
+        colorOption={colorOption}
+        contents={content}
+      >
         0
       </QuizResultStatContent>
     </QuizResultStatItemLayout>
@@ -57,12 +62,16 @@ const QuizResultStatItemLayout = styled.article`
   }
 `;
 
-const QuizResultStatContent = styled.div<{ option?: number }>`
+const QuizResultStatContent = styled.div<{
+  contents: number;
+  colorOption?: boolean;
+}>`
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   font-size: ${theme.fontSize.large};
   font-weight: bold;
-  color: ${(props) => getCSSColorByAccuracy(props.option)};
+  color: ${({ colorOption, contents }) =>
+    getCSSColorByAccuracy(colorOption ? contents : undefined)};
 `;
