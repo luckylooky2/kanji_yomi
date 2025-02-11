@@ -47,21 +47,18 @@ const QuizAnswerForm = () => {
   const timeId = useRef<NodeJS.Timeout | null>(null);
 
   const getNextQuestion = (isSkipped: boolean) => {
-    let prevRetry: number;
-
-    setRetries((prev) => {
-      prevRetry = prev;
+    setRetries((prevRetries) => {
+      setQuizResult((prevQuizResult) => [
+        ...prevQuizResult,
+        {
+          word: kanji!.word,
+          meanings: kanji!.meanings,
+          skipped: isSkipped,
+          retries: prevRetries,
+        },
+      ]);
       return 0;
     });
-    setQuizResult((prev) => [
-      ...prev,
-      {
-        word: kanji!.word,
-        meanings: kanji!.meanings,
-        skipped: isSkipped,
-        retries: prevRetry,
-      },
-    ]);
     resetInput();
     setCurrentRound((prev) => {
       if (prev + 1 === maxRound) {
