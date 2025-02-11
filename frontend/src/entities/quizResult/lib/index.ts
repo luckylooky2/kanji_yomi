@@ -1,5 +1,7 @@
 import { Dayjs } from "dayjs";
 
+import { QuizResultLegendType } from "../type";
+
 export const getCSSColorByAccuracy = (ratio: number | undefined) => {
   if (ratio === undefined) {
     return "black";
@@ -16,22 +18,12 @@ export const getCSSColorByAccuracy = (ratio: number | undefined) => {
   return "black";
 };
 
-export const getImageSourceList = () => [
-  { src: "/correct.png", alt: "correct", description: "Correct" },
-  { src: "/retried.png", alt: "retried", description: "Retried" },
-  { src: "/skipped.png", alt: "skipped", description: "Skipped" },
+export const quizResultLegendList: (QuizResultLegendType | "All")[] = [
+  "All",
+  "Correct",
+  "Retried",
+  "Skipped",
 ];
-
-export const findImageSource = (isSkipped: boolean, retries: number) => {
-  const [correctImg, retriedImg, skippedImg] = getImageSourceList();
-  if (isSkipped) {
-    return { src: skippedImg.src, alt: skippedImg.alt };
-  } else if (retries === 0) {
-    return { src: correctImg.src, alt: correctImg.alt };
-  } else {
-    return { src: retriedImg.src, alt: retriedImg.alt };
-  }
-};
 
 export const getTotalSeconds = (
   startTime: Dayjs | null,
