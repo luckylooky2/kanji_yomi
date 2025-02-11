@@ -17,6 +17,7 @@ import {
 // Quiz
 export const quizStatusState = atom<QuizStatus>(QuizStatus.OPTION);
 export const quizCurrentRoundState = atom(0);
+export const quizCurrentRetries = atom(0);
 export const quizCurrentKanjiState = atomWithRefresh(async (get) => {
   get(quizCurrentRoundState);
   const difficulty = get(quizOptionDifficultyState);
@@ -54,6 +55,20 @@ export const quizAnswerResultState = atom(
 
 // QuizResult
 export const quizResultState = atom<QuizResult[]>([]);
+export const quizResultFilter = atom<QuizResultLegendType | "All">("All");
+export const quizResultFilteredState = atom((get) => {
+  const quizResult = get(quizResultState);
+  const filter = get(quizResultFilter);
+
+  if (filter === null) {
+    return quizResult;
+  }
+
+  return quizResult.filter(({ type }) =>
+    filter === "All" ? true : filter === type
+  );
+});
+
 export const quizTotalRetriesState = atom((get) => {
   const quizResult = get(quizResultState);
   let [correct, totalRetries] = [0, 0];
