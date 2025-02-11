@@ -9,6 +9,8 @@ import React from "react";
 import {
   quizCurrentKanjiState,
   quizCurrentRetries,
+  quizCurrentRoundState,
+  quizResultFilter,
   quizResultState,
   quizStatusState,
   quizTimerState,
@@ -26,6 +28,8 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
   const [, setQuizResult] = useAtom(quizResultState);
   const [retries, setRetries] = useAtom(quizCurrentRetries);
   const { data: kanji } = useAtomValue(quizCurrentKanjiState);
+  const [, setFilter] = useAtom(quizResultFilter);
+  const [currentRound] = useAtom(quizCurrentRoundState);
 
   const handleQuit = () => {
     setIsOpen(true);
@@ -36,13 +40,16 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
     setQuizResult((prev) => [
       ...prev,
       {
+        round: currentRound,
         word: kanji!.word,
         meanings: kanji!.meanings,
         skipped: true,
         retries,
+        type: "Skipped",
       },
     ]);
     setRetries(0);
+    setFilter("All");
     setQuizStatus(QuizStatus.RESULT);
   };
 
