@@ -17,6 +17,7 @@ import {
 // Quiz
 export const quizStatusState = atom<QuizStatus>(QuizStatus.OPTION);
 export const quizCurrentRoundState = atom(0);
+export const quizCurrentRetries = atom(0);
 export const quizCurrentKanjiState = atomWithRefresh(async (get) => {
   get(quizCurrentRoundState);
   const difficulty = get(quizOptionDifficultyState);
@@ -54,6 +55,7 @@ export const quizAnswerResultState = atom(
 
 // QuizResult
 export const quizResultState = atom<QuizResult[]>([]);
+
 export const quizTotalRetriesState = atom((get) => {
   const quizResult = get(quizResultState);
   let [correct, totalRetries] = [0, 0];

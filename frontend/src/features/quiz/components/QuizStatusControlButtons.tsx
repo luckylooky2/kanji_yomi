@@ -3,10 +3,16 @@ import ArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { Button } from "@mui/material";
 import dayjs from "dayjs";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React from "react";
 
-import { quizStatusState, quizTimerState } from "@/entities/quiz/store";
+import {
+  quizCurrentKanjiState,
+  quizCurrentRetries,
+  quizResultState,
+  quizStatusState,
+  quizTimerState,
+} from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
@@ -17,6 +23,9 @@ interface Props {
 const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
   const setQuizStatus = useSetAtom(quizStatusState);
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
+  const [, setQuizResult] = useAtom(quizResultState);
+  const [retries, setRetries] = useAtom(quizCurrentRetries);
+  const { data: kanji } = useAtomValue(quizCurrentKanjiState);
 
   const handleQuit = () => {
     setIsOpen(true);
@@ -24,6 +33,16 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
 
   const handleFinish = () => {
     setQuizTimer({ ...quizTimer, quizEndTime: dayjs(new Date()) });
+    setQuizResult((prev) => [
+      ...prev,
+      {
+        word: kanji!.word,
+        meanings: kanji!.meanings,
+        skipped: true,
+        retries,
+      },
+    ]);
+    setRetries(0);
     setQuizStatus(QuizStatus.RESULT);
   };
 

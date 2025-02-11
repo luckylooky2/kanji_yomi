@@ -14,6 +14,7 @@ import {
   quizResultState,
   quizAnswerResultState,
   quizTimerState,
+  quizCurrentRetries,
 } from "@/entities/quiz/store";
 import {
   AnswerInputType,
@@ -41,22 +42,23 @@ const QuizAnswerForm = () => {
     quizCurrentKanjiState
   );
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
+  const [, setRetries] = useAtom(quizCurrentRetries);
   const [shake, setShake] = useState(false);
   const timeId = useRef<NodeJS.Timeout | null>(null);
-  // 화면 전환시 초기화됨에 주의
-  const retries = useRef(0);
 
   const getNextQuestion = (isSkipped: boolean) => {
-    setQuizResult((prev) => [
-      ...prev,
-      {
-        word: kanji!.word,
-        meanings: kanji!.meanings,
-        skipped: isSkipped,
-        retries: retries.current,
-      },
-    ]);
-    retries.current = 0;
+    setRetries((prevRetries) => {
+      setQuizResult((prevQuizResult) => [
+        ...prevQuizResult,
+        {
+          word: kanji!.word,
+          meanings: kanji!.meanings,
+          skipped: isSkipped,
+          retries: prevRetries,
+        },
+      ]);
+      return 0;
+    });
     resetInput();
     setCurrentRound((prev) => {
       if (prev + 1 === maxRound) {
@@ -86,7 +88,7 @@ const QuizAnswerForm = () => {
       getNextQuestion(false);
     } else {
       triggerShake();
-      retries.current++;
+      setRetries((prev) => prev + 1);
     }
   };
 

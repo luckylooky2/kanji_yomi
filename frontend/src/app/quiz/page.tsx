@@ -5,6 +5,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 
 import {
   quizCurrentKanjiState,
+  quizCurrentRetries,
   quizCurrentRoundState,
   quizResultState,
   quizStatusState,
@@ -27,10 +28,12 @@ const QuizPage = () => {
   const setQuizResult = useSetAtom(quizResultState);
   const refreshKanji = useSetAtom(quizCurrentKanjiState);
   const setQuizTimer = useSetAtom(quizTimerState);
+  const setCurrentRetries = useSetAtom(quizCurrentRetries);
   const { isOpen, setIsOpen } = useModal();
 
   function resetQuizState() {
     setCurrentRound(0);
+    setCurrentRetries(0);
     setQuizResult([]);
     setQuizTimer({ quizStartTime: null, quizEndTime: null });
     refreshKanji();
