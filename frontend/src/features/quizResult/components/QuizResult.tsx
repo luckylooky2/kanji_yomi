@@ -1,113 +1,136 @@
 import styled from "@emotion/styled";
-import { Button } from "@mui/material";
+import { Button, Divider, Tab, TableCell, Tabs } from "@mui/material";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import NextImage from "next/image";
-import { useEffect, useState } from "react";
+import { SyntheticEvent } from "react";
 
-import {
-  quizResultState,
-  quizTimerState,
-  quizStatusState,
-  quizTotalRetriesState,
-} from "@/entities/quiz/store";
+import { quizTimerState, quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import {
+  accuracyColorFormattingFn,
   calculateAccuracy,
-  findImageSource,
-  getImageSourceList,
   getTotalSeconds,
+  accuracyFormattingFn,
+  quizResultLegendList,
+  timeFormattingFn,
 } from "@/entities/quizResult/lib";
+import {
+  quizTotalRetriesState,
+  quizResultFilteredState,
+  quizResultFilter,
+  quizResultState,
+} from "@/entities/quizResult/store";
+import { QuizResultLegendType } from "@/entities/quizResult/type";
 import { theme } from "@/shared/styles/theme";
-import Loading from "@/widgets/Loading/Loading";
 
 import QuizResultStatItem from "./QuizResultStatItem";
 
 const QuizResult = () => {
   const setQuizStatus = useSetAtom(quizStatusState);
+  const { quizStartTime, quizEndTime } = useAtomValue(quizTimerState);
+  const [quizResultFiltered] = useAtom(quizResultFilteredState);
+  const [filter, setFilter] = useAtom(quizResultFilter);
   const [quizResult] = useAtom(quizResultState);
   const [correct, totalRetries] = useAtomValue(quizTotalRetriesState);
+
   const accuracy = calculateAccuracy(correct, totalRetries);
-  const { quizStartTime, quizEndTime } = useAtomValue(quizTimerState);
-  const [allImagesLoaded, setAllImagesLoaded] = useState(false);
-  const imageList = getImageSourceList();
+  const correctCount = quizResult.filter(
+    (item) => item.type === "Correct" || item.type === "Retried"
+  ).length;
 
   const handleGoToQuizOption = () => {
     setQuizStatus(QuizStatus.OPTION);
   };
 
-  useEffect(() => {
-    const preloadImages = async () => {
-      const loadPromises = imageList.map(({ src }) => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = resolve;
-          img.onerror = resolve;
-        });
-      });
-      await Promise.all(loadPromises);
-      setAllImagesLoaded(true);
-    };
+  const handleFilter = (
+    _event: SyntheticEvent,
+    newValue: "Correct" | "Retried" | "Skipped"
+  ) => {
+    setFilter(filter === newValue ? "All" : newValue);
+  };
 
-    preloadImages();
-  }, []);
-
-  if (!allImagesLoaded) {
-    return (
-      <QuizResultContainer>
-        <Loading size="50px" />
-      </QuizResultContainer>
-    );
-  }
+  const scoreFormattingFn = (n: number) => `${n} / ${quizResult.length}`;
+  const scoreColorFormattingFn = (n: number) => {
+    const ratio = Math.floor((n / quizResult.length) * 100);
+    if (ratio >= 80) {
+      return "green";
+    } else if (ratio >= 50) {
+      return "orange";
+    } else if (ratio >= 0) {
+      return "red";
+    }
+    return "black";
+  };
 
   return (
     <QuizResultContainer>
       <h2>Result</h2>
       <QuizResultStat>
         <QuizResultStatItem
+          title="Score"
+          content={correctCount}
+          formattingFn={scoreFormattingFn}
+          colorFormattingFn={scoreColorFormattingFn}
+        />
+        <QuizResultStatItem
           title="Accuracy"
           content={accuracy}
-          format="percent"
-          option={accuracy}
+          formattingFn={accuracyFormattingFn}
+          colorFormattingFn={accuracyColorFormattingFn}
         />
         <QuizResultStatItem
           title="Time"
           content={getTotalSeconds(quizStartTime, quizEndTime)}
-          format="time"
+          formattingFn={timeFormattingFn}
         />
       </QuizResultStat>
-      <QuizResultGridContainer>
-        <QuizResultGrid>
-          {quizResult.length ? (
-            <QuizResultGridLayout>
-              {quizResult.map((item, index) => {
-                const { src, alt } = findImageSource(
-                  item.skipped,
-                  item.retries
-                );
-                return (
-                  <QuizResultWordItem key={`${item} + ${index}`}>
-                    <NextImage src={src} alt={alt} width="20" height="20" />
-                    <strong>{item.word}</strong>
-                  </QuizResultWordItem>
-                );
-              })}
-            </QuizResultGridLayout>
-          ) : (
-            <QuizResultGridEmpty>
-              Play and learn more words :)
-            </QuizResultGridEmpty>
-          )}
-        </QuizResultGrid>
+      <QuizResultListContainer>
         <QuizResultLegend>
-          {imageList.map(({ src, alt, description }) => (
-            <QuizResultWordItem key={`${alt} + ${description}`}>
-              <NextImage src={src} alt={alt} width="20" height="20" />
-              <span>{description}</span>
-            </QuizResultWordItem>
-          ))}
+          <CustomTabs
+            value={filter}
+            onChange={handleFilter}
+            aria-label="quiz result filter"
+          >
+            {quizResultLegendList.map((type, index) => (
+              <CustomTab
+                key={type + index}
+                icon={<ColorCircle type={type} size={15} />}
+                label={type}
+                value={type}
+                iconPosition="start"
+                aria-controls="quiz-result-list"
+                aria-label={`show ${type} result`}
+              />
+            ))}
+          </CustomTabs>
         </QuizResultLegend>
-      </QuizResultGridContainer>
+        <QuizResultList
+          id="quiz-result-list"
+          aria-label={`${filter} result list`}
+        >
+          {quizResultFiltered.length ? (
+            quizResultFiltered.map((item, index) => (
+              <QuizResultListItem key={index}>
+                <QuizResultListCellLayout component="div">
+                  <QuizResultListCell>
+                    <QuizResultListCellHeader>
+                      <ColorCircle type={item.type} size={20}>
+                        {item.round + 1}
+                      </ColorCircle>
+                      <h3>{item.word}</h3>
+                    </QuizResultListCellHeader>
+                    <Divider orientation="vertical" />
+                    <h3>{item.meanings.map((v) => v.meaning).join(", ")}</h3>
+                  </QuizResultListCell>
+                </QuizResultListCellLayout>
+              </QuizResultListItem>
+            ))
+          ) : (
+            <QuizResultListEmpty>
+              Play and learn more words :)
+            </QuizResultListEmpty>
+          )}
+        </QuizResultList>
+      </QuizResultListContainer>
       <Button variant="contained" onClick={handleGoToQuizOption}>
         Go To Quiz Option
       </Button>
@@ -134,32 +157,58 @@ const QuizResultStat = styled.section`
   justify-content: center;
 `;
 
-const QuizResultGridContainer = styled.section`
+const QuizResultListContainer = styled.section`
   height: 60%;
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
-const QuizResultGrid = styled.div`
+const QuizResultList = styled.div`
   height: 100%;
   border: 3px solid transparent;
   border-radius: ${theme.radius.medium};
-  background-color: lightgray;
-  padding: 0 ${theme.spacing.medium};
   font-size: ${theme.fontSize.medium};
+  width: 100%;
   overflow-y: auto;
 `;
 
-const QuizResultGridLayout = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-
-  @media (min-width: 480px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+const QuizResultListItem = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
-const QuizResultGridEmpty = styled.div`
+const QuizResultListCellLayout = styled(TableCell)`
+  display: flex;
+  gap: ${theme.spacing.medium};
+  width: 95%;
+  border: 1px solid #ddd;
+  border-radius: ${theme.radius.medium};
+  margin-bottom: ${theme.spacing.small};
+`;
+
+const QuizResultListCell = styled.div`
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  width: 100%;
+  white-space: nowrap;
+  gap: ${theme.spacing.medium};
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+`;
+
+const QuizResultListCellHeader = styled.div`
+  display: flex;
+  gap: ${theme.spacing.small};
+`;
+
+const QuizResultListEmpty = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
@@ -167,16 +216,53 @@ const QuizResultGridEmpty = styled.div`
   color: gray;
 `;
 
-const QuizResultWordItem = styled.article`
+const QuizResultLegend = styled.div`
   display: flex;
+  justify-content: start;
+  gap: ${theme.spacing.medium};
+  height: 30px;
+  margin-bottom: ${theme.spacing.small};
+`;
+
+const ColorCircle = styled.div<{
+  type: QuizResultLegendType | "All";
+  size: number;
+}>`
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  border-radius: 50%;
+  background-color: ${({ type }) => {
+    if (type === "Correct") {
+      return "rgb(76, 175, 80)";
+    } else if (type === "Retried") {
+      return "rgb(255, 213, 79)";
+    } else if (type === "Skipped") {
+      return "rgb(255, 107, 107)";
+    }
+    return "rgb(128, 128, 128)";
+  }};
+  opacity: 0.8;
+  color: white;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  margin: ${theme.spacing.small} 0;
+  font-size: 12px;
+  font-weight: bold;
+`;
+
+const CustomTabs = styled(Tabs)`
+min-height: 30px;            
+width: 100%;
+
+.MuiTabs-flexContainer {
   gap: ${theme.spacing.small};
 `;
 
-const QuizResultLegend = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${theme.spacing.medium};
+const CustomTab = styled(Tab)`
+  padding: 0;
+  min-height: 30px;
+  font-size: 12px;
+  text-transform: none;
+  min-width: 0px;
+  padding: 0 ${theme.spacing.xsmall};
 `;

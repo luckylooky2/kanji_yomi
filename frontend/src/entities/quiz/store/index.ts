@@ -9,7 +9,6 @@ import {
   QuizAnswerResponseDTO,
   QuizHintSpeakSetting,
   QuizQuestionResponseDTO,
-  QuizResult,
   QuizStatus,
   QuizTimer,
 } from "../types";
@@ -52,23 +51,6 @@ export const quizAnswerResultState = atom(
     }
   }
 );
-
-// QuizResult
-export const quizResultState = atom<QuizResult[]>([]);
-
-export const quizTotalRetriesState = atom((get) => {
-  const quizResult = get(quizResultState);
-  let [correct, totalRetries] = [0, 0];
-  for (const { skipped, retries } of quizResult) {
-    if (skipped) {
-      totalRetries += retries;
-    } else {
-      correct++;
-      totalRetries += retries + 1;
-    }
-  }
-  return [correct, totalRetries];
-});
 
 // QuizHint
 export const quizHintVoiceListState = atom<SpeechSynthesisVoice[]>([]);

@@ -9,11 +9,12 @@ import React from "react";
 import {
   quizCurrentKanjiState,
   quizCurrentRetries,
-  quizResultState,
+  quizCurrentRoundState,
   quizStatusState,
   quizTimerState,
 } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
+import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 interface Props {
@@ -23,9 +24,11 @@ interface Props {
 const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
   const setQuizStatus = useSetAtom(quizStatusState);
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
-  const [, setQuizResult] = useAtom(quizResultState);
   const [retries, setRetries] = useAtom(quizCurrentRetries);
   const { data: kanji } = useAtomValue(quizCurrentKanjiState);
+  const [currentRound] = useAtom(quizCurrentRoundState);
+  const [, setQuizResult] = useAtom(quizResultState);
+  const [, setFilter] = useAtom(quizResultFilter);
 
   const handleQuit = () => {
     setIsOpen(true);
@@ -36,13 +39,16 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
     setQuizResult((prev) => [
       ...prev,
       {
+        round: currentRound,
         word: kanji!.word,
         meanings: kanji!.meanings,
         skipped: true,
         retries,
+        type: "Skipped",
       },
     ]);
     setRetries(0);
+    setFilter("All");
     setQuizStatus(QuizStatus.RESULT);
   };
 

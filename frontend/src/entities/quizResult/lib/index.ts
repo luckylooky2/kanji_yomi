@@ -1,37 +1,13 @@
 import { Dayjs } from "dayjs";
 
-export const getCSSColorByAccuracy = (ratio: number | undefined) => {
-  if (ratio === undefined) {
-    return "black";
-  }
+import { QuizResultLegendType } from "../type";
 
-  if (80 <= ratio) {
-    return "green";
-  } else if (50 <= ratio) {
-    return "orange";
-  } else if (0 <= ratio) {
-    return "red";
-  }
-
-  return "black";
-};
-
-export const getImageSourceList = () => [
-  { src: "/correct.png", alt: "correct", description: "Correct" },
-  { src: "/retried.png", alt: "retried", description: "Retried" },
-  { src: "/skipped.png", alt: "skipped", description: "Skipped" },
+export const quizResultLegendList: (QuizResultLegendType | "All")[] = [
+  "All",
+  "Correct",
+  "Retried",
+  "Skipped",
 ];
-
-export const findImageSource = (isSkipped: boolean, retries: number) => {
-  const [correctImg, retriedImg, skippedImg] = getImageSourceList();
-  if (isSkipped) {
-    return { src: skippedImg.src, alt: skippedImg.alt };
-  } else if (retries === 0) {
-    return { src: correctImg.src, alt: correctImg.alt };
-  } else {
-    return { src: retriedImg.src, alt: retriedImg.alt };
-  }
-};
 
 export const getTotalSeconds = (
   startTime: Dayjs | null,
@@ -56,7 +32,23 @@ export const timeFormattingFn = (num: number) => {
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
 };
 
-export const percentFormattingFn = (num: number) => {
+export const accuracyColorFormattingFn = (ratio: number | undefined) => {
+  if (ratio === undefined) {
+    return "black";
+  }
+
+  if (80 <= ratio) {
+    return "green";
+  } else if (50 <= ratio) {
+    return "orange";
+  } else if (0 <= ratio) {
+    return "red";
+  }
+
+  return "black";
+};
+
+export const accuracyFormattingFn = (num: number) => {
   return `${num}%`;
 };
 

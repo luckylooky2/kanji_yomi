@@ -11,7 +11,6 @@ import {
   quizCurrentRoundState,
   quizStatusState,
   quizCurrentKanjiState,
-  quizResultState,
   quizAnswerResultState,
   quizTimerState,
   quizCurrentRetries,
@@ -22,28 +21,30 @@ import {
   QuizStatus,
 } from "@/entities/quiz/types";
 import { quizOptionRoundState } from "@/entities/quizOption/store";
+import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
 import { theme } from "@/shared/styles/theme";
 
 import "../../../../public/styles/utils.css";
 
 const QuizAnswerForm = () => {
-  const {
-    register,
-    handleSubmit,
-    reset: resetInput,
-  } = useForm<AnswerInputType>();
-  const [, setStatus] = useState(AnswerStatus.BEFORE);
-  const setCurrentRound = useSetAtom(quizCurrentRoundState);
+  const maxRound = useAtomValue(quizOptionRoundState);
+  const [currentRound, setCurrentRound] = useAtom(quizCurrentRoundState);
   const setQuizStatus = useSetAtom(quizStatusState);
   const [, inquireAnswer] = useAtom(quizAnswerResultState);
-  const maxRound = useAtomValue(quizOptionRoundState);
-  const [, setQuizResult] = useAtom(quizResultState);
   const { data: kanji, error: errorCurrentKanji } = useAtomValue(
     quizCurrentKanjiState
   );
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
   const [, setRetries] = useAtom(quizCurrentRetries);
+  const [, setFilter] = useAtom(quizResultFilter);
+  const [, setQuizResult] = useAtom(quizResultState);
   const [shake, setShake] = useState(false);
+  const [, setStatus] = useState(AnswerStatus.BEFORE);
+  const {
+    register,
+    handleSubmit,
+    reset: resetInput,
+  } = useForm<AnswerInputType>();
   const timeId = useRef<NodeJS.Timeout | null>(null);
 
   const getNextQuestion = (isSkipped: boolean) => {
@@ -51,10 +52,16 @@ const QuizAnswerForm = () => {
       setQuizResult((prevQuizResult) => [
         ...prevQuizResult,
         {
+          round: currentRound,
           word: kanji!.word,
           meanings: kanji!.meanings,
           skipped: isSkipped,
           retries: prevRetries,
+          type: isSkipped
+            ? "Skipped"
+            : prevRetries === 0
+            ? "Correct"
+            : "Retried",
         },
       ]);
       return 0;
@@ -63,6 +70,7 @@ const QuizAnswerForm = () => {
     setCurrentRound((prev) => {
       if (prev + 1 === maxRound) {
         setQuizStatus(QuizStatus.RESULT);
+        setFilter("All");
         setQuizTimer({ ...quizTimer, quizEndTime: dayjs(new Date()) });
       }
       return prev + 1;

@@ -1,5 +1,6 @@
 import { Dayjs } from "dayjs";
 
+import { QuizResultLegendType } from "@/entities/quizResult/type";
 import { MeaningInfo, MUIChipColorType, WordInfo } from "@/shared/types";
 
 export type QuizQuestionRequestDTO = {
@@ -37,6 +38,8 @@ export enum QuizStatus {
 }
 
 export type QuizResult = {
+  round: number;
+  type: QuizResultLegendType;
   word: string;
   meanings: MeaningInfo[];
   skipped: boolean;
