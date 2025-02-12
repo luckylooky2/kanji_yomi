@@ -42,7 +42,7 @@ const WordsDisplayGrid = ({ allocateRef, handleWordClick }: Props) => {
           isActive={currentWordIndex === index}
           onClick={handleWordClick(index)}
         >
-          <h3>{word.word}</h3>
+          <h2>{word.word}</h2>
         </WordItem>
       ))}
     </WordsDisplayGridContainer>
