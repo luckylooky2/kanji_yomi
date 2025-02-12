@@ -61,13 +61,11 @@ export const quizResultFilteredState = atom((get) => {
   const quizResult = get(quizResultState);
   const filter = get(quizResultFilter);
 
-  if (filter === null) {
+  if (filter === "All") {
     return quizResult;
   }
 
-  return quizResult.filter(({ type }) =>
-    filter === "All" ? true : filter === type
-  );
+  return quizResult.filter(({ type }) => filter === type);
 });
 
 export const quizTotalRetriesState = atom((get) => {
