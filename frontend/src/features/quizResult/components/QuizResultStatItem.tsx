@@ -1,21 +1,20 @@
 import styled from "@emotion/styled";
 import { useEffect, useRef } from "react";
 
-import { getCSSColorByAccuracy } from "@/entities/quizResult/lib";
 import { theme } from "@/shared/styles/theme";
 
 interface Props {
   title: string;
   content: number;
   formattingFn?: (_n: number) => string;
-  colorOption?: boolean;
+  colorFormattingFn?: (_n: number) => "green" | "orange" | "red" | "black";
 }
 
 const QuizResultStatItem = ({
   title,
   content,
   formattingFn = (n: number) => n.toString(),
-  colorOption = false,
+  colorFormattingFn = () => "black",
 }: Props) => {
   const countupRef = useRef(null);
   let countUpAnim;
@@ -41,7 +40,7 @@ const QuizResultStatItem = ({
       <span>{title}</span>
       <QuizResultStatContent
         ref={countupRef}
-        colorOption={colorOption}
+        colorFormattingFn={colorFormattingFn}
         contents={content}
       >
         0
@@ -63,8 +62,8 @@ const QuizResultStatItemLayout = styled.article`
 `;
 
 const QuizResultStatContent = styled.div<{
+  colorFormattingFn: (_n: number) => "green" | "orange" | "red" | "black";
   contents: number;
-  colorOption?: boolean;
 }>`
   display: flex;
   justify-content: center;
@@ -72,6 +71,5 @@ const QuizResultStatContent = styled.div<{
   text-align: center;
   font-size: ${theme.fontSize.large};
   font-weight: bold;
-  color: ${({ colorOption, contents }) =>
-    getCSSColorByAccuracy(colorOption ? contents : undefined)};
+  color: ${({ colorFormattingFn, contents }) => colorFormattingFn(contents)};
 `;

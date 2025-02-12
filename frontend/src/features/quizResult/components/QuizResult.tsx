@@ -6,9 +6,10 @@ import { SyntheticEvent } from "react";
 import { quizTimerState, quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import {
+  accuracyColorFormattingFn,
   calculateAccuracy,
   getTotalSeconds,
-  percentFormattingFn,
+  accuracyFormattingFn,
   quizResultLegendList,
   timeFormattingFn,
 } from "@/entities/quizResult/lib";
@@ -48,6 +49,17 @@ const QuizResult = () => {
   };
 
   const scoreFormattingFn = (n: number) => `${n} / ${quizResult.length}`;
+  const scoreColorFormattingFn = (n: number) => {
+    const ratio = Math.floor((n / quizResult.length) * 100);
+    if (ratio >= 80) {
+      return "green";
+    } else if (ratio >= 50) {
+      return "orange";
+    } else if (ratio >= 0) {
+      return "red";
+    }
+    return "black";
+  };
 
   return (
     <QuizResultContainer>
@@ -57,12 +69,13 @@ const QuizResult = () => {
           title="Score"
           content={correctCount}
           formattingFn={scoreFormattingFn}
+          colorFormattingFn={scoreColorFormattingFn}
         />
         <QuizResultStatItem
           title="Accuracy"
           content={accuracy}
-          formattingFn={percentFormattingFn}
-          colorOption
+          formattingFn={accuracyFormattingFn}
+          colorFormattingFn={accuracyColorFormattingFn}
         />
         <QuizResultStatItem
           title="Time"

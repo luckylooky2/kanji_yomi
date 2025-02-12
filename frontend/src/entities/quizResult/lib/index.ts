@@ -2,22 +2,6 @@ import { Dayjs } from "dayjs";
 
 import { QuizResultLegendType } from "../type";
 
-export const getCSSColorByAccuracy = (ratio: number | undefined) => {
-  if (ratio === undefined) {
-    return "black";
-  }
-
-  if (80 <= ratio) {
-    return "green";
-  } else if (50 <= ratio) {
-    return "orange";
-  } else if (0 <= ratio) {
-    return "red";
-  }
-
-  return "black";
-};
-
 export const quizResultLegendList: (QuizResultLegendType | "All")[] = [
   "All",
   "Correct",
@@ -48,7 +32,23 @@ export const timeFormattingFn = (num: number) => {
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
 };
 
-export const percentFormattingFn = (num: number) => {
+export const accuracyColorFormattingFn = (ratio: number | undefined) => {
+  if (ratio === undefined) {
+    return "black";
+  }
+
+  if (80 <= ratio) {
+    return "green";
+  } else if (50 <= ratio) {
+    return "orange";
+  } else if (0 <= ratio) {
+    return "red";
+  }
+
+  return "black";
+};
+
+export const accuracyFormattingFn = (num: number) => {
   return `${num}%`;
 };
 
