@@ -140,7 +140,7 @@ const QuizResultListContainer = styled.section`
   height: 60%;
   display: flex;
   flex-direction: column;
-  widht: 100%;
+  width: 100%;
 `;
 
 const QuizResultList = styled.div`
