@@ -3,14 +3,7 @@ import { Button, Divider, Tab, TableCell, Tabs } from "@mui/material";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { SyntheticEvent } from "react";
 
-import {
-  quizTimerState,
-  quizStatusState,
-  quizTotalRetriesState,
-  quizResultFilteredState,
-  quizResultFilter,
-  quizResultState,
-} from "@/entities/quiz/store";
+import { quizTimerState, quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import {
   calculateAccuracy,
@@ -19,6 +12,12 @@ import {
   quizResultLegendList,
   timeFormattingFn,
 } from "@/entities/quizResult/lib";
+import {
+  quizTotalRetriesState,
+  quizResultFilteredState,
+  quizResultFilter,
+  quizResultState,
+} from "@/entities/quizResult/store";
 import { QuizResultLegendType } from "@/entities/quizResult/type";
 import { theme } from "@/shared/styles/theme";
 
@@ -26,11 +25,11 @@ import QuizResultStatItem from "./QuizResultStatItem";
 
 const QuizResult = () => {
   const setQuizStatus = useSetAtom(quizStatusState);
-  const [quizResultFiltered] = useAtom(quizResultFilteredState);
-  const [correct, totalRetries] = useAtomValue(quizTotalRetriesState);
   const { quizStartTime, quizEndTime } = useAtomValue(quizTimerState);
+  const [quizResultFiltered] = useAtom(quizResultFilteredState);
   const [filter, setFilter] = useAtom(quizResultFilter);
   const [quizResult] = useAtom(quizResultState);
+  const [correct, totalRetries] = useAtomValue(quizTotalRetriesState);
 
   const accuracy = calculateAccuracy(correct, totalRetries);
   const correctCount = quizResult.filter(

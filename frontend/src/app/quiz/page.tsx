@@ -7,11 +7,11 @@ import {
   quizCurrentKanjiState,
   quizCurrentRetries,
   quizCurrentRoundState,
-  quizResultState,
   quizStatusState,
   quizTimerState,
 } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
+import { quizResultState } from "@/entities/quizResult/store";
 import { useModal } from "@/features/modal/hooks/useModal";
 import QuizAnswerForm from "@/features/quiz/components/QuizAnswerForm";
 import QuizProgressBar from "@/features/quiz/components/QuizProgressBar";
@@ -25,10 +25,10 @@ import { theme } from "@/shared/styles/theme";
 const QuizPage = () => {
   const quizStatus = useAtomValue(quizStatusState);
   const setCurrentRound = useSetAtom(quizCurrentRoundState);
-  const setQuizResult = useSetAtom(quizResultState);
   const refreshKanji = useSetAtom(quizCurrentKanjiState);
   const setQuizTimer = useSetAtom(quizTimerState);
   const setCurrentRetries = useSetAtom(quizCurrentRetries);
+  const setQuizResult = useSetAtom(quizResultState);
   const { isOpen, setIsOpen } = useModal();
 
   function resetQuizState() {

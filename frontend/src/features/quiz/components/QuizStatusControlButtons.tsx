@@ -10,12 +10,11 @@ import {
   quizCurrentKanjiState,
   quizCurrentRetries,
   quizCurrentRoundState,
-  quizResultFilter,
-  quizResultState,
   quizStatusState,
   quizTimerState,
 } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
+import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 interface Props {
@@ -25,11 +24,11 @@ interface Props {
 const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
   const setQuizStatus = useSetAtom(quizStatusState);
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
-  const [, setQuizResult] = useAtom(quizResultState);
   const [retries, setRetries] = useAtom(quizCurrentRetries);
   const { data: kanji } = useAtomValue(quizCurrentKanjiState);
-  const [, setFilter] = useAtom(quizResultFilter);
   const [currentRound] = useAtom(quizCurrentRoundState);
+  const [, setQuizResult] = useAtom(quizResultState);
+  const [, setFilter] = useAtom(quizResultFilter);
 
   const handleQuit = () => {
     setIsOpen(true);
