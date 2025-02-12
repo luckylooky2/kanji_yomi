@@ -73,7 +73,11 @@ const QuizResult = () => {
       </QuizResultStat>
       <QuizResultListContainer>
         <QuizResultLegend>
-          <CustomTabs value={filter} onChange={handleFilter}>
+          <CustomTabs
+            value={filter}
+            onChange={handleFilter}
+            aria-label="quiz result filter"
+          >
             {quizResultLegendList.map((type, index) => (
               <CustomTab
                 key={type + index}
@@ -81,11 +85,16 @@ const QuizResult = () => {
                 label={type}
                 value={type}
                 iconPosition="start"
+                aria-controls="quiz-result-list"
+                aria-label={`show ${type} result`}
               />
             ))}
           </CustomTabs>
         </QuizResultLegend>
-        <QuizResultList>
+        <QuizResultList
+          id="quiz-result-list"
+          aria-label={`${filter} result list`}
+        >
           {quizResultFiltered.length ? (
             quizResultFiltered.map((item, index) => (
               <QuizResultListItem key={index}>
