@@ -33,7 +33,7 @@ const WordsDisplayList = ({ allocateRef, handleWordClick }: Props) => {
               isActive={currentWordIndex === index}
             >
               <TableCell component="th" scope="row" ref={allocateRef(index)}>
-                <h3>{word.word}</h3>
+                <h2>{word.word}</h2>
               </TableCell>
             </TableRowContainer>
           ))}
@@ -57,4 +57,8 @@ const WordsDisplayListContainer = styled.div<{ isWordSelected: boolean }>`
 const TableRowContainer = styled(TableRow)<{ isActive?: boolean }>`
   background-color: ${({ isActive }) =>
     isActive ? "rgba(25, 118, 210, 0.5)" : "white"};
+
+  h2 {
+    text-align: center;
+  }
 `;
