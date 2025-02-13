@@ -96,7 +96,7 @@ const QuizResult = () => {
   }, [handleClicked, optionDifficulty, quizResult]);
 
   const throttledDownloadCSV = useCallback(
-    throttle(handleDownloadCSV, DURATION.THROTTLE),
+    throttle(handleDownloadCSV, DURATION.THROTTLE, { trailing: false }),
     [handleDownloadCSV]
   );
 
