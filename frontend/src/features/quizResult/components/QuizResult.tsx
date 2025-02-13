@@ -56,6 +56,14 @@ const QuizResult = () => {
     }, DURATION.ANIMATION);
   }, []);
 
+  function sanitizeCSVCell(cell: string): string {
+    // CSV Injection 방지: =, +, -, @로 시작하면 앞에 ' 붙이기
+    if (/^[=+\-@]/.test(cell)) {
+      return "'" + cell;
+    }
+    return cell;
+  }
+
   const handleDownloadCSV = useCallback(() => {
     handleClicked();
     const formattedTimestamp = dayjs().format("YYMMDD_HHmmss");
@@ -63,10 +71,10 @@ const QuizResult = () => {
     const csvContent = quizResult
       .map(({ round, word, meanings, type }) => {
         return [
-          round + 1,
-          word,
-          meanings.map((v) => v.meaning).join(","),
-          type,
+          sanitizeCSVCell((round + 1).toString()),
+          sanitizeCSVCell(word),
+          sanitizeCSVCell(meanings.map((v) => v.meaning).join(",")),
+          sanitizeCSVCell(type),
         ].join(",");
       })
       .join("\n");
