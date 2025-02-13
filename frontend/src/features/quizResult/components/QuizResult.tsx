@@ -70,7 +70,7 @@ const QuizResult = () => {
       .map(({ round, word, meanings, type }) => {
         return [
           sanitizeCSVCell(type),
-          sanitizeCSVCell('"' + (round + 1).toString() + '"'),
+          sanitizeCSVCell((round + 1).toString()),
           sanitizeCSVCell(word),
           ...meanings.map((v) => sanitizeCSVCell(v.meaning)),
         ].join(",");
