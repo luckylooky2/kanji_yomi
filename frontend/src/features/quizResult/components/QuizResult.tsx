@@ -1,10 +1,15 @@
 import styled from "@emotion/styled";
 import { Button, Divider, Tab, TableCell, Tabs } from "@mui/material";
+import dayjs from "dayjs";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { SyntheticEvent } from "react";
+import { throttle } from "lodash";
+import Image from "next/image";
+import { SyntheticEvent, useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import { quizTimerState, quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
+import { quizOptionDifficultyState } from "@/entities/quizOption/store";
 import {
   accuracyColorFormattingFn,
   calculateAccuracy,
@@ -31,15 +36,67 @@ const QuizResult = () => {
   const [filter, setFilter] = useAtom(quizResultFilter);
   const [quizResult] = useAtom(quizResultState);
   const [correct, totalRetries] = useAtomValue(quizTotalRetriesState);
+  const optionDifficulty = useAtomValue(quizOptionDifficultyState);
+  const [clicked, setClicked] = useState(false);
 
   const accuracy = calculateAccuracy(correct, totalRetries);
   const correctCount = quizResult.filter(
     (item) => item.type === "Correct" || item.type === "Retried"
   ).length;
+  const DURATION = { THROTTLE: 1000, ANIMATION: 500 };
 
   const handleGoToQuizOption = () => {
     setQuizStatus(QuizStatus.OPTION);
   };
+
+  const handleClicked = useCallback(() => {
+    setClicked(true);
+    setTimeout(() => {
+      setClicked(false);
+    }, DURATION.ANIMATION);
+  }, []);
+
+  const handleDownloadCSV = useCallback(() => {
+    handleClicked();
+    const formattedTimestamp = dayjs().format("YYMMDD_HHmmss");
+    const csvHeader = "Round,Word,Meaning,Type\n";
+    const csvContent = quizResult
+      .map(({ round, word, meanings, type }) => {
+        return [
+          round + 1,
+          word,
+          meanings.map((v) => v.meaning).join(","),
+          type,
+        ].join(",");
+      })
+      .join("\n");
+    const difficulty = [...optionDifficulty].sort().reverse().join("-");
+    const blob = new Blob([csvHeader + csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const filename = `kanjiyomi_${formattedTimestamp}_${difficulty}.csv`;
+
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.info(`${filename} Downloaded.`);
+  }, [handleClicked, optionDifficulty, quizResult]);
+
+  const throttledDownloadCSV = useCallback(
+    throttle(handleDownloadCSV, DURATION.THROTTLE),
+    [handleDownloadCSV]
+  );
+
+  useEffect(() => {
+    return () => {
+      throttledDownloadCSV.cancel();
+    };
+  }, [throttledDownloadCSV]);
 
   const handleFilter = (
     _event: SyntheticEvent,
@@ -64,6 +121,7 @@ const QuizResult = () => {
   return (
     <QuizResultContainer>
       <h2>Result</h2>
+
       <QuizResultStat>
         <QuizResultStatItem
           title="Score"
@@ -131,9 +189,18 @@ const QuizResult = () => {
           )}
         </QuizResultList>
       </QuizResultListContainer>
-      <Button variant="contained" onClick={handleGoToQuizOption}>
-        Go To Quiz Option
-      </Button>
+      <QuizResultButtonGroup>
+        <DownloadCSVButton
+          clicked={clicked}
+          variant="outlined"
+          onClick={throttledDownloadCSV}
+        >
+          <Image src="csv.svg" alt="csv download" width="25" height="25" />
+        </DownloadCSVButton>
+        <OptionButton variant="contained" onClick={handleGoToQuizOption}>
+          Back To Option
+        </OptionButton>
+      </QuizResultButtonGroup>
     </QuizResultContainer>
   );
 };
@@ -265,4 +332,35 @@ const CustomTab = styled(Tab)`
   text-transform: none;
   min-width: 0px;
   padding: 0 ${theme.spacing.xsmall};
+`;
+
+const QuizResultButtonGroup = styled.div`
+  display: flex;
+  width: 100%;
+  gap: ${theme.spacing.xsmall};
+`;
+
+const DownloadCSVButton = styled(Button)<{ clicked: boolean }>`
+  min-width: 25px;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: ${({ clicked }) => (clicked ? "100%" : "0")};
+    background: #1976d2;
+    opacity: 0.3;
+    transition: ${({ clicked }) => (clicked ? "width 0.3s ease-in-out" : "")};
+    z-index: -1;
+  }
+
+  span {
+    display: none;
+  }
+`;
+
+const OptionButton = styled(Button)`
+  flex: 1;
 `;
