@@ -80,7 +80,7 @@ const WordsPage = () => {
           <WordsSearchInput
             {...register(SearchInputKey)}
             autoComplete="off"
-            placeholder="Search words (e.g., 日, ひ)"
+            placeholder="Search words. ex) 日, ひ"
             defaultValue={searchInput}
           />
         </WordsSearchForm>
