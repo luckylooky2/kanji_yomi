@@ -10,7 +10,6 @@ import {
   TableCell,
   Tabs,
 } from "@mui/material";
-import dayjs from "dayjs";
 import { saveAs } from "file-saver";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { throttle } from "lodash";
@@ -74,7 +73,11 @@ const QuizResult = () => {
   }
 
   const handleDownloadCSV = useCallback(() => {
-    const formattedTimestamp = dayjs().format("YYMMDD_HHmmss");
+    if (quizStartTime === null) {
+      return;
+    }
+
+    const formattedTimestamp = quizStartTime.format("YYMMDD_HHmmss");
     const csvHeader = "Type,Round,Word,Meaning\n";
     const csvContent = quizResult
       .map(({ round, word, meanings, type }) => {
@@ -134,7 +137,6 @@ const QuizResult = () => {
   return (
     <QuizResultContainer>
       <h2>Result</h2>
-
       <QuizResultStat>
         <QuizResultStatItem
           title="Score"
@@ -380,6 +382,7 @@ const DownloadButtonGroup = styled(ButtonGroup)`
 `;
 
 const DownloadCSVButton = styled(Button)`
-  display: "flex";
+  display: flex;
   gap: ${theme.spacing.small};
+  background-color: white;
 `;
