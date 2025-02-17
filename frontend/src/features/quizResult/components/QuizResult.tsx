@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 import { Button, Divider, Tab, TableCell, Tabs } from "@mui/material";
 import dayjs from "dayjs";
+import { saveAs } from "file-saver";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { throttle } from "lodash";
 import Image from "next/image";
-import { SyntheticEvent, useCallback, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { SyntheticEvent, useCallback, useEffect } from "react";
 
 import { quizTimerState, quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
@@ -37,24 +37,16 @@ const QuizResult = () => {
   const [quizResult] = useAtom(quizResultState);
   const [correct, totalRetries] = useAtomValue(quizTotalRetriesState);
   const optionDifficulty = useAtomValue(quizOptionDifficultyState);
-  const [clicked, setClicked] = useState(false);
 
   const accuracy = calculateAccuracy(correct, totalRetries);
   const correctCount = quizResult.filter(
     (item) => item.type === "Correct" || item.type === "Retried"
   ).length;
-  const DURATION = { THROTTLE: 1000, ANIMATION: 500 };
+  const DURATION = { THROTTLE: 1000 };
 
   const handleGoToQuizOption = () => {
     setQuizStatus(QuizStatus.OPTION);
   };
-
-  const handleClicked = useCallback(() => {
-    setClicked(true);
-    setTimeout(() => {
-      setClicked(false);
-    }, DURATION.ANIMATION);
-  }, []);
 
   function sanitizeCSVCell(cell: string): string {
     const escaped = cell.replace(/"/g, '""');
@@ -63,7 +55,6 @@ const QuizResult = () => {
   }
 
   const handleDownloadCSV = useCallback(() => {
-    handleClicked();
     const formattedTimestamp = dayjs().format("YYMMDD_HHmmss");
     const csvHeader = "Type,Round,Word,Meaning\n";
     const csvContent = quizResult
@@ -78,20 +69,12 @@ const QuizResult = () => {
       .join("\n");
     const difficulty = [...optionDifficulty].sort().reverse().join("-");
     const blob = new Blob([csvHeader + csvContent], {
-      type: "text/csv;charset=utf-8;",
+      type: "application/octet-stream;charset=utf-8;",
     });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
     const filename = `kanjiyomi_${formattedTimestamp}_${difficulty}.csv`;
 
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    toast.info(`${filename} Downloaded.`);
-  }, [handleClicked, optionDifficulty, quizResult]);
+    saveAs(blob, filename);
+  }, [optionDifficulty, quizResult]);
 
   const throttledDownloadCSV = useCallback(
     throttle(handleDownloadCSV, DURATION.THROTTLE, { trailing: false }),
@@ -196,11 +179,7 @@ const QuizResult = () => {
         </QuizResultList>
       </QuizResultListContainer>
       <QuizResultButtonGroup>
-        <DownloadCSVButton
-          clicked={clicked}
-          variant="outlined"
-          onClick={throttledDownloadCSV}
-        >
+        <DownloadCSVButton variant="outlined" onClick={throttledDownloadCSV}>
           <Image src="csv.svg" alt="csv download" width="25" height="25" />
         </DownloadCSVButton>
         <OptionButton variant="contained" onClick={handleGoToQuizOption}>
@@ -346,25 +325,8 @@ const QuizResultButtonGroup = styled.div`
   gap: ${theme.spacing.xsmall};
 `;
 
-const DownloadCSVButton = styled(Button)<{ clicked: boolean }>`
+const DownloadCSVButton = styled(Button)`
   min-width: 25px;
-
-  &:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: ${({ clicked }) => (clicked ? "100%" : "0")};
-    background: #1976d2;
-    opacity: 0.3;
-    transition: ${({ clicked }) => (clicked ? "width 0.3s ease-in-out" : "")};
-    z-index: -1;
-  }
-
-  span {
-    display: none;
-  }
 `;
 
 const OptionButton = styled(Button)`
