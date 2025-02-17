@@ -1,11 +1,27 @@
 import styled from "@emotion/styled";
-import { Button, Divider, Tab, TableCell, Tabs } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
+import DownloadIcon from "@mui/icons-material/Download";
+import {
+  Button,
+  ButtonGroup,
+  Divider,
+  Popper,
+  Tab,
+  TableCell,
+  Tabs,
+} from "@mui/material";
 import dayjs from "dayjs";
 import { saveAs } from "file-saver";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { throttle } from "lodash";
 import Image from "next/image";
-import { SyntheticEvent, useCallback, useEffect } from "react";
+import {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useState,
+  MouseEvent,
+} from "react";
 
 import { quizTimerState, quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
@@ -26,6 +42,7 @@ import {
 } from "@/entities/quizResult/store";
 import { QuizResultLegendType } from "@/entities/quizResult/type";
 import { theme } from "@/shared/styles/theme";
+import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 import QuizResultStatItem from "./QuizResultStatItem";
 
@@ -37,6 +54,8 @@ const QuizResult = () => {
   const [quizResult] = useAtom(quizResultState);
   const [correct, totalRetries] = useAtomValue(quizTotalRetriesState);
   const optionDifficulty = useAtomValue(quizOptionDifficultyState);
+  const [isDownloadMenuOpen, setIsDownloadMenuOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const accuracy = calculateAccuracy(correct, totalRetries);
   const correctCount = quizResult.filter(
@@ -92,6 +111,11 @@ const QuizResult = () => {
     newValue: "Correct" | "Retried" | "Skipped"
   ) => {
     setFilter(filter === newValue ? "All" : newValue);
+  };
+
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+    setIsDownloadMenuOpen((previousOpen) => !previousOpen);
   };
 
   const scoreFormattingFn = (n: number) => `${n} / ${quizResult.length}`;
@@ -179,9 +203,27 @@ const QuizResult = () => {
         </QuizResultList>
       </QuizResultListContainer>
       <QuizResultButtonGroup>
-        <DownloadCSVButton variant="outlined" onClick={throttledDownloadCSV}>
-          <Image src="csv.svg" alt="csv download" width="25" height="25" />
-        </DownloadCSVButton>
+        <DownloadMenuButton variant="outlined" onClick={handleClick}>
+          <ResponsiveIcon
+            icon={isDownloadMenuOpen ? ClearIcon : DownloadIcon}
+          />
+        </DownloadMenuButton>
+        <Popper
+          open={isDownloadMenuOpen}
+          anchorEl={anchorEl}
+          placement="top-start"
+        >
+          <DownloadButtonGroup
+            variant="outlined"
+            orientation="vertical"
+            aria-label="download button group"
+          >
+            <DownloadCSVButton onClick={throttledDownloadCSV}>
+              <Image src="csv.svg" alt="csv download" width="25" height="25" />
+              Download CSV
+            </DownloadCSVButton>
+          </DownloadButtonGroup>
+        </Popper>
         <OptionButton variant="contained" onClick={handleGoToQuizOption}>
           Back To Option
         </OptionButton>
@@ -325,10 +367,19 @@ const QuizResultButtonGroup = styled.div`
   gap: ${theme.spacing.xsmall};
 `;
 
-const DownloadCSVButton = styled(Button)`
+const OptionButton = styled(Button)`
+  flex: 1;
+`;
+
+const DownloadMenuButton = styled(Button)`
   min-width: 25px;
 `;
 
-const OptionButton = styled(Button)`
-  flex: 1;
+const DownloadButtonGroup = styled(ButtonGroup)`
+  margin-bottom: 5px;
+`;
+
+const DownloadCSVButton = styled(Button)`
+  display: "flex";
+  gap: ${theme.spacing.small};
 `;
