@@ -14,7 +14,6 @@ import {
 import { saveAs } from "file-saver";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { throttle } from "lodash";
-import Image from "next/image";
 import {
   SyntheticEvent,
   useCallback,
