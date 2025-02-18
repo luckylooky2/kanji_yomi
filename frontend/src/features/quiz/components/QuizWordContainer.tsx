@@ -1,10 +1,10 @@
 "use client";
 
 import styled from "@emotion/styled";
+import FmdBadIcon from "@mui/icons-material/FmdBad";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { IconButton } from "@mui/material";
 import { useAtom } from "jotai";
-import Image from "next/image";
 
 import { quizCurrentKanjiState } from "@/entities/quiz/store";
 // import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
@@ -19,10 +19,10 @@ const QuizWordContainer = () => {
   if (error) {
     return (
       <ErrorComponentContainer>
-        <div>
-          <Image src="/warning.png" width="30" height="30" alt="Error" />
+        <ErrorComponentLayout>
+          <FmdBadIcon />
           {error?.message}
-        </div>
+        </ErrorComponentLayout>
         <IconButton aria-label="retry" onClick={() => refreshKanji()}>
           <ResponsiveIcon icon={ReplayIcon} />
         </IconButton>
@@ -61,5 +61,17 @@ const ErrorComponentContainer = styled.div`
   div {
     display: flex;
     gap: ${theme.spacing.small};
+  }
+`;
+
+const ErrorComponentLayout = styled.div`
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 30px;
+    height: 30px;
+    color: red;
+    filter: brightness(90%);
   }
 `;
