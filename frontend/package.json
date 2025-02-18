@@ -20,6 +20,7 @@
     "@vercel/analytics": "^1.4.1",
     "countup.js": "^2.8.0",
     "dayjs": "^1.11.13",
+    "file-saver": "^2.0.5",
     "jotai": "^2.10.1",
     "lodash": "^4.17.21",
     "next": "14.2.21",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.64.2",
     "@tanstack/react-query-devtools": "^5.64.2",
+    "@types/file-saver": "^2",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4",
     "@types/node": "^20",

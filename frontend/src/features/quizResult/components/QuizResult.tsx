@@ -1,11 +1,26 @@
 import styled from "@emotion/styled";
-import { Button, Divider, Tab, TableCell, Tabs } from "@mui/material";
-import dayjs from "dayjs";
+import ClearIcon from "@mui/icons-material/Clear";
+import DownloadIcon from "@mui/icons-material/Download";
+import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
+import {
+  Button,
+  ButtonGroup,
+  Divider,
+  Popper,
+  Tab,
+  TableCell,
+  Tabs,
+} from "@mui/material";
+import { saveAs } from "file-saver";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { throttle } from "lodash";
-import Image from "next/image";
-import { SyntheticEvent, useCallback, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useState,
+  MouseEvent,
+} from "react";
 
 import { quizTimerState, quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
@@ -26,6 +41,7 @@ import {
 } from "@/entities/quizResult/store";
 import { QuizResultLegendType } from "@/entities/quizResult/type";
 import { theme } from "@/shared/styles/theme";
+import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 import QuizResultStatItem from "./QuizResultStatItem";
 
@@ -37,24 +53,18 @@ const QuizResult = () => {
   const [quizResult] = useAtom(quizResultState);
   const [correct, totalRetries] = useAtomValue(quizTotalRetriesState);
   const optionDifficulty = useAtomValue(quizOptionDifficultyState);
-  const [clicked, setClicked] = useState(false);
+  const [isDownloadMenuOpen, setIsDownloadMenuOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const accuracy = calculateAccuracy(correct, totalRetries);
   const correctCount = quizResult.filter(
     (item) => item.type === "Correct" || item.type === "Retried"
   ).length;
-  const DURATION = { THROTTLE: 1000, ANIMATION: 500 };
+  const DURATION = { THROTTLE: 1000 };
 
   const handleGoToQuizOption = () => {
     setQuizStatus(QuizStatus.OPTION);
   };
-
-  const handleClicked = useCallback(() => {
-    setClicked(true);
-    setTimeout(() => {
-      setClicked(false);
-    }, DURATION.ANIMATION);
-  }, []);
 
   function sanitizeCSVCell(cell: string): string {
     const escaped = cell.replace(/"/g, '""');
@@ -63,8 +73,11 @@ const QuizResult = () => {
   }
 
   const handleDownloadCSV = useCallback(() => {
-    handleClicked();
-    const formattedTimestamp = dayjs().format("YYMMDD_HHmmss");
+    if (quizStartTime === null) {
+      return;
+    }
+
+    const formattedTimestamp = quizStartTime.format("YYMMDD_HHmmss");
     const csvHeader = "Type,Round,Word,Meaning\n";
     const csvContent = quizResult
       .map(({ round, word, meanings, type }) => {
@@ -78,20 +91,13 @@ const QuizResult = () => {
       .join("\n");
     const difficulty = [...optionDifficulty].sort().reverse().join("-");
     const blob = new Blob([csvHeader + csvContent], {
-      type: "text/csv;charset=utf-8;",
+      type: "application/octet-stream;charset=utf-8;",
     });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    const filename = `kanjiyomi_${formattedTimestamp}_${difficulty}.csv`;
+    const uuid = crypto.randomUUID().slice(0, 6);
+    const filename = `kanjiyomi_${formattedTimestamp}_${difficulty}_${uuid}.csv`;
 
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    toast.info(`${filename} Downloaded.`);
-  }, [handleClicked, optionDifficulty, quizResult]);
+    saveAs(blob, filename);
+  }, [optionDifficulty, quizResult, quizStartTime]);
 
   const throttledDownloadCSV = useCallback(
     throttle(handleDownloadCSV, DURATION.THROTTLE, { trailing: false }),
@@ -111,6 +117,11 @@ const QuizResult = () => {
     setFilter(filter === newValue ? "All" : newValue);
   };
 
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+    setIsDownloadMenuOpen((previousOpen) => !previousOpen);
+  };
+
   const scoreFormattingFn = (n: number) => `${n} / ${quizResult.length}`;
   const scoreColorFormattingFn = (n: number) => {
     const ratio = Math.floor((n / quizResult.length) * 100);
@@ -127,7 +138,6 @@ const QuizResult = () => {
   return (
     <QuizResultContainer>
       <h2>Result</h2>
-
       <QuizResultStat>
         <QuizResultStatItem
           title="Score"
@@ -196,13 +206,36 @@ const QuizResult = () => {
         </QuizResultList>
       </QuizResultListContainer>
       <QuizResultButtonGroup>
-        <DownloadCSVButton
-          clicked={clicked}
+        <DownloadMenuButton
           variant="outlined"
-          onClick={throttledDownloadCSV}
+          onClick={handleClick}
+          aria-label="download menu open"
+          aria-expanded={isDownloadMenuOpen}
+          aria-haspopup="true"
+          aria-controls="download-menu"
         >
-          <Image src="csv.svg" alt="csv download" width="25" height="25" />
-        </DownloadCSVButton>
+          <ResponsiveIcon
+            icon={isDownloadMenuOpen ? ClearIcon : DownloadIcon}
+          />
+        </DownloadMenuButton>
+        <Popper
+          open={isDownloadMenuOpen}
+          anchorEl={anchorEl}
+          placement="top-start"
+          role="menu"
+          id="download-menu"
+        >
+          <DownloadButtonGroup
+            variant="outlined"
+            orientation="vertical"
+            aria-label="download button group"
+          >
+            <DownloadCSVButton onClick={throttledDownloadCSV}>
+              <InsertDriveFileOutlinedIcon />
+              Download CSV
+            </DownloadCSVButton>
+          </DownloadButtonGroup>
+        </Popper>
         <OptionButton variant="contained" onClick={handleGoToQuizOption}>
           Back To Option
         </OptionButton>
@@ -346,27 +379,21 @@ const QuizResultButtonGroup = styled.div`
   gap: ${theme.spacing.xsmall};
 `;
 
-const DownloadCSVButton = styled(Button)<{ clicked: boolean }>`
-  min-width: 25px;
-
-  &:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: ${({ clicked }) => (clicked ? "100%" : "0")};
-    background: #1976d2;
-    opacity: 0.3;
-    transition: ${({ clicked }) => (clicked ? "width 0.3s ease-in-out" : "")};
-    z-index: -1;
-  }
-
-  span {
-    display: none;
-  }
-`;
-
 const OptionButton = styled(Button)`
   flex: 1;
+`;
+
+const DownloadMenuButton = styled(Button)`
+  min-width: 25px;
+`;
+
+const DownloadButtonGroup = styled(ButtonGroup)`
+  margin-bottom: 5px;
+`;
+
+const DownloadCSVButton = styled(Button)`
+  display: flex;
+  gap: ${theme.spacing.small};
+  background-color: white;
+  text-transform: none;
 `;
