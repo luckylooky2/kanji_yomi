@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import ClearIcon from "@mui/icons-material/Clear";
 import DownloadIcon from "@mui/icons-material/Download";
+import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import {
   Button,
   ButtonGroup,
@@ -221,7 +222,7 @@ const QuizResult = () => {
             aria-label="download button group"
           >
             <DownloadCSVButton onClick={throttledDownloadCSV}>
-              <Image src="csv.svg" alt="csv download" width="25" height="25" />
+              <InsertDriveFileOutlinedIcon />
               Download CSV
             </DownloadCSVButton>
           </DownloadButtonGroup>
@@ -385,4 +386,5 @@ const DownloadCSVButton = styled(Button)`
   display: flex;
   gap: ${theme.spacing.small};
   background-color: white;
+  text-transform: none;
 `;
