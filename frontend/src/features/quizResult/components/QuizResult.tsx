@@ -205,7 +205,14 @@ const QuizResult = () => {
         </QuizResultList>
       </QuizResultListContainer>
       <QuizResultButtonGroup>
-        <DownloadMenuButton variant="outlined" onClick={handleClick}>
+        <DownloadMenuButton
+          variant="outlined"
+          onClick={handleClick}
+          aria-label="download menu open"
+          aria-expanded={isDownloadMenuOpen}
+          aria-haspopup="true"
+          aria-controls="download-menu"
+        >
           <ResponsiveIcon
             icon={isDownloadMenuOpen ? ClearIcon : DownloadIcon}
           />
@@ -214,6 +221,8 @@ const QuizResult = () => {
           open={isDownloadMenuOpen}
           anchorEl={anchorEl}
           placement="top-start"
+          role="menu"
+          id="download-menu"
         >
           <DownloadButtonGroup
             variant="outlined"
