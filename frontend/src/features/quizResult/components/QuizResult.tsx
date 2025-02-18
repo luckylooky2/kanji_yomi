@@ -93,7 +93,8 @@ const QuizResult = () => {
     const blob = new Blob([csvHeader + csvContent], {
       type: "application/octet-stream;charset=utf-8;",
     });
-    const filename = `kanjiyomi_${formattedTimestamp}_${difficulty}.csv`;
+    const uuid = crypto.randomUUID().slice(0, 8);
+    const filename = `kanjiyomi_${formattedTimestamp}_${difficulty}_${uuid}.csv`;
 
     saveAs(blob, filename);
   }, [optionDifficulty, quizResult]);
