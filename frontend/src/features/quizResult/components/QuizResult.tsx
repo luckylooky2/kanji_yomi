@@ -97,7 +97,7 @@ const QuizResult = () => {
     const filename = `kanjiyomi_${formattedTimestamp}_${difficulty}_${uuid}.csv`;
 
     saveAs(blob, filename);
-  }, [optionDifficulty, quizResult]);
+  }, [optionDifficulty, quizResult, quizStartTime]);
 
   const throttledDownloadCSV = useCallback(
     throttle(handleDownloadCSV, DURATION.THROTTLE, { trailing: false }),
