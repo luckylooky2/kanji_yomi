@@ -61,7 +61,6 @@ export class QuestionService {
         'limited_words',
         'word.id = limited_words.id',
       )
-      .orderBy('word.id')
       .setParameters(subQuery.getParameters());
 
     const words = await mainQuery.getMany();
