@@ -44,15 +44,29 @@ export class QuestionService {
     const randomDifficulty =
       request.difficulty[Math.floor(Math.random() * request.difficulty.length)];
 
-    // TODO: 랜덤 로직을 DB가 아닌 서버에서 처리하는 것을 고려
-    const randomWord = await this.wordRepository
-      .createQueryBuilder('word')
-      .innerJoinAndSelect('word.meanings', 'meaning')
+    // word.id를 선택하면 TypeORM이 자동으로 word_id라는 별칭을 부여
+    // DISTINCT를 사용하면 TypeORM이 자동으로 별칭을 붙이지 않고 원래 컬럼명(id) 그대로 반환
+    const subQuery = this.meaningRepository
+      .createQueryBuilder('meaning')
+      .select('DISTINCT meaning.wordId AS id')
       .where('meaning.difficulty = :difficulty', {
         difficulty: randomDifficulty,
-      })
-      .orderBy('RAND()')
-      .getOne();
+      });
+
+    const mainQuery = this.wordRepository
+      .createQueryBuilder('word')
+      .innerJoinAndSelect('word.meanings', 'meaning')
+      .innerJoin(
+        `(${subQuery.getQuery()})`,
+        'limited_words',
+        'word.id = limited_words.id',
+      )
+      .orderBy('word.id')
+      .setParameters(subQuery.getParameters());
+
+    const words = await mainQuery.getMany();
+    const randomIndex = Math.floor(Math.random() * words.length);
+    const randomWord = words[randomIndex];
 
     if (!randomWord) {
       throw new Error('No matching meaning found');
