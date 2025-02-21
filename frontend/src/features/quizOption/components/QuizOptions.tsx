@@ -1,8 +1,11 @@
 import styled from "@emotion/styled";
+import KeyboardIcon from "@mui/icons-material/Keyboard";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Slider from "@mui/material/Slider";
 import Stack from "@mui/material/Stack";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import dayjs from "dayjs";
 import { useAtom, useSetAtom } from "jotai";
 
@@ -51,7 +54,20 @@ const QuizOptions = () => {
     <QuizOptionContainer>
       <h2>Options</h2>
       <QuizOptionSection>
-        <QuizOptionLayout title="Difficulties">
+        <QuizOptionLayout title="Input Type">
+          <ToggleButtonGroupWrapper
+            color="primary"
+            value="Typing"
+            exclusive
+            aria-label="Platform"
+          >
+            <TypingToggleButton value="Typing" selected>
+              <KeyboardIcon />
+              Typing
+            </TypingToggleButton>
+          </ToggleButtonGroupWrapper>
+        </QuizOptionLayout>
+        <QuizOptionLayout title="JLPT Difficulty">
           <Stack direction="row" spacing={1}>
             {difficulties.map((item, index) => (
               <Chip
@@ -67,7 +83,7 @@ const QuizOptions = () => {
             ))}
           </Stack>
         </QuizOptionLayout>
-        <QuizOptionLayout title="Rounds">
+        <QuizOptionLayout title="Round">
           <SliderWrapper
             aria-label="quiz-round"
             defaultValue={round}
@@ -114,4 +130,25 @@ const QuizOptionSection = styled.section`
 
 const SliderWrapper = styled(Slider)`
   width: 80%;
+`;
+
+const ToggleButtonGroupWrapper = styled(ToggleButtonGroup)`
+  width: 100%;
+`;
+
+const TypingToggleButton = styled(ToggleButton)`
+  width: 100%;
+  display: flex;
+  gap: ${theme.spacing.xsmall};
+  padding: ${theme.spacing.xsmall};
+  text-transform: none;
+
+  &.Mui-selected {
+    background-color: #1976d2;
+    color: white;
+  }
+
+  &.Mui-selected:hover {
+    background-color: #1565c0;
+  }
 `;
