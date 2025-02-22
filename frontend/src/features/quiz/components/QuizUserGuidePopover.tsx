@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import CloseButton from "@mui/icons-material/Close";
-import { Button, Popover } from "@mui/material";
+import { Button, Popover, PopoverOrigin } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
@@ -26,7 +26,7 @@ const QuizUserGuidePopover = () => {
       const { left: anchorLeft, right: anchorRight } =
         guideContent.anchorEl.getBoundingClientRect();
       const { left: popoverLeft, right: popoverRight } = document
-        .getElementsByClassName("MuiPaper-root")[1]
+        .getElementsByClassName("MuiPaper-root")[1] // MuiPaper-root[0]은 AppBar
         .getBoundingClientRect();
       // anchor의 중간이 popover의 몇 %에 위치하는지 계산
       const anchorMid = (anchorLeft + anchorRight) / 2;
@@ -47,13 +47,23 @@ const QuizUserGuidePopover = () => {
     return null;
   }
 
+  const anchorOrigin: PopoverOrigin =
+    guideContent.position === "top"
+      ? { vertical: "top", horizontal: "center" }
+      : { vertical: "bottom", horizontal: "center" };
+  const transformOrigin: PopoverOrigin =
+    guideContent.position === "top"
+      ? { vertical: "bottom", horizontal: "center" }
+      : { vertical: "top", horizontal: "center" };
+  const arrowPosition = guideContent.position === "top" ? "bottom" : "top";
+
   return (
     <QuizUserGuidePopoverLayout
       open
       anchorEl={guideContent.anchorEl}
-      anchorOrigin={guideContent.anchorOrigin}
-      transformOrigin={guideContent.transformOrigin}
-      arrowPosition={guideContent.arrowPosition}
+      anchorOrigin={anchorOrigin}
+      transformOrigin={transformOrigin}
+      arrowPosition={arrowPosition}
       disablePortal
       mid={mid}
     >
@@ -156,6 +166,8 @@ const QuizUserGuidePopoverControlBar = styled.div`
 
   div {
     padding: ${theme.spacing.small};
+    color: #1976d2;
+    font-size: 13px;
   }
 `;
 

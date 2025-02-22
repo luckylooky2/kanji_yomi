@@ -64,15 +64,7 @@ export type QuizTimer = Record<"quizStartTime" | "quizEndTime", Dayjs | null>;
 
 export interface QuizUserGuideType {
   anchorEl: HTMLElement | null;
-  anchorOrigin: {
-    vertical: "top" | "center" | "bottom";
-    horizontal: "left" | "center" | "right";
-  };
-  transformOrigin: {
-    vertical: "top" | "center" | "bottom";
-    horizontal: "left" | "center" | "right";
-  };
-  arrowPosition: "top" | "bottom";
+  position: "top" | "bottom";
   content: string;
   title: string;
 }
