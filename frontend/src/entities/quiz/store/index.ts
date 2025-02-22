@@ -11,6 +11,7 @@ import {
   QuizQuestionResponseDTO,
   QuizStatus,
   QuizTimer,
+  QuizUserGuideStepType,
 } from "../types";
 
 // Quiz
@@ -62,3 +63,6 @@ export const quizHintSpeakSettingState = atomWithStorage<QuizHintSpeakSetting>(
       : "{}"
   )
 );
+
+// QuizUserGuide
+export const quizUserGuideStepState = atom<QuizUserGuideStepType>(0);
