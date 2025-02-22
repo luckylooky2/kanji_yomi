@@ -63,6 +63,7 @@ export const quizHintSpeakSettingState = atomWithStorage<QuizHintSpeakSetting>(
       : "{}"
   )
 );
+export const quizHintMenuOpenState = atom(false);
 
 // QuizUserGuide
 export const quizUserGuideStepState = atom<QuizUserGuideStepType>(0);
