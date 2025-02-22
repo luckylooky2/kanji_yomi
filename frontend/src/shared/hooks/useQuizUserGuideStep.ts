@@ -1,57 +1,98 @@
 import { useAtom } from "jotai";
+import { useEffect } from "react";
 
-import { quizUserGuideStepState } from "@/entities/quiz/store";
+import {
+  quizHintMenuOpenState,
+  quizUserGuideStepState,
+} from "@/entities/quiz/store";
 import { QuizUserGuideType } from "@/entities/quiz/types";
+
+import { quizUserGuideIndex } from "../model";
 
 export function useQuizUserGuideStep() {
   const [userGuideStep, setUserGuideStep] = useAtom(quizUserGuideStepState);
+  const [, setIsHintMenuOpen] = useAtom(quizHintMenuOpenState);
 
   const quizUserGuideList: (QuizUserGuideType | null)[] = [
     null,
     {
-      anchorEl: document.getElementById("progress-bar"),
-      anchorOrigin: { vertical: "bottom", horizontal: "center" },
-      transformOrigin: { vertical: "top", horizontal: "center" },
-      arrowPosition: "top",
-      content: "This is Content.",
-      title: "Round",
-    },
-    {
       anchorEl: document.getElementById("answer-input"),
-      anchorOrigin: { vertical: "top", horizontal: "center" },
-      transformOrigin: { vertical: "bottom", horizontal: "center" },
-      arrowPosition: "bottom",
+      position: "top",
       content:
         "This is Content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc.This is Content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc.This is Content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc. Nulla nec purus feugiat, vestibulum nunc sit amet, ultrices nunc.",
       title: "Input",
     },
     {
+      anchorEl: document.getElementById("submit-button"),
+      position: "top",
+      content: "This is Content.",
+      title: "Submit",
+    },
+    {
+      anchorEl: document.getElementById("skip-button"),
+      position: "top",
+      content: "This is Content.",
+      title: "Skip",
+    },
+    {
+      anchorEl: document.getElementById("progress-bar"),
+      position: "bottom",
+      content: "This is Content.",
+      title: "Round",
+    },
+    {
+      anchorEl: document.getElementById("quiz-hint"),
+      position: "top",
+      content: "This is Content.",
+      title: "Menu",
+    },
+    {
       anchorEl: document.getElementById("quit-button"),
-      anchorOrigin: { vertical: "bottom", horizontal: "center" },
-      transformOrigin: { vertical: "top", horizontal: "center" },
-      arrowPosition: "top",
+      position: "bottom",
       content: "This is Content.",
       title: "Quit",
     },
     {
       anchorEl: document.getElementById("finish-button"),
-      anchorOrigin: { vertical: "bottom", horizontal: "center" },
-      transformOrigin: { vertical: "top", horizontal: "center" },
-      arrowPosition: "top",
+      position: "bottom",
       content: "This is Content.",
       title: "Finish",
     },
   ];
 
+  const setPrevStep = () => {
+    setUserGuideStep((prev) => {
+      const prevIndex = prev - 1;
+      setIsHintMenuOpen(prevIndex === quizUserGuideIndex.HINT_MENU);
+      return Math.max(0, prev - 1);
+    });
+  };
+
+  const setNextStep = () => {
+    setUserGuideStep((prev) => {
+      const nextIndex = prev + 1;
+      setIsHintMenuOpen(nextIndex === quizUserGuideIndex.HINT_MENU);
+      return Math.min(quizUserGuideList.length - 1, prev + 1);
+    });
+  };
+
+  const initializeStep = () => {
+    setIsHintMenuOpen(false);
+    setUserGuideStep(0);
+  };
+
+  useEffect(() => {
+    return () => {
+      initializeStep();
+    };
+  }, []);
+
   return {
     currStep: userGuideStep,
     finalStep: quizUserGuideList.length - 1,
     guideContent: quizUserGuideList[userGuideStep],
-    setPrevStep: () => setUserGuideStep((prev) => Math.max(0, prev - 1)),
-    setNextStep: () =>
-      setUserGuideStep((prev) =>
-        Math.min(quizUserGuideList.length - 1, prev + 1)
-      ),
-    initializeStep: () => setUserGuideStep(0),
+    setPrevStep,
+    setNextStep,
+    initializeStep,
   };
 }
