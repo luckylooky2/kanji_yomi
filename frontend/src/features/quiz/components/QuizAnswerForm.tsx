@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import HelpIcon from "@mui/icons-material/Help";
 import Button from "@mui/material/Button";
 import dayjs from "dayjs";
 import { useSetAtom, useAtomValue, useAtom } from "jotai";
@@ -23,6 +24,7 @@ import {
 import { quizOptionRoundState } from "@/entities/quizOption/store";
 import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
 import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
+import { quizUserGuideIndex } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
 import "../../../../public/styles/utils.css";
@@ -132,12 +134,14 @@ const QuizAnswerForm = () => {
     getNextQuestion(true);
   };
 
+  const handleStartUserGuide = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setNextStep();
+  };
+
   return (
     <QuizAnswerSection>
-      <form
-        onSubmit={handleSubmit(throttledOnSubmit)}
-        style={{ display: "flex", gap: "4px" }}
-      >
+      <QuizAnswerFormWrapper onSubmit={handleSubmit(throttledOnSubmit)}>
         <QuizAnswerInput
           {...register("answer")}
           id="answer-input"
@@ -145,31 +149,30 @@ const QuizAnswerForm = () => {
           autoComplete="off"
           placeholder="Type in Hiragana. ex) きょう, あした"
           onFocus={handlePullUpScrollToTarget}
-          isGuideSelected={currStep === 2}
+          isGuideSelected={currStep === quizUserGuideIndex.ANSWER_INPUT}
         />
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            setNextStep();
-          }}
-        >
-          help
-        </button>
-      </form>
-      <Button
+        <QuizStartUserGuideButton onClick={handleStartUserGuide}>
+          <HelpIcon />
+        </QuizStartUserGuideButton>
+      </QuizAnswerFormWrapper>
+      <QuizAnswerSubmitButton
+        id="submit-button"
         variant="contained"
         onClick={handleSubmit(throttledOnSubmit)}
         disabled={!!errorCurrentKanji}
+        isGuideSelected={currStep === quizUserGuideIndex.SUBMIT_BUTTON}
       >
         submit
-      </Button>
-      <Button
+      </QuizAnswerSubmitButton>
+      <QuizAnswerSkipButton
+        id="skip-button"
         variant="outlined"
         onClick={handleSkip}
         disabled={!!errorCurrentKanji}
+        isGuideSelected={currStep === quizUserGuideIndex.SKIP_BUTTON}
       >
         skip
-      </Button>
+      </QuizAnswerSkipButton>
     </QuizAnswerSection>
   );
 };
@@ -182,6 +185,11 @@ const QuizAnswerSection = styled.section`
   gap: ${theme.spacing.small};
 `;
 
+const QuizAnswerFormWrapper = styled.form`
+  display: flex;
+  gap: ${theme.spacing.xsmall};
+`;
+
 const QuizAnswerInput = styled.input<{ isGuideSelected?: boolean }>`
   ${({ isGuideSelected }) =>
     isGuideSelected &&
@@ -190,4 +198,28 @@ const QuizAnswerInput = styled.input<{ isGuideSelected?: boolean }>`
     background-color: white;
     transform: scale(1.1);
     `}
+`;
+
+const QuizAnswerSubmitButton = styled(Button)<{ isGuideSelected?: boolean }>`
+  ${({ isGuideSelected }) =>
+    isGuideSelected &&
+    `
+  z-index: 10000;
+  transform: scale(1.1);
+  `}
+`;
+
+const QuizAnswerSkipButton = styled(Button)<{ isGuideSelected?: boolean }>`
+  background-color: white;
+
+  ${({ isGuideSelected }) =>
+    isGuideSelected &&
+    `
+  z-index: 10000;
+  transform: scale(1.1);
+  `}
+`;
+
+const QuizStartUserGuideButton = styled(Button)`
+  min-width: 0;
 `;
