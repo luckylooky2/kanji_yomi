@@ -17,6 +17,7 @@ import QuizAnswerForm from "@/features/quiz/components/QuizAnswerForm";
 import QuizProgressBar from "@/features/quiz/components/QuizProgressBar";
 import QuizQuitModal from "@/features/quiz/components/QuizQuitModal";
 import QuizStatusControlButtons from "@/features/quiz/components/QuizStatusControlButtons";
+import QuizUserGuidePopover from "@/features/quiz/components/QuizUserGuidePopover";
 import QuizWordContainer from "@/features/quiz/components/QuizWordContainer";
 import QuizOptions from "@/features/quizOption/components/QuizOptions";
 import QuizResult from "@/features/quizResult/components/QuizResult";
@@ -50,6 +51,7 @@ const QuizPage = () => {
 
   return (
     <QuizQuestionContainer>
+      <QuizUserGuidePopover />
       <QuizQuitModal isOpen={isOpen} setIsOpen={setIsOpen} />
       <QuizStatusControlButtons setIsOpen={setIsOpen} />
       <QuizProgressBar />
