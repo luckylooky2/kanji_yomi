@@ -22,6 +22,7 @@ import {
 } from "@/entities/quiz/types";
 import { quizOptionRoundState } from "@/entities/quizOption/store";
 import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
+import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
 import { theme } from "@/shared/styles/theme";
 
 import "../../../../public/styles/utils.css";
@@ -46,6 +47,7 @@ const QuizAnswerForm = () => {
     reset: resetInput,
   } = useForm<AnswerInputType>();
   const timeId = useRef<NodeJS.Timeout | null>(null);
+  const { currStep, setNextStep } = useQuizUserGuideStep();
 
   const getNextQuestion = (isSkipped: boolean) => {
     setRetries((prevRetries) => {
@@ -121,7 +123,7 @@ const QuizAnswerForm = () => {
     setTimeout(() => {
       // 바로 실행하면 동작하지 않음
       document
-        .getElementById("scrollTarget")
+        .getElementById("quit-button")
         ?.scrollIntoView({ behavior: "smooth" });
     }, 200);
   };
@@ -132,14 +134,27 @@ const QuizAnswerForm = () => {
 
   return (
     <QuizAnswerSection>
-      <form onSubmit={handleSubmit(throttledOnSubmit)}>
-        <input
+      <form
+        onSubmit={handleSubmit(throttledOnSubmit)}
+        style={{ display: "flex", gap: "4px" }}
+      >
+        <QuizAnswerInput
           {...register("answer")}
+          id="answer-input"
           className={shake ? "shake" : ""}
           autoComplete="off"
           placeholder="Type in Hiragana. ex) きょう, あした"
           onFocus={handlePullUpScrollToTarget}
+          isGuideSelected={currStep === 2}
         />
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setNextStep();
+          }}
+        >
+          help
+        </button>
       </form>
       <Button
         variant="contained"
@@ -165,4 +180,14 @@ const QuizAnswerSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.small};
+`;
+
+const QuizAnswerInput = styled.input<{ isGuideSelected?: boolean }>`
+  ${({ isGuideSelected }) =>
+    isGuideSelected &&
+    `
+    z-index: 10000;
+    background-color: white;
+    transform: scale(1.1);
+    `}
 `;

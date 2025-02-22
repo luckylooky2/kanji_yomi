@@ -15,6 +15,7 @@ import {
 } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
+import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 interface Props {
@@ -29,6 +30,7 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
   const [currentRound] = useAtom(quizCurrentRoundState);
   const [, setQuizResult] = useAtom(quizResultState);
   const [, setFilter] = useAtom(quizResultFilter);
+  const { currStep } = useQuizUserGuideStep();
 
   const handleQuit = () => {
     setIsOpen(true);
@@ -54,17 +56,24 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
 
   return (
     <QuizStatusControlButtonsLayout>
-      <Button
-        id="scrollTarget"
+      <QuizQuitButton
+        id="quit-button"
         variant="text"
         color="error"
         onClick={handleQuit}
+        isGuideSelected={currStep === 3}
       >
         <ResponsiveIcon icon={ArrowLeftIcon} /> Quit
-      </Button>
-      <Button variant="text" color="error" onClick={handleFinish}>
+      </QuizQuitButton>
+      <QuizFinishButton
+        id="finish-button"
+        variant="text"
+        color="error"
+        onClick={handleFinish}
+        isGuideSelected={currStep === 4}
+      >
         Finish <ResponsiveIcon icon={ArrowRightIcon} />
-      </Button>
+      </QuizFinishButton>
     </QuizStatusControlButtonsLayout>
   );
 };
@@ -74,4 +83,24 @@ export default QuizStatusControlButtons;
 const QuizStatusControlButtonsLayout = styled.section`
   display: flex;
   justify-content: space-between;
+`;
+
+const QuizQuitButton = styled(Button)<{ isGuideSelected?: boolean }>`
+  ${({ isGuideSelected }) =>
+    isGuideSelected &&
+    `
+  z-index: 10000;
+  background-color: white;
+  transform: scale(1.1);
+  `}
+`;
+
+const QuizFinishButton = styled(Button)<{ isGuideSelected?: boolean }>`
+  ${({ isGuideSelected }) =>
+    isGuideSelected &&
+    `
+  z-index: 10000;
+  background-color: white;
+  transform: scale(1.1);
+  `}
 `;
