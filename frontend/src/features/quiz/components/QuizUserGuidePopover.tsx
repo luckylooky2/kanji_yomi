@@ -82,6 +82,7 @@ const QuizUserGuidePopover = () => {
         </div>
         <QuizUserGuidePopoverButtonGroup>
           <QuizUserGuideStepButton
+            variant="contained"
             disabled={currStep === 1}
             onClick={setPrevStep}
           >
@@ -89,6 +90,7 @@ const QuizUserGuidePopover = () => {
           </QuizUserGuideStepButton>
           <div>|</div>
           <QuizUserGuideStepButton
+            variant="contained"
             disabled={currStep === finalStep}
             onClick={setNextStep}
           >
