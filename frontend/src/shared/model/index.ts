@@ -72,3 +72,13 @@ export const roundMarks = [10, 30, 50, 70, 90, 100].map((v) => ({
   value: v,
   label: v,
 }));
+
+export const quizUserGuideIndex = {
+  ANSWER_INPUT: 1,
+  SUBMIT_BUTTON: 2,
+  SKIP_BUTTON: 3,
+  PROGRESS_BAR: 4,
+  HINT_MENU: 5,
+  QUIT_BUTTON: 6,
+  FINISH_BUTTON: 7,
+};

@@ -16,6 +16,7 @@ import {
 import { QuizStatus } from "@/entities/quiz/types";
 import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
 import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
+import { quizUserGuideIndex } from "@/shared/model";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 interface Props {
@@ -61,7 +62,7 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
         variant="text"
         color="error"
         onClick={handleQuit}
-        isGuideSelected={currStep === 3}
+        isGuideSelected={currStep === quizUserGuideIndex.QUIT_BUTTON}
       >
         <ResponsiveIcon icon={ArrowLeftIcon} /> Quit
       </QuizQuitButton>
@@ -70,7 +71,7 @@ const QuizStatusControlButtons = ({ setIsOpen }: Props) => {
         variant="text"
         color="error"
         onClick={handleFinish}
-        isGuideSelected={currStep === 4}
+        isGuideSelected={currStep === quizUserGuideIndex.FINISH_BUTTON}
       >
         Finish <ResponsiveIcon icon={ArrowRightIcon} />
       </QuizFinishButton>

@@ -7,6 +7,7 @@ import { useAtomValue } from "jotai";
 import { quizCurrentRoundState } from "@/entities/quiz/store";
 import { quizOptionRoundState } from "@/entities/quizOption/store";
 import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
+import { quizUserGuideIndex } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
 const QuizProgressBar = () => {
@@ -19,7 +20,7 @@ const QuizProgressBar = () => {
       id="progress-bar"
       role="progress"
       aria-labelledby="progress-rate"
-      isGuideSelected={currStep === 1}
+      isGuideSelected={currStep === quizUserGuideIndex.PROGRESS_BAR}
     >
       <ProgressBar
         variant="determinate"
