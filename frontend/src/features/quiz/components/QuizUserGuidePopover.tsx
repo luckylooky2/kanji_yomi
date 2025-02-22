@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
 import CloseButton from "@mui/icons-material/Close";
-import { Button, Checkbox, FormControlLabel, Popover } from "@mui/material";
+import { Button, Popover } from "@mui/material";
+import { useEffect, useState } from "react";
 
 import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
 import { theme } from "@/shared/styles/theme";
-import { useEffect, useState } from "react";
 
 const QuizUserGuidePopover = () => {
   const {
