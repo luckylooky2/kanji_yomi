@@ -117,7 +117,10 @@ export function validateSpeakSetting(speakSetting: QuizHintSpeakSetting) {
   );
 }
 
-export function validateSpeakSettingAtom(stored: string): QuizHintSpeakSetting {
+export function validateSpeakSettingAtom(): QuizHintSpeakSetting {
+  const isServer = typeof window === "undefined";
+  const stored = isServer ? "{}" : localStorage.getItem("speakSetting") || "{}";
+
   // {null} 과 같은 입력은 JSON.parse에서 에러가 발생한다.
   let parsed;
 
@@ -136,4 +139,21 @@ export function validateSpeakSettingAtom(stored: string): QuizHintSpeakSetting {
   }
 
   return parsed;
+}
+
+export function validateShowQuizUserGuideAtom(): boolean {
+  const isServer = typeof window === "undefined";
+
+  if (isServer) {
+    return true;
+  } else {
+    const item = localStorage.getItem("showQuizUserGuide");
+    if (item) {
+      // showQuizUserGuide가 있다면 => "false"인지 ? false : true
+      return item !== "false";
+    }
+
+    // showQuizUserGuide가 없다면 => true
+    return true;
+  }
 }
