@@ -1,6 +1,5 @@
 "use client";
 
-import styled from "@emotion/styled";
 import { useAtomValue, useSetAtom } from "jotai";
 
 import {
@@ -12,14 +11,9 @@ import {
 } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import { quizResultState } from "@/entities/quizResult/store";
-import QuizAnswerForm from "@/features/quiz/components/QuizAnswerForm";
-import QuizProgressBar from "@/features/quiz/components/QuizProgressBar";
-import QuizStatusControlButtons from "@/features/quiz/components/QuizStatusControlButtons";
-import QuizUserGuidePopover from "@/features/quiz/components/QuizUserGuidePopover";
-import QuizWordContainer from "@/features/quiz/components/QuizWordContainer";
+import QuizGame from "@/features/quiz/components/QuizGame";
 import QuizOptions from "@/features/quizOption/components/QuizOptions";
 import QuizResult from "@/features/quizResult/components/QuizResult";
-import { theme } from "@/shared/styles/theme";
 
 const QuizPage = () => {
   const quizStatus = useAtomValue(quizStatusState);
@@ -46,27 +40,7 @@ const QuizPage = () => {
     return <QuizResult />;
   }
 
-  return (
-    <QuizQuestionContainer>
-      <QuizUserGuidePopover />
-      <QuizStatusControlButtons />
-      <QuizProgressBar />
-      <QuizWordContainer />
-      <QuizAnswerForm />
-    </QuizQuestionContainer>
-  );
+  return <QuizGame />;
 };
 
 export default QuizPage;
-
-const QuizQuestionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.medium};
-  justify-content: center;
-  height: 100%;
-
-  @media (min-width: 480px) {
-    gap: ${theme.spacing.large};
-  }
-`;
