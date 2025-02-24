@@ -6,20 +6,28 @@ import TuneIcon from "@mui/icons-material/Tune";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Button, ButtonGroup, Popper } from "@mui/material";
 import { useAtom } from "jotai";
-import React, { useState } from "react";
+import { useState } from "react";
 
-import { quizCurrentKanjiState } from "@/entities/quiz/store";
+import {
+  quizCurrentKanjiState,
+  quizHintMenuOpenState,
+} from "@/entities/quiz/store";
+import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
+import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
 import { useTTS } from "@/shared/hooks/useTTS";
+import { quizUserGuideIndex } from "@/shared/model";
+import { theme } from "@/shared/styles/theme";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 import QuizWordHintSpeakSetting from "./QuizWordHintSpeakSetting";
 
 const QuizWordHint = () => {
   const [{ data: kanji }] = useAtom(quizCurrentKanjiState);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [isMenuOpen, setIsMenuOpen] = useAtom(quizHintMenuOpenState);
   const [isSpeakSettingOpen, setIsSpeakSettingOpen] = useState(false);
   const { playTTS } = useTTS();
+  const { currStep } = useQuizUserGuideStep();
+  const isMobile = useMediaQuery(theme.breakpoints.mobile);
 
   const handleSpeakWord = () => {
     if (!kanji) {
@@ -37,22 +45,27 @@ const QuizWordHint = () => {
     window.open(`https://jisho.org/search/${hintWord}`, "_blank");
   };
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = () => {
     setIsMenuOpen((previousOpen) => !previousOpen);
     setIsSpeakSettingOpen(false);
   };
 
   return (
-    <QuizWordHintLayout>
+    <QuizWordHintLayout id="quiz-hint">
       <QuizWordHintMenuButton variant="text" onClick={handleClick}>
         <ResponsiveIcon icon={isMenuOpen ? ClearIcon : MenuIcon} />
       </QuizWordHintMenuButton>
-      <Popper open={isMenuOpen} anchorEl={anchorEl} placement="bottom">
+      <QuizWordHintPopper
+        open={isMenuOpen}
+        anchorEl={document.getElementById("quiz-hint")}
+        placement="bottom"
+        isGuideSelected={currStep === quizUserGuideIndex.HINT_MENU}
+      >
         <QuizWordHintButtonGroup
           variant="outlined"
           orientation="vertical"
           aria-label="Hint button group"
+          isMobile={isMobile}
         >
           <QuizWordHintButton onClick={handleSpeakWord}>
             <ResponsiveIcon icon={VolumeUpIcon} />
@@ -68,7 +81,7 @@ const QuizWordHint = () => {
             <ResponsiveIcon icon={TravelExploreIcon} />
           </QuizWordHintButton>
         </QuizWordHintButtonGroup>
-      </Popper>
+      </QuizWordHintPopper>
     </QuizWordHintLayout>
   );
 };
@@ -80,9 +93,13 @@ const QuizWordHintLayout = styled.div`
   justify-content: center;
 `;
 
-const QuizWordHintButtonGroup = styled(ButtonGroup)`
+const QuizWordHintButtonGroup = styled(ButtonGroup)<{ isMobile: boolean }>`
   position: relative;
-  margin-top: 5px;
+
+  .MuiButtonBase-root {
+    padding: auto 0;
+    height: ${({ isMobile }) => (isMobile ? "28px" : "32px")};
+  }
 `;
 
 const QuizWordHintMenuButton = styled(Button)`
@@ -90,3 +107,16 @@ const QuizWordHintMenuButton = styled(Button)`
 `;
 
 const QuizWordHintButton = styled(Button)``;
+
+const QuizWordHintPopper = styled(Popper)<{ isGuideSelected?: boolean }>`
+  .MuiButtonGroup-root {
+    background-color: white;
+  }
+
+  ${({ isGuideSelected }) =>
+    isGuideSelected &&
+    `
+    z-index: 10000;
+    transform: scale(1.1);
+    `}
+`;

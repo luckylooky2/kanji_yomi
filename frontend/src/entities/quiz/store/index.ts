@@ -4,13 +4,17 @@ import { atomWithRefresh, atomWithStorage } from "jotai/utils";
 import { quizOptionDifficultyState } from "@/entities/quizOption/store";
 import { QuizService } from "@/features/quiz/api";
 
-import { validateSpeakSettingAtom } from "../lib";
+import {
+  validateShowQuizUserGuideAtom,
+  validateSpeakSettingAtom,
+} from "../lib";
 import {
   QuizAnswerResponseDTO,
   QuizHintSpeakSetting,
   QuizQuestionResponseDTO,
   QuizStatus,
   QuizTimer,
+  QuizUserGuideStepType,
 } from "../types";
 
 // Quiz
@@ -56,9 +60,13 @@ export const quizAnswerResultState = atom(
 export const quizHintVoiceListState = atom<SpeechSynthesisVoice[]>([]);
 export const quizHintSpeakSettingState = atomWithStorage<QuizHintSpeakSetting>(
   "speakSetting",
-  validateSpeakSettingAtom(
-    typeof window !== "undefined"
-      ? localStorage.getItem("speakSetting") || "{}"
-      : "{}"
-  )
+  validateSpeakSettingAtom()
+);
+export const quizHintMenuOpenState = atom(false);
+
+// QuizUserGuide
+export const quizUserGuideStepState = atom<QuizUserGuideStepType>(0);
+export const quizUserGuideShowState = atomWithStorage(
+  "showQuizUserGuide",
+  validateShowQuizUserGuideAtom()
 );
