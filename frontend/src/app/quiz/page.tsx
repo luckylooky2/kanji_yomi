@@ -12,10 +12,8 @@ import {
 } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import { quizResultState } from "@/entities/quizResult/store";
-import { useModal } from "@/features/modal/hooks/useModal";
 import QuizAnswerForm from "@/features/quiz/components/QuizAnswerForm";
 import QuizProgressBar from "@/features/quiz/components/QuizProgressBar";
-import QuizQuitModal from "@/features/quiz/components/QuizQuitModal";
 import QuizStatusControlButtons from "@/features/quiz/components/QuizStatusControlButtons";
 import QuizUserGuidePopover from "@/features/quiz/components/QuizUserGuidePopover";
 import QuizWordContainer from "@/features/quiz/components/QuizWordContainer";
@@ -30,7 +28,6 @@ const QuizPage = () => {
   const setQuizTimer = useSetAtom(quizTimerState);
   const setCurrentRetries = useSetAtom(quizCurrentRetries);
   const setQuizResult = useSetAtom(quizResultState);
-  const { isOpen, setIsOpen } = useModal();
 
   function resetQuizState() {
     setCurrentRound(0);
@@ -52,8 +49,7 @@ const QuizPage = () => {
   return (
     <QuizQuestionContainer>
       <QuizUserGuidePopover />
-      <QuizQuitModal isOpen={isOpen} setIsOpen={setIsOpen} />
-      <QuizStatusControlButtons setIsOpen={setIsOpen} />
+      <QuizStatusControlButtons />
       <QuizProgressBar />
       <QuizWordContainer />
       <QuizAnswerForm />

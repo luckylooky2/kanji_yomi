@@ -27,6 +27,7 @@ const QuizQuitModal = ({ isOpen, setIsOpen }: Props) => {
   return (
     <ModalBase open={isOpen} onClose={handleCancel} title="Quit?">
       <QuitModalLayout>
+        <div>The Quiz progress will be reset.</div>
         <Button variant="outlined" onClick={handleQuit}>
           Quit
         </Button>

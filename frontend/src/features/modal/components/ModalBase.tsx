@@ -20,7 +20,7 @@ const ModalBase = ({ children, open, onClose, title }: Props) => {
     >
       <ModalLayout>
         {title && <ModalTitle>{title}</ModalTitle>}
-        {children}
+        <ModalContent>{children}</ModalContent>
       </ModalLayout>
     </Modal>
   );
@@ -43,5 +43,9 @@ const ModalTitle = styled.h3`
   display: inline-block;
   height: 50px;
   line-height: 50px;
-  margin-left: ${theme.spacing.medium};
+  padding: ${theme.spacing.small};
+`;
+
+const ModalContent = styled.div`
+  padding: ${theme.spacing.small};
 `;
