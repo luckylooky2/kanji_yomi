@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import { ReactNode } from "react";
 
 import { QuizResultLegendType } from "@/entities/quizResult/type";
 import { MeaningInfo, MUIChipColorType, WordInfo } from "@/shared/types";
@@ -65,7 +66,7 @@ export type QuizTimer = Record<"quizStartTime" | "quizEndTime", Dayjs | null>;
 export interface QuizUserGuideType {
   anchorEl: HTMLElement | null;
   position: "top" | "bottom";
-  content: string;
+  content: string | ReactNode;
   title: string;
 }
 
