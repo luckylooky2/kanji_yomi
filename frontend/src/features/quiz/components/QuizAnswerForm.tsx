@@ -149,7 +149,10 @@ const QuizAnswerForm = () => {
           autoComplete="off"
           placeholder="Type in Hiragana. ex) きょう, あした"
           onFocus={handlePullUpScrollToTarget}
-          isGuideSelected={currStep === quizUserGuideIndex.ANSWER_INPUT}
+          isGuideSelected={
+            currStep === quizUserGuideIndex.ANSWER_INPUT ||
+            currStep === quizUserGuideIndex.HOW_TO_SET_HIRAGANA
+          }
         />
         <QuizStartUserGuideButton onClick={handleStartUserGuide}>
           <HelpIcon />
