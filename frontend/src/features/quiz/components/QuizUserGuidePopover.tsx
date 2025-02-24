@@ -174,6 +174,10 @@ const QuizUserGuidePopoverContent = styled.div`
   > div::-webkit-scrollbar {
     display: none;
   }
+
+  span {
+    color: #1976d2;
+  }
 `;
 
 const QuizUserGuidePopoverControlBar = styled.div`
@@ -183,7 +187,7 @@ const QuizUserGuidePopoverControlBar = styled.div`
   div {
     padding: ${theme.spacing.small};
     color: #1976d2;
-    font-size: 13px;
+    font-size: 14px;
   }
 `;
 

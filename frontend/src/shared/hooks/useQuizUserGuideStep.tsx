@@ -24,26 +24,29 @@ export function useQuizUserGuideStep() {
       position: "top",
       content: (
         <div>
-          <div>The answer should be submitted in Hiragana only.</div>
+          <div>
+            The answer should be submitted in <span>Japanese Hiragana</span>{" "}
+            only.
+          </div>
           <div>&nbsp;• きょう &#40;O&#41;</div>
           <div>&nbsp;• 今日 &#40;X&#41;</div>
           <div>&nbsp;• キョウ &#40;X&#41;</div>
         </div>
       ),
-      title: "Input",
+      title: "Input Format",
     },
     {
       anchorEl: document.getElementById("answer-input"),
       position: "top",
       content: <QuizInputUserGuide />,
-      title: "Setting Hiragana",
+      title: "Japanese Keyboard Setup",
     },
     {
       anchorEl: document.getElementById("submit-button"),
       position: "top",
       content: (
         <div>
-          <div>Press ENTER or the SUBMIT BUTTON to submit the answer.</div>
+          <div>Press ENTER or SUBMIT BUTTON to submit the answer.</div>
           <br />
           <div>
             If it’s correct, you will proceed to the next question. Otherwise,
@@ -68,7 +71,7 @@ export function useQuizUserGuideStep() {
       anchorEl: document.getElementById("progress-bar"),
       position: "bottom",
       content: "Shows the current round and the total rounds.",
-      title: "Round",
+      title: "Quiz Rounds",
     },
     {
       anchorEl: document.getElementById("quiz-hint"),
@@ -78,14 +81,14 @@ export function useQuizUserGuideStep() {
           <div>Listen with TTS or check how to read it in the Dictionary.</div>
         </div>
       ),
-      title: "Hint Menu",
+      title: "Hints",
     },
     {
       anchorEl: document.getElementById("quit-button"),
       position: "bottom",
       content: (
         <div>
-          <div>Return to the Quiz option page.</div>
+          <div>Return to Quiz option page.</div>
           <br />
           <div>The current quiz progress will not be saved.</div>
         </div>
@@ -97,9 +100,9 @@ export function useQuizUserGuideStep() {
       position: "bottom",
       content: (
         <div>
-          <div>Move immediately to the Quiz result page.</div>
+          <div>Move immediately to Quiz result page.</div>
           <br />
-          <div>It can be clicked even if you haven’t completed all rounds.</div>
+          <div>You can click without completing all rounds.</div>
         </div>
       ),
       title: "Finish",
