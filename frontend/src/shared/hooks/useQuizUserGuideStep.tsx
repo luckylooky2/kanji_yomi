@@ -7,10 +7,9 @@ import {
   quizUserGuideStepState,
 } from "@/entities/quiz/store";
 import { QuizUserGuideType } from "@/entities/quiz/types";
+import QuizInputUserGuide from "@/features/quiz/components/QuizInputUserGuide";
 
 import { quizUserGuideIndex } from "../model";
-
-import QuizInputUserGuide from "./QuizInputUserGuide";
 
 export function useQuizUserGuideStep() {
   const [userGuideStep, setUserGuideStep] = useAtom(quizUserGuideStepState);

@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Tab, Tabs } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
 
-import { theme } from "../styles/theme";
+import { theme } from "../../../shared/styles/theme";
 
 const [PC, MOBILE] = [0, 1];
 const [WINDOWS, MACOS, LINUX] = [0, 1, 2];
@@ -33,7 +33,7 @@ const QuizInputUserGuide = () => {
           onChange={handleValue(setPlatform)}
           textColor="inherit"
           variant="fullWidth"
-          aria-label="full width tabs example"
+          aria-label="platform selection"
         >
           <InputUserGuideTab label="PC" />
           <InputUserGuideTab label="Mobile" />
@@ -45,7 +45,7 @@ const QuizInputUserGuide = () => {
               onChange={handleValue(setPcOS)}
               textColor="inherit"
               variant="fullWidth"
-              aria-label="full width tabs example"
+              aria-label="pc os selection"
             >
               <InputUserGuideTab label="Windows" />
               <InputUserGuideTab label="MacOS" />
@@ -60,7 +60,7 @@ const QuizInputUserGuide = () => {
               onChange={handleValue(setMobileOS)}
               textColor="inherit"
               variant="fullWidth"
-              aria-label="full width tabs example"
+              aria-label="mobile os selection"
             >
               <InputUserGuideTab label="iOS" />
               <InputUserGuideTab label="Android" />
