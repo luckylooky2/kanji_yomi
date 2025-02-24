@@ -152,14 +152,22 @@ const QuizUserGuidePopoverTitle = styled.div`
 
   h3 {
     padding: ${theme.spacing.small};
+    color: #1976d2;
   }
 `;
 
 const QuizUserGuidePopoverContent = styled.div`
   min-height: 70px;
-  max-height: 200px;
-  overflow-y: auto;
   padding: ${theme.spacing.small};
+
+  > div {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  > div::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const QuizUserGuidePopoverControlBar = styled.div`
