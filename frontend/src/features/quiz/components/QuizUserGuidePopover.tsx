@@ -27,7 +27,7 @@ const QuizUserGuidePopover = () => {
       const { left: anchorLeft, right: anchorRight } =
         guideContent.anchorEl.getBoundingClientRect();
       const { left: popoverLeft, right: popoverRight } = document
-        .getElementsByClassName("MuiPaper-root")[1] // MuiPaper-root[0]은 AppBar
+        .getElementsByClassName("MuiPopover-paper")[0] // MuiPaper-root[0]은 AppBar
         .getBoundingClientRect();
       // anchor의 중간이 popover의 몇 %에 위치하는지 계산
       const anchorMid = (anchorLeft + anchorRight) / 2;
