@@ -175,6 +175,16 @@ const QuizUserGuidePopoverContent = styled.div`
     display: none;
   }
 
+  /* Firefox */
+  > div {
+    scrollbar-width: none;
+  }
+
+  /* IE and Edge */
+  > div {
+    -ms-overflow-style: none;
+  }
+
   span {
     color: #1976d2;
   }
