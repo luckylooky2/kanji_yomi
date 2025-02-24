@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import {
   quizHintMenuOpenState,
+  quizUserGuideShowState,
   quizUserGuideStepState,
 } from "@/entities/quiz/store";
 import { QuizUserGuideType } from "@/entities/quiz/types";
@@ -14,6 +15,7 @@ import QuizInputUserGuide from "./QuizInputUserGuide";
 export function useQuizUserGuideStep() {
   const [userGuideStep, setUserGuideStep] = useAtom(quizUserGuideStepState);
   const [, setIsHintMenuOpen] = useAtom(quizHintMenuOpenState);
+  const [, setShowUserGuide] = useAtom(quizUserGuideShowState);
 
   const quizUserGuideList: (QuizUserGuideType | null)[] = [
     null,
@@ -125,6 +127,10 @@ export function useQuizUserGuideStep() {
     setUserGuideStep(0);
   };
 
+  const disableShowUserGuide = () => {
+    setShowUserGuide(false);
+  };
+
   useEffect(() => {
     return () => {
       initializeStep();
@@ -138,5 +144,6 @@ export function useQuizUserGuideStep() {
     setPrevStep,
     setNextStep,
     initializeStep,
+    disableShowUserGuide,
   };
 }

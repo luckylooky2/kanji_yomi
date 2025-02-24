@@ -14,6 +14,7 @@ const QuizUserGuidePopover = () => {
     setPrevStep,
     setNextStep,
     initializeStep,
+    disableShowUserGuide,
   } = useQuizUserGuideStep();
   const [mid, setMid] = useState(0);
 
@@ -43,6 +44,11 @@ const QuizUserGuidePopover = () => {
     };
   }, [guideContent]);
 
+  const handleCloseUserGuide = () => {
+    initializeStep();
+    disableShowUserGuide();
+  };
+
   if (guideContent === null) {
     return null;
   }
@@ -69,7 +75,7 @@ const QuizUserGuidePopover = () => {
     >
       <QuizUserGuidePopoverTitle>
         <h3>{guideContent.title}</h3>
-        <QuizUserGuideCloseButton onClick={initializeStep}>
+        <QuizUserGuideCloseButton onClick={handleCloseUserGuide}>
           <CloseButton fontSize="small" />
         </QuizUserGuideCloseButton>
       </QuizUserGuidePopoverTitle>
