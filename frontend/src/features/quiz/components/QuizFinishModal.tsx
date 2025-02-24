@@ -30,13 +30,17 @@ const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
   const [, setFilter] = useAtom(quizResultFilter);
 
   const handleQuit = () => {
+    if (kanji === undefined) {
+      return;
+    }
+
     setQuizTimer({ ...quizTimer, quizEndTime: dayjs(new Date()) });
     setQuizResult((prev) => [
       ...prev,
       {
         round: currentRound,
-        word: kanji!.word,
-        meanings: kanji!.meanings,
+        word: kanji.word,
+        meanings: kanji.meanings,
         skipped: true,
         retries,
         type: "Skipped",
@@ -55,7 +59,7 @@ const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
   return (
     <ModalBase open={isOpen} onClose={handleCancel} title="Finish?">
       <QuitModalLayout>
-        <div>Moving to the Quiz result page.</div>
+        <div>Move to the Quiz result page.</div>
         <Button variant="outlined" onClick={handleQuit}>
           Finish
         </Button>
