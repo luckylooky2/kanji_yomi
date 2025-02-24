@@ -22,6 +22,7 @@ const QuizGame = () => {
     if (showUserGuide) {
       setUserGuideStep(quizUserGuideIndex.ANSWER_INPUT);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
