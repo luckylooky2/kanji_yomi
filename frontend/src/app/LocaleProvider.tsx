@@ -4,13 +4,13 @@ import { usePathname } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { createContext, useState, useEffect, ReactNode, useRef } from "react";
 
-import { settingLangauageType } from "@/entities/setting/types";
+import { settingLanguageType } from "@/entities/setting/types";
 
 export const LocaleContext = createContext({
-  locale: "en" as settingLangauageType,
+  locale: "en" as settingLanguageType,
   messages: {} as Record<string, string>,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setLocale: (locale: settingLangauageType) => {},
+  setLocale: (locale: settingLanguageType) => {},
   pathname: "",
 });
 
@@ -20,10 +20,10 @@ export function LocaleProvider({
   messages: staticMessages,
 }: {
   children: ReactNode;
-  locale: settingLangauageType;
+  locale: settingLanguageType;
   messages: Record<string, string>;
 }) {
-  const [locale, setLocale] = useState<settingLangauageType>(staticLocale);
+  const [locale, setLocale] = useState<settingLanguageType>(staticLocale);
   const [messages, setMessages] = useState(staticMessages);
   const pathname = usePathname().slice(1) || "landing";
   const renderRef = useRef(false);
@@ -38,7 +38,7 @@ export function LocaleProvider({
     loadMessages(locale);
   }, [pathname]);
 
-  const loadMessages = async (newLocale: settingLangauageType) => {
+  const loadMessages = async (newLocale: settingLanguageType) => {
     const newMessages = (
       await import(`../../messages/${pathname}/${newLocale}.json`)
     ).default;

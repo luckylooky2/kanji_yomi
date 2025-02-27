@@ -16,7 +16,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
 import { addClass, startBubbleAnimation, reveal } from "@/entities/landing/lib";
-import { settingLangauageType } from "@/entities/setting/types";
+import { settingLanguageType } from "@/entities/setting/types";
 import { useLocale } from "@/shared/hooks/useLocale";
 import { theme } from "@/shared/styles/theme";
 
@@ -92,7 +92,7 @@ const LandingPage = () => {
     setIsMenuOpen(false);
   };
 
-  const handleSetLanguageAndClose = (lang: settingLangauageType) => () => {
+  const handleSetLanguageAndClose = (lang: settingLanguageType) => () => {
     setLocale(lang);
     setIsMenuOpen(false);
   };

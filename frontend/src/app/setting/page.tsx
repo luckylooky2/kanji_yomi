@@ -3,7 +3,7 @@
 import styled from "@emotion/styled";
 import { useTranslations } from "next-intl";
 
-import { settingLangauageType } from "@/entities/setting/types";
+import { settingLanguageType } from "@/entities/setting/types";
 import { useLocale } from "@/shared/hooks/useLocale";
 import { theme } from "@/shared/styles/theme";
 import Loading from "@/widgets/Loading/Loading";
@@ -18,7 +18,7 @@ const SettingPage = () => {
   ];
 
   const handleLanguageChange = ({ target }: { target: HTMLSelectElement }) => {
-    const selectedLanguage = target.value as settingLangauageType;
+    const selectedLanguage = target.value as settingLanguageType;
     setLocale(selectedLanguage);
   };
 

@@ -7,7 +7,7 @@ import React from "react";
 import { Slide, ToastContainer } from "react-toastify";
 
 import ReactQueryProviders from "@/ReactQueryProviders";
-import { settingLangauageType } from "@/entities/setting/types";
+import { settingLanguageType } from "@/entities/setting/types";
 
 import "../../public/styles/globals.css";
 
@@ -53,7 +53,7 @@ export default async function RootLayout({
   const headersList = headers();
   const pathname = (headersList.get("x-pathname") || "/").slice(1) || "landing";
   const locale =
-    (cookies().get("NEXT_LOCALE")?.value as settingLangauageType) || "en";
+    (cookies().get("NEXT_LOCALE")?.value as settingLanguageType) || "en";
   const messages = (await import(`../../messages/${pathname}/${locale}.json`))
     .default;
 

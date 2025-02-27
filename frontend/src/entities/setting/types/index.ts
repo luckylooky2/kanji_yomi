@@ -1,1 +1,1 @@
-export type settingLangauageType = "en" | "ko";
+export type settingLanguageType = "en" | "ko";
