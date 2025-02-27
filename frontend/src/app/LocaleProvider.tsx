@@ -36,7 +36,7 @@ export function LocaleProvider({
     }
 
     loadMessages(locale);
-  }, [pathname]);
+  }, [pathname, locale]);
 
   const loadMessages = async (newLocale: settingLanguageType) => {
     const newMessages = (
@@ -52,7 +52,7 @@ export function LocaleProvider({
       value={{
         locale,
         messages,
-        setLocale: loadMessages,
+        setLocale,
         pathname,
       }}
     >
