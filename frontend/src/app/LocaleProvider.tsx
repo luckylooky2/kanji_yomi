@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
-import { createContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useState, useEffect, ReactNode, useRef } from "react";
 
 import { settingLangauageType } from "@/entities/setting/types";
 
@@ -26,11 +26,15 @@ export function LocaleProvider({
   const [locale, setLocale] = useState<settingLangauageType>(staticLocale);
   const [messages, setMessages] = useState(staticMessages);
   const pathname = usePathname().slice(1) || "landing";
-
-  // 아직 pathname에 맞는 message가 변경되지 않은 상태에서 t 함수를 호출하고 프로퍼티가 없는 경우 에러가 발생한다.
-  // - 한 파일로 관리한다?
+  const renderRef = useRef(false);
 
   useEffect(() => {
+    // 첫 렌더링 시에는 실행하지 않음
+    if (renderRef.current === false) {
+      renderRef.current = true;
+      return;
+    }
+
     loadMessages(locale);
   }, [pathname]);
 

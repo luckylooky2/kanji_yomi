@@ -49,6 +49,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // SSR을 위한 로직
   const headersList = headers();
   const pathname = (headersList.get("x-pathname") || "/").slice(1) || "landing";
   const locale =
