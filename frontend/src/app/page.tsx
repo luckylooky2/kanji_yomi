@@ -16,12 +16,13 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
 import { addClass, startBubbleAnimation, reveal } from "@/entities/landing/lib";
+import { useLocale } from "@/shared/hooks/useLocale";
+import { theme } from "@/shared/styles/theme";
 
 import "../../public/landing/css/style.css";
 
 import pkg from "../../package.json";
-import { useLocale } from "./LocaleProvider";
-import { theme } from "@/shared/styles/theme";
+import { settingLangauageType } from "@/entities/setting/types";
 
 const LandingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -83,6 +84,19 @@ const LandingPage = () => {
     init();
   }, []);
 
+  const handleToggleLanguageMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  const handleCloseLanguageMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const handleSetLanguageAndClose = (lang: settingLangauageType) => () => {
+    setLocale(lang);
+    setIsMenuOpen(false);
+  };
+
   return (
     <div id="body" className="is-boxed has-animations">
       <div className="body-wrap boxed-container">
@@ -111,9 +125,7 @@ const LandingPage = () => {
                     menuRef.current = node;
                   }
                 }}
-                onClick={() => {
-                  setIsMenuOpen((prev) => !prev);
-                }}
+                onClick={handleToggleLanguageMenu}
                 size="small"
                 aria-controls={isMenuOpen ? "language-menu" : undefined}
                 aria-haspopup="true"
@@ -125,37 +137,29 @@ const LandingPage = () => {
                 <div>/</div>
                 <div>{locale === "en" ? "🇺🇸" : "🇰🇷"}</div>
               </LanguageSelectButton>
-              <Popper
+              <LanguagePopper
                 open={isMenuOpen}
                 anchorEl={menuRef.current}
                 role="language-menu"
-                placement="bottom-start"
                 transition
               >
                 {({ TransitionProps }) => (
                   <Grow {...TransitionProps}>
                     <Paper>
-                      <ClickAwayListener
-                        onClickAway={() => {
-                          setIsMenuOpen(false);
-                        }}
-                      >
+                      <ClickAwayListener onClickAway={handleCloseLanguageMenu}>
                         <MenuList
                           autoFocusItem={isMenuOpen}
-                          id="composition-menu"
-                          aria-labelledby="composition-button"
+                          id="language-menu-list"
                         >
                           <LanguageMenuItem
-                            onClick={() => setLocale("en")}
-                            currentLocale={locale}
-                            locale="en"
+                            onClick={handleSetLanguageAndClose("en")}
+                            isSelected={locale === "en"}
                           >
                             🇺🇸 {t("language-en")}
                           </LanguageMenuItem>
                           <LanguageMenuItem
-                            onClick={() => setLocale("ko")}
-                            currentLocale={locale}
-                            locale="ko"
+                            onClick={handleSetLanguageAndClose("ko")}
+                            isSelected={locale === "ko"}
                           >
                             🇰🇷 {t("language-ko")}
                           </LanguageMenuItem>
@@ -164,7 +168,7 @@ const LandingPage = () => {
                     </Paper>
                   </Grow>
                 )}
-              </Popper>
+              </LanguagePopper>
             </div>
           </div>
         </header>
@@ -431,6 +435,10 @@ const LandingPage = () => {
 
 export default LandingPage;
 
+const LanguagePopper = styled(Popper)`
+  z-index: 1000;
+`;
+
 const LanguageSelectButton = styled(IconButton)`
   display: flex;
   gap: ${theme.spacing.xsmall};
@@ -450,14 +458,12 @@ const LanguageSelectButton = styled(IconButton)`
 `;
 
 const LanguageMenuItem = styled(MenuItem)<{
-  currentLocale: "en" | "ko";
-  locale: "en" | "ko";
+  isSelected: boolean;
 }>`
-  background-color: ${({ locale, currentLocale }) =>
-    locale === currentLocale ? "#cccccc" : "white"};
+  background-color: ${({ isSelected }) => (isSelected ? "#cccccc" : "white")};
 
   &.MuiButtonBase-root:hover {
-    background-color: ${({ locale, currentLocale }) =>
-      locale === currentLocale ? "#bbbbbb" : "#eeeeee"};
+    background-color: ${({ isSelected }) =>
+      isSelected ? "#bbbbbb" : "#eeeeee"};
   }
 `;
