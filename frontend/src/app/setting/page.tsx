@@ -1,16 +1,18 @@
 "use client";
 
 import styled from "@emotion/styled";
-import { useTranslations } from "next-intl";
+import { useMessages, useTranslations } from "next-intl";
 
 import { settingLangauageType } from "@/entities/setting/types";
 import { theme } from "@/shared/styles/theme";
 
-import { useLocale } from "../LocaleProvider";
+import Loading from "@/widgets/Loading/Loading";
+import { useLocale } from "@/shared/hooks/useLocale";
 
 const SettingPage = () => {
-  const { locale, setLocale } = useLocale();
+  const { locale, setLocale, isLoading } = useLocale();
   const t = useTranslations();
+
   const langList = [
     ["language-en", "en"],
     ["language-ko", "ko"],
@@ -20,6 +22,10 @@ const SettingPage = () => {
     const selectedLanguage = target.value as settingLangauageType;
     setLocale(selectedLanguage);
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <SettingPageContainer>

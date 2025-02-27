@@ -5,6 +5,7 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -23,7 +24,7 @@ import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { theme } from "@/shared/styles/theme";
 import Loading from "@/widgets/Loading/Loading";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
-import { useTranslations } from "next-intl";
+import { useLocale } from "@/shared/hooks/useLocale";
 
 const WordsPage = () => {
   const [isSearchPageOpen, setIsSearchPageOpen] = useState(false);
@@ -42,6 +43,7 @@ const WordsPage = () => {
   const isWordSelected = currentWordIndex !== null;
   const { isLoading, isError } = useFetchWords();
   const t = useTranslations();
+  const { isLoading: isLocaleLoading } = useLocale();
 
   const onSubmit = ({ search }: WordsSearchInputType) => {
     setDifficulty({ ...selectedDifficulty });
@@ -60,6 +62,10 @@ const WordsPage = () => {
   };
 
   const toggleSearchFilter = () => setIsSearchPageOpen(!isSearchPageOpen);
+
+  if (isLocaleLoading) {
+    return <Loading />;
+  }
 
   if (isError) {
     return (

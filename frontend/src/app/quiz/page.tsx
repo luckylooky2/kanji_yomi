@@ -14,6 +14,8 @@ import { quizResultState } from "@/entities/quizResult/store";
 import QuizGame from "@/features/quiz/components/QuizGame";
 import QuizOptions from "@/features/quizOption/components/QuizOptions";
 import QuizResult from "@/features/quizResult/components/QuizResult";
+import Loading from "@/widgets/Loading/Loading";
+import { useLocale } from "@/shared/hooks/useLocale";
 
 const QuizPage = () => {
   const quizStatus = useAtomValue(quizStatusState);
@@ -22,6 +24,7 @@ const QuizPage = () => {
   const setQuizTimer = useSetAtom(quizTimerState);
   const setCurrentRetries = useSetAtom(quizCurrentRetries);
   const setQuizResult = useSetAtom(quizResultState);
+  const { isLoading } = useLocale();
 
   function resetQuizState() {
     setCurrentRound(0);
@@ -29,6 +32,10 @@ const QuizPage = () => {
     setQuizResult([]);
     setQuizTimer({ quizStartTime: null, quizEndTime: null });
     refreshKanji();
+  }
+
+  if (isLoading) {
+    return <Loading />;
   }
 
   if (quizStatus === QuizStatus.OPTION) {
