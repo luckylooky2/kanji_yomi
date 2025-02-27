@@ -2,12 +2,16 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { cookies, headers } from "next/headers";
 import React from "react";
 import { Slide, ToastContainer } from "react-toastify";
 
 import ReactQueryProviders from "@/ReactQueryProviders";
 
 import "../../public/styles/globals.css";
+
+import { LocaleProvider } from "./LocaleProvider";
+import { settingLangauageType } from "@/entities/setting/types";
 
 const openSans = localFont({
   src: "../../public/fonts/Open_Sans_Regular.ttf",
@@ -40,27 +44,36 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = headers();
+  const pathname = (headersList.get("x-pathname") || "/").slice(1) || "landing";
+  const locale =
+    (cookies().get("NEXT_LOCALE")?.value as settingLangauageType) || "en";
+  const messages = (await import(`../../messages/${pathname}/${locale}.json`))
+    .default;
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={`${openSans.variable} ${openSansBold.variable}`}>
-        <AppRouterCacheProvider>
-          <ReactQueryProviders>
-            <Analytics />
-            <ToastContainer
-              position="top-right"
-              theme="colored"
-              transition={Slide}
-              autoClose={3000}
-              closeOnClick={true}
-            />
-            {children}
-          </ReactQueryProviders>
-        </AppRouterCacheProvider>
+        <LocaleProvider locale={locale} messages={messages}>
+          <AppRouterCacheProvider>
+            <ReactQueryProviders>
+              <Analytics />
+              <ToastContainer
+                position="top-right"
+                theme="colored"
+                transition={Slide}
+                autoClose={3000}
+                closeOnClick={true}
+              />
+              {children}
+            </ReactQueryProviders>
+          </AppRouterCacheProvider>
+        </LocaleProvider>
       </body>
     </html>
   );
