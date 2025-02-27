@@ -2,21 +2,16 @@
 
 import { usePathname } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
+import { createContext, useState, useEffect, ReactNode } from "react";
 
 import { settingLangauageType } from "@/entities/setting/types";
 
-const LocaleContext = createContext({
+export const LocaleContext = createContext({
   locale: "en" as settingLangauageType,
-  messages: {},
+  messages: {} as Record<string, string>,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setLocale: (locale: settingLangauageType) => {},
+  pathname: "",
 });
 
 export function LocaleProvider({
@@ -54,6 +49,7 @@ export function LocaleProvider({
         locale,
         messages,
         setLocale: loadMessages,
+        pathname,
       }}
     >
       <NextIntlClientProvider
@@ -65,8 +61,4 @@ export function LocaleProvider({
       </NextIntlClientProvider>
     </LocaleContext.Provider>
   );
-}
-
-export function useLocale() {
-  return useContext(LocaleContext);
 }
