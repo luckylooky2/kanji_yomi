@@ -1,4 +1,5 @@
 {
+  "id": "words",
   "search-placeholder": "Search words. ex",
   "error-title": "Failed to fetch words :(",
   "error-reload": "Reload",

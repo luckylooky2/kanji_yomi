@@ -1,4 +1,5 @@
 {
+  "id": "quiz",
   "options": {
     "title": "Options",
     "quizType": "Quiz Type",

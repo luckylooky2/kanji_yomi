@@ -1,4 +1,5 @@
 {
+  "id": "words",
   "search-placeholder": "단어를 검색하세요. 예)",
   "error-title": "단어 가져오기에 실패했습니다 :(",
   "error-reload": "재시도",
