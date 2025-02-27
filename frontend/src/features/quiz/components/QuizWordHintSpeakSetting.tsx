@@ -10,10 +10,12 @@ import {
 import { theme } from "@/shared/styles/theme";
 
 import QuizWordHintSlider from "./QuizWordHintSlider";
+import { useTranslations } from "next-intl";
 
 const QuizWordHintSpeakSetting = () => {
   const [speakSetting, setSpeakSetting] = useAtom(quizHintSpeakSettingState);
   const [voiceList] = useAtom(quizHintVoiceListState);
+  const t = useTranslations("game");
 
   const handleVoiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const voice = e.target.selectedOptions[0].value;
@@ -26,7 +28,7 @@ const QuizWordHintSpeakSetting = () => {
   return (
     <QuizWordHintSpeakSettingContainer>
       <QuizWordHintSpeakSettingItem>
-        <div id="voice-select">Voice</div>
+        <div id="voice-select">{t("voice")}</div>
         <QuizWordHintSpeakSettingInput>
           <select
             aria-labelledby="voice-select"
@@ -45,7 +47,7 @@ const QuizWordHintSpeakSetting = () => {
         </QuizWordHintSpeakSettingInput>
       </QuizWordHintSpeakSettingItem>
       <QuizWordHintSpeakSettingItem>
-        <div>Rate</div>
+        <div>{t("rate")}</div>
         <QuizWordHintSpeakSettingInput>
           <QuizWordHintSlider
             min={0.1}
@@ -57,7 +59,7 @@ const QuizWordHintSpeakSetting = () => {
         </QuizWordHintSpeakSettingInput>
       </QuizWordHintSpeakSettingItem>
       <QuizWordHintSpeakSettingItem>
-        <div>Pitch</div>
+        <div>{t("pitch")}</div>
         <QuizWordHintSpeakSettingInput>
           <QuizWordHintSlider
             min={0}
@@ -69,7 +71,7 @@ const QuizWordHintSpeakSetting = () => {
         </QuizWordHintSpeakSettingInput>
       </QuizWordHintSpeakSettingItem>
       <QuizWordHintSpeakSettingItem>
-        <div>Volume</div>
+        <div>{t("volume")}</div>
         <QuizWordHintSpeakSettingInput>
           <QuizWordHintSlider
             min={0}

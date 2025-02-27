@@ -1,12 +1,14 @@
 import styled from "@emotion/styled";
 import CloseButton from "@mui/icons-material/Close";
 import { Button, Popover, PopoverOrigin } from "@mui/material";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
 import { theme } from "@/shared/styles/theme";
+import { useTranslations } from "next-intl";
 
 const QuizUserGuidePopover = () => {
+  const [mid, setMid] = useState(0);
   const {
     currStep,
     finalStep,
@@ -16,7 +18,7 @@ const QuizUserGuidePopover = () => {
     initializeStep,
     disableShowUserGuide,
   } = useQuizUserGuideStep();
-  const [mid, setMid] = useState(0);
+  const t = useTranslations("guide");
 
   useEffect(() => {
     const handleResize = () => {
@@ -92,7 +94,7 @@ const QuizUserGuidePopover = () => {
             disabled={currStep === 1}
             onClick={setPrevStep}
           >
-            &lt; prev
+            &lt; {t("prev")}
           </QuizUserGuideStepButton>
           <div>|</div>
           <QuizUserGuideStepButton
@@ -100,7 +102,7 @@ const QuizUserGuidePopover = () => {
             disabled={currStep === finalStep}
             onClick={setNextStep}
           >
-            next &gt;
+            {t("next")} &gt;
           </QuizUserGuideStepButton>
         </QuizUserGuidePopoverButtonGroup>
       </QuizUserGuidePopoverControlBar>

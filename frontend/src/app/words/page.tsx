@@ -23,6 +23,7 @@ import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { theme } from "@/shared/styles/theme";
 import Loading from "@/widgets/Loading/Loading";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
+import { useTranslations } from "next-intl";
 
 const WordsPage = () => {
   const [isSearchPageOpen, setIsSearchPageOpen] = useState(false);
@@ -40,6 +41,7 @@ const WordsPage = () => {
   const [searchInput, setSearchInput] = useAtom(wordsSearchFilterSearchInput);
   const isWordSelected = currentWordIndex !== null;
   const { isLoading, isError } = useFetchWords();
+  const t = useTranslations();
 
   const onSubmit = ({ search }: WordsSearchInputType) => {
     setDifficulty({ ...selectedDifficulty });
@@ -62,17 +64,18 @@ const WordsPage = () => {
   if (isError) {
     return (
       <WordsErrorContainer>
-        <h3>Failed to fetch words :(</h3>
+        <h3>{t("error-title")}</h3>
         <Button
           size="small"
           variant="contained"
           onClick={() => window.location.reload()}
         >
-          Reload
+          {t("error-reload")}
         </Button>
       </WordsErrorContainer>
     );
   }
+
   return (
     <WordsContainer>
       <WordsSearchContainer>
@@ -80,7 +83,7 @@ const WordsPage = () => {
           <WordsSearchInput
             {...register(SearchInputKey)}
             autoComplete="off"
-            placeholder="Search words. ex) 日, ひ"
+            placeholder={`${t("search-placeholder")} 日, ひ`}
             defaultValue={searchInput}
           />
         </WordsSearchForm>

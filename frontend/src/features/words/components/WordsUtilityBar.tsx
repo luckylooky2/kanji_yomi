@@ -16,6 +16,7 @@ import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { theme } from "@/shared/styles/theme";
 
 import { WordsService } from "../api";
+import { useTranslations } from "next-intl";
 
 const WordsUtilityBar = () => {
   const [view, setView] = useAtom(wordsView);
@@ -32,6 +33,11 @@ const WordsUtilityBar = () => {
       wordsSearchFilterState
     );
     const { data, isLoading, isError } = useQuery(queryOption());
+    const t = useTranslations();
+
+    const convertNumberToThousandSeperated = (num: number) => {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
 
     function queryOption() {
       return queryOptions({
@@ -57,12 +63,12 @@ const WordsUtilityBar = () => {
     }
 
     if (isError) {
-      return <span>Failed to load count.</span>;
+      return <span>{t("count-error")}</span>;
     }
 
     return (
       <span>
-        Found <i>{data.totalCount}</i> items.
+        {convertNumberToThousandSeperated(data.totalCount)} {t("count-total")}
       </span>
     );
   };

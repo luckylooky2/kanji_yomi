@@ -19,12 +19,14 @@ import { difficulties, roundMarks } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
 import QuizOptionLayout from "./QuizOptionLayout";
+import { useTranslations } from "next-intl";
 
 const QuizOptions = () => {
   const [difficulty, setDifficulty] = useAtom(quizOptionDifficultyState);
   const [round, setRound] = useAtom(quizOptionRoundState);
   const setQuizStatus = useSetAtom(quizStatusState);
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
+  const t = useTranslations("options");
 
   const handleDifficultyChange = ({
     currentTarget,
@@ -52,9 +54,9 @@ const QuizOptions = () => {
 
   return (
     <QuizOptionContainer>
-      <h2>Options</h2>
+      <h2>{t("title")}</h2>
       <QuizOptionSection>
-        <QuizOptionLayout title="Input Type">
+        <QuizOptionLayout title={`${t("quizType")}`}>
           <ToggleButtonGroupWrapper
             color="primary"
             value="Typing"
@@ -63,11 +65,11 @@ const QuizOptions = () => {
           >
             <TypingToggleButton value="Typing" selected>
               <KeyboardIcon />
-              Typing
+              {`${t("quizType-content")}`}
             </TypingToggleButton>
           </ToggleButtonGroupWrapper>
         </QuizOptionLayout>
-        <QuizOptionLayout title="JLPT Difficulty">
+        <QuizOptionLayout title={`${t("difficulty")}`}>
           <Stack direction="row" spacing={1}>
             {difficulties.map((item, index) => (
               <Chip
@@ -83,7 +85,7 @@ const QuizOptions = () => {
             ))}
           </Stack>
         </QuizOptionLayout>
-        <QuizOptionLayout title="Round">
+        <QuizOptionLayout title={`${t("round")}`}>
           <SliderWrapper
             aria-label="quiz-round"
             defaultValue={round}
@@ -99,7 +101,7 @@ const QuizOptions = () => {
         variant="contained"
         disabled={!(difficulty.length && round)}
       >
-        start
+        {`${t("start")}`}
       </Button>
     </QuizOptionContainer>
   );

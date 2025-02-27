@@ -14,6 +14,7 @@ import { QuizStatus } from "@/entities/quiz/types";
 import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
 import ModalBase from "@/features/modal/components/ModalBase";
 import { theme } from "@/shared/styles/theme";
+import { useTranslations } from "next-intl";
 
 interface Props {
   isOpen: boolean;
@@ -28,6 +29,7 @@ const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
   const [currentRound] = useAtom(quizCurrentRoundState);
   const [, setQuizResult] = useAtom(quizResultState);
   const [, setFilter] = useAtom(quizResultFilter);
+  const t = useTranslations("game");
 
   const handleQuit = () => {
     if (kanji === undefined) {
@@ -57,14 +59,18 @@ const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
   };
 
   return (
-    <ModalBase open={isOpen} onClose={handleCancel} title="Finish?">
+    <ModalBase
+      open={isOpen}
+      onClose={handleCancel}
+      title={`${t("finish-modal-title")}`}
+    >
       <QuitModalLayout>
-        <div>Move to the Quiz result page.</div>
+        <div>{t("finish-modal-content")}</div>
         <Button variant="outlined" onClick={handleQuit}>
-          Finish
+          {t("modal-ok")}
         </Button>
         <Button variant="contained" onClick={handleCancel}>
-          Cancel
+          {t("modal-cancel")}
         </Button>
       </QuitModalLayout>
     </ModalBase>

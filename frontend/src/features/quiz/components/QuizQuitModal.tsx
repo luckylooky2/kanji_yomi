@@ -6,6 +6,7 @@ import { quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import ModalBase from "@/features/modal/components/ModalBase";
 import { theme } from "@/shared/styles/theme";
+import { useTranslations } from "next-intl";
 
 interface Props {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface Props {
 
 const QuizQuitModal = ({ isOpen, setIsOpen }: Props) => {
   const setQuizStatus = useSetAtom(quizStatusState);
+  const t = useTranslations("game");
 
   const handleQuit = () => {
     setIsOpen(false);
@@ -25,14 +27,18 @@ const QuizQuitModal = ({ isOpen, setIsOpen }: Props) => {
   };
 
   return (
-    <ModalBase open={isOpen} onClose={handleCancel} title="Quit?">
+    <ModalBase
+      open={isOpen}
+      onClose={handleCancel}
+      title={`${t("quit-modal-title")}`}
+    >
       <QuitModalLayout>
-        <div>The Quiz progress will be reset.</div>
+        <div>{t("quit-modal-content")}</div>
         <Button variant="outlined" onClick={handleQuit}>
-          Quit
+          {t("modal-ok")}
         </Button>
         <Button variant="contained" onClick={handleCancel}>
-          Cancel
+          {t("modal-cancel")}
         </Button>
       </QuitModalLayout>
     </ModalBase>
