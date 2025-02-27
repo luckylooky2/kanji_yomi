@@ -8,6 +8,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import dayjs from "dayjs";
 import { useAtom, useSetAtom } from "jotai";
+import { useTranslations } from "next-intl";
 
 import { quizStatusState, quizTimerState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
@@ -19,7 +20,6 @@ import { difficulties, roundMarks } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
 import QuizOptionLayout from "./QuizOptionLayout";
-import { useTranslations } from "next-intl";
 
 const QuizOptions = () => {
   const [difficulty, setDifficulty] = useAtom(quizOptionDifficultyState);

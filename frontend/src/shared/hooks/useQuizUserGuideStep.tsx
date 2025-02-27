@@ -1,4 +1,5 @@
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
 import {
@@ -10,7 +11,6 @@ import { QuizUserGuideType } from "@/entities/quiz/types";
 import QuizInputUserGuide from "@/features/quiz/components/QuizInputUserGuide";
 
 import { quizUserGuideIndex } from "../model";
-import { useTranslations } from "next-intl";
 
 export function useQuizUserGuideStep() {
   const [userGuideStep, setUserGuideStep] = useAtom(quizUserGuideStepState);

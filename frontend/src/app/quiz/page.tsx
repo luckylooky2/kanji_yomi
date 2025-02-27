@@ -14,8 +14,8 @@ import { quizResultState } from "@/entities/quizResult/store";
 import QuizGame from "@/features/quiz/components/QuizGame";
 import QuizOptions from "@/features/quizOption/components/QuizOptions";
 import QuizResult from "@/features/quizResult/components/QuizResult";
-import Loading from "@/widgets/Loading/Loading";
 import { useLocale } from "@/shared/hooks/useLocale";
+import Loading from "@/widgets/Loading/Loading";
 
 const QuizPage = () => {
   const quizStatus = useAtomValue(quizStatusState);

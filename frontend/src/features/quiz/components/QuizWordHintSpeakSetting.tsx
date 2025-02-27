@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 import { findVoiceIndex } from "@/entities/quiz/lib";
@@ -10,7 +11,6 @@ import {
 import { theme } from "@/shared/styles/theme";
 
 import QuizWordHintSlider from "./QuizWordHintSlider";
-import { useTranslations } from "next-intl";
 
 const QuizWordHintSpeakSetting = () => {
   const [speakSetting, setSpeakSetting] = useAtom(quizHintSpeakSettingState);

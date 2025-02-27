@@ -21,10 +21,10 @@ import WordsDisplay from "@/features/words/components/WordsDisplay";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
 import WordsUtilityBar from "@/features/words/components/WordsUtilityBar";
 import { useFetchWords } from "@/shared/hooks/useFetchWords";
+import { useLocale } from "@/shared/hooks/useLocale";
 import { theme } from "@/shared/styles/theme";
 import Loading from "@/widgets/Loading/Loading";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
-import { useLocale } from "@/shared/hooks/useLocale";
 
 const WordsPage = () => {
   const [isSearchPageOpen, setIsSearchPageOpen] = useState(false);

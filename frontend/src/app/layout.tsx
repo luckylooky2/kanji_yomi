@@ -7,11 +7,11 @@ import React from "react";
 import { Slide, ToastContainer } from "react-toastify";
 
 import ReactQueryProviders from "@/ReactQueryProviders";
+import { settingLangauageType } from "@/entities/setting/types";
 
 import "../../public/styles/globals.css";
 
 import { LocaleProvider } from "./LocaleProvider";
-import { settingLangauageType } from "@/entities/setting/types";
 
 const openSans = localFont({
   src: "../../public/fonts/Open_Sans_Regular.ttf",

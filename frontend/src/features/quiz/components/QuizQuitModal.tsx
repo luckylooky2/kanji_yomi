@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { useSetAtom } from "jotai";
+import { useTranslations } from "next-intl";
 
 import { quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import ModalBase from "@/features/modal/components/ModalBase";
 import { theme } from "@/shared/styles/theme";
-import { useTranslations } from "next-intl";
 
 interface Props {
   isOpen: boolean;

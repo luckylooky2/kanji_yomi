@@ -14,6 +14,7 @@ import {
 import { saveAs } from "file-saver";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { throttle } from "lodash";
+import { useTranslations } from "next-intl";
 import {
   SyntheticEvent,
   useCallback,
@@ -44,7 +45,6 @@ import { theme } from "@/shared/styles/theme";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 import QuizResultStatItem from "./QuizResultStatItem";
-import { useTranslations } from "next-intl";
 
 const QuizResult = () => {
   const setQuizStatus = useSetAtom(quizStatusState);

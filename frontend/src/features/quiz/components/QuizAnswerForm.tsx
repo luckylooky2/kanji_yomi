@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import dayjs from "dayjs";
 import { useSetAtom, useAtomValue, useAtom } from "jotai";
 import throttle from "lodash/throttle";
+import { useTranslations } from "next-intl";
 import React, { useState, useRef, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -28,7 +29,6 @@ import { quizUserGuideIndex } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
 import "../../../../public/styles/utils.css";
-import { useTranslations } from "next-intl";
 
 const QuizAnswerForm = () => {
   const maxRound = useAtomValue(quizOptionRoundState);

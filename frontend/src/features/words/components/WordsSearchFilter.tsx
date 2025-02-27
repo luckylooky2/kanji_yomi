@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
+import { useTranslations } from "next-intl";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset } from "react-hook-form";
 
@@ -18,7 +19,6 @@ import { useResponsiveSize } from "@/shared/hooks/useResponsiveSize";
 import { correctRatio as cr, difficulties as d } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 import ResponsiveButton from "@/widgets/Responsive/ResponsiveButton";
-import { useTranslations } from "next-intl";
 
 interface Props {
   toggleHandler: () => void;

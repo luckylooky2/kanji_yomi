@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 import { MouseEvent } from "react";
 
 import { wordsSearchFilterState, wordsView } from "@/entities/words/store";
@@ -16,7 +17,6 @@ import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { theme } from "@/shared/styles/theme";
 
 import { WordsService } from "../api";
-import { useTranslations } from "next-intl";
 
 const WordsUtilityBar = () => {
   const [view, setView] = useAtom(wordsView);

@@ -16,13 +16,13 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
 import { addClass, startBubbleAnimation, reveal } from "@/entities/landing/lib";
+import { settingLangauageType } from "@/entities/setting/types";
 import { useLocale } from "@/shared/hooks/useLocale";
 import { theme } from "@/shared/styles/theme";
 
 import "../../public/landing/css/style.css";
 
 import pkg from "../../package.json";
-import { settingLangauageType } from "@/entities/setting/types";
 
 const LandingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -1,13 +1,12 @@
 "use client";
 
 import styled from "@emotion/styled";
-import { useMessages, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 import { settingLangauageType } from "@/entities/setting/types";
-import { theme } from "@/shared/styles/theme";
-
-import Loading from "@/widgets/Loading/Loading";
 import { useLocale } from "@/shared/hooks/useLocale";
+import { theme } from "@/shared/styles/theme";
+import Loading from "@/widgets/Loading/Loading";
 
 const SettingPage = () => {
   const { locale, setLocale, isLoading } = useLocale();

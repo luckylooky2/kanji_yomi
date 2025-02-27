@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
 import { Tab, Tabs } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { SyntheticEvent, useState } from "react";
 
 import { theme } from "../../../shared/styles/theme";
-import { useTranslations } from "next-intl";
 
 const [PC, MOBILE] = [0, 1];
 const [WINDOWS, MACOS, LINUX] = [0, 1, 2];

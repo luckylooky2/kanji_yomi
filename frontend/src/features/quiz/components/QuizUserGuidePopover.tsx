@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 import CloseButton from "@mui/icons-material/Close";
 import { Button, Popover, PopoverOrigin } from "@mui/material";
-import { use, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
 import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
 import { theme } from "@/shared/styles/theme";
-import { useTranslations } from "next-intl";
 
 const QuizUserGuidePopover = () => {
   const [mid, setMid] = useState(0);
