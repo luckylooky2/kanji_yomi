@@ -108,6 +108,10 @@ const QuizInputUserGuide = () => {
             <span>4. </span>
             {t("step2-MacOS4")}
           </div>
+          <div>
+            <span>5. </span>
+            {t("step2-MacOS5")}
+          </div>
         </InputUserGuideContent>
       )}
       {platform === PC && pcOS === LINUX && (
