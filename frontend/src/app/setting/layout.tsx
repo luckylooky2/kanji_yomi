@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Setting - Kanji Yomi",
     description: "Manage language and other preferences",
-    url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/words`,
+    url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/setting`,
     images: [
       {
         url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/og_image.png`,
