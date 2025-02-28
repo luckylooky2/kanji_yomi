@@ -1,24 +1,12 @@
 "use client";
 
-import styled from "@emotion/styled";
-import LanguageIcon from "@mui/icons-material/Language";
-import {
-  ClickAwayListener,
-  Grow,
-  IconButton,
-  MenuItem,
-  MenuList,
-  Paper,
-  Popper,
-} from "@mui/material";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { addClass, startBubbleAnimation, reveal } from "@/entities/landing/lib";
-import { settingLanguageType } from "@/entities/setting/types";
+import LanguageSelectMenu from "@/features/header/components/LanguageSelectMenu";
 import { useLocale } from "@/shared/hooks/useLocale";
-import { theme } from "@/shared/styles/theme";
 import ErrorComponent from "@/widgets/ErrorComponent/ErrorComponent";
 import Loading from "@/widgets/Loading/Loading";
 
@@ -27,13 +15,11 @@ import "../../public/landing/css/style.css";
 import pkg from "../../package.json";
 
 const LandingPage = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = useTranslations();
   const htmlRef = useRef<HTMLElement>();
   const bodyRef = useRef<HTMLElement>();
   const scrollRevealRef = useRef<scrollReveal.ScrollRevealObject>();
-  const menuRef = useRef<HTMLButtonElement>();
-  const { locale, setLocale, isError, retryHandler, isLoading } = useLocale();
+  const { isError, retryHandler, isLoading } = useLocale();
 
   const currVersion = `v${pkg.version}`;
   const url = `https://github.com/luckylooky2/kanji_yomi/releases/tag/${currVersion}`;
@@ -100,19 +86,6 @@ const LandingPage = () => {
     return <Loading />;
   }
 
-  const handleToggleLanguageMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
-
-  const handleCloseLanguageMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-  const handleSetLanguageAndClose = (lang: settingLanguageType) => () => {
-    setLocale(lang);
-    setIsMenuOpen(false);
-  };
-
   return (
     <div id="body" className="is-boxed has-animations">
       <div className="body-wrap boxed-container">
@@ -134,57 +107,7 @@ const LandingPage = () => {
                   height={40}
                 />
               </div>
-              <LanguageSelectButton
-                id="language-select"
-                ref={(node) => {
-                  if (node) {
-                    menuRef.current = node;
-                  }
-                }}
-                onClick={handleToggleLanguageMenu}
-                size="small"
-                aria-controls={isMenuOpen ? "language-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={isMenuOpen ? "true" : undefined}
-              >
-                <div>
-                  <LanguageIcon fontSize="small" />
-                </div>
-                <div>/</div>
-                <div>{locale === "en" ? "🇺🇸" : "🇰🇷"}</div>
-              </LanguageSelectButton>
-              <LanguagePopper
-                open={isMenuOpen}
-                anchorEl={menuRef.current}
-                role="language-menu"
-                transition
-              >
-                {({ TransitionProps }) => (
-                  <Grow {...TransitionProps}>
-                    <Paper>
-                      <ClickAwayListener onClickAway={handleCloseLanguageMenu}>
-                        <MenuList
-                          autoFocusItem={isMenuOpen}
-                          id="language-menu-list"
-                        >
-                          <LanguageMenuItem
-                            onClick={handleSetLanguageAndClose("en")}
-                            isSelected={locale === "en"}
-                          >
-                            🇺🇸 {t("language-en")}
-                          </LanguageMenuItem>
-                          <LanguageMenuItem
-                            onClick={handleSetLanguageAndClose("ko")}
-                            isSelected={locale === "ko"}
-                          >
-                            🇰🇷 {t("language-ko")}
-                          </LanguageMenuItem>
-                        </MenuList>
-                      </ClickAwayListener>
-                    </Paper>
-                  </Grow>
-                )}
-              </LanguagePopper>
+              <LanguageSelectMenu />
             </div>
           </div>
         </header>
@@ -450,36 +373,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-
-const LanguagePopper = styled(Popper)`
-  z-index: 1000;
-`;
-
-const LanguageSelectButton = styled(IconButton)`
-  display: flex;
-  gap: ${theme.spacing.xsmall};
-  border-radius: ${theme.radius.medium};
-
-  div {
-    font-size: 28px;
-  }
-
-  svg {
-    margin-top: 2px;
-  }
-
-  &.MuiButtonBase-root:hover {
-    border-radius: ${theme.radius.medium};
-  }
-`;
-
-const LanguageMenuItem = styled(MenuItem)<{
-  isSelected: boolean;
-}>`
-  background-color: ${({ isSelected }) => (isSelected ? "#cccccc" : "white")};
-
-  &.MuiButtonBase-root:hover {
-    background-color: ${({ isSelected }) =>
-      isSelected ? "#bbbbbb" : "#eeeeee"};
-  }
-`;
