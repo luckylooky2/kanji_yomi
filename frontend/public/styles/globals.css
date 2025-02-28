@@ -1,6 +1,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --spacing-xsmall: 4px;
+  --spacing-small: 8px;
+  --spacing-medium: 16px;
+  --spacing-large: 32px;
+  --radius-small: 4px;
+  --radius-medium: 8px;
+  --radius-large: 16px;
+  --breakpoint-mobile: (max-width: 480px);
 }
 
 /* vh는 브라우저에서 주소 표시줄을 고려하지 않기 때문에 스크롤이 발생하는 단점이 있다. */
@@ -160,13 +168,4 @@ footer {
   width: 100%;
   text-align: center;
   background-color: white;
-}
-
-.header-appbar {
-  height: 64px;
-}
-
-.header-toolbar {
-  justify-content: center;
-  height: 64px;
 }
