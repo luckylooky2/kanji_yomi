@@ -15,6 +15,7 @@ import QuizGame from "@/features/quiz/components/QuizGame";
 import QuizOptions from "@/features/quizOption/components/QuizOptions";
 import QuizResult from "@/features/quizResult/components/QuizResult";
 import { useLocale } from "@/shared/hooks/useLocale";
+import ErrorComponent from "@/widgets/ErrorComponent/ErrorComponent";
 import Loading from "@/widgets/Loading/Loading";
 
 const QuizPage = () => {
@@ -24,7 +25,7 @@ const QuizPage = () => {
   const setQuizTimer = useSetAtom(quizTimerState);
   const setCurrentRetries = useSetAtom(quizCurrentRetries);
   const setQuizResult = useSetAtom(quizResultState);
-  const { isLoading } = useLocale();
+  const { isLoading, isError, retryHandler } = useLocale();
 
   function resetQuizState() {
     setCurrentRound(0);
@@ -32,6 +33,12 @@ const QuizPage = () => {
     setQuizResult([]);
     setQuizTimer({ quizStartTime: null, quizEndTime: null });
     refreshKanji();
+  }
+
+  if (isError) {
+    return (
+      <ErrorComponent retryHandler={retryHandler} message="Network Error" />
+    );
   }
 
   if (isLoading) {

@@ -19,6 +19,8 @@ import { addClass, startBubbleAnimation, reveal } from "@/entities/landing/lib";
 import { settingLanguageType } from "@/entities/setting/types";
 import { useLocale } from "@/shared/hooks/useLocale";
 import { theme } from "@/shared/styles/theme";
+import ErrorComponent from "@/widgets/ErrorComponent/ErrorComponent";
+import Loading from "@/widgets/Loading/Loading";
 
 import "../../public/landing/css/style.css";
 
@@ -26,17 +28,21 @@ import pkg from "../../package.json";
 
 const LandingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { locale, setLocale } = useLocale();
   const t = useTranslations();
   const htmlRef = useRef<HTMLElement>();
   const bodyRef = useRef<HTMLElement>();
   const scrollRevealRef = useRef<scrollReveal.ScrollRevealObject>();
   const menuRef = useRef<HTMLButtonElement>();
+  const { locale, setLocale, isError, retryHandler, isLoading } = useLocale();
 
   const currVersion = `v${pkg.version}`;
   const url = `https://github.com/luckylooky2/kanji_yomi/releases/tag/${currVersion}`;
 
   useEffect(() => {
+    if (isError || isLoading) {
+      return;
+    }
+
     // SSR 환경에서는 window 객체가 없기 때문에 동적으로 로드
     async function dynamicLoadScrollReveal() {
       const scrollreveal = await import("scrollreveal");
@@ -82,7 +88,17 @@ const LandingPage = () => {
     }
 
     init();
-  }, []);
+  }, [isError, isLoading]);
+
+  if (isError) {
+    return (
+      <ErrorComponent retryHandler={retryHandler} message="Network Error" />
+    );
+  }
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   const handleToggleLanguageMenu = () => {
     setIsMenuOpen((prev) => !prev);

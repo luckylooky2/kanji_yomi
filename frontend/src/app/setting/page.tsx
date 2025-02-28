@@ -6,10 +6,11 @@ import { useTranslations } from "next-intl";
 import { settingLanguageType } from "@/entities/setting/types";
 import { useLocale } from "@/shared/hooks/useLocale";
 import { theme } from "@/shared/styles/theme";
+import ErrorComponent from "@/widgets/ErrorComponent/ErrorComponent";
 import Loading from "@/widgets/Loading/Loading";
 
 const SettingPage = () => {
-  const { locale, setLocale, isLoading } = useLocale();
+  const { locale, setLocale, isLoading, isError, retryHandler } = useLocale();
   const t = useTranslations();
 
   const langList = [
@@ -21,6 +22,12 @@ const SettingPage = () => {
     const selectedLanguage = target.value as settingLanguageType;
     setLocale(selectedLanguage);
   };
+
+  if (isError) {
+    return (
+      <ErrorComponent retryHandler={retryHandler} message="Network Error" />
+    );
+  }
 
   if (isLoading) {
     return <Loading />;

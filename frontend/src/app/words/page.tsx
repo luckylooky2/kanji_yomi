@@ -23,6 +23,7 @@ import WordsUtilityBar from "@/features/words/components/WordsUtilityBar";
 import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { useLocale } from "@/shared/hooks/useLocale";
 import { theme } from "@/shared/styles/theme";
+import ErrorComponent from "@/widgets/ErrorComponent/ErrorComponent";
 import Loading from "@/widgets/Loading/Loading";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
@@ -43,7 +44,11 @@ const WordsPage = () => {
   const isWordSelected = currentWordIndex !== null;
   const { isLoading, isError } = useFetchWords();
   const t = useTranslations();
-  const { isLoading: isLocaleLoading } = useLocale();
+  const {
+    isLoading: isLocaleLoading,
+    isError: isLocaleError,
+    retryHandler,
+  } = useLocale();
 
   const onSubmit = ({ search }: WordsSearchInputType) => {
     setDifficulty({ ...selectedDifficulty });
@@ -62,6 +67,12 @@ const WordsPage = () => {
   };
 
   const toggleSearchFilter = () => setIsSearchPageOpen(!isSearchPageOpen);
+
+  if (isLocaleError) {
+    return (
+      <ErrorComponent retryHandler={retryHandler} message="Network Error" />
+    );
+  }
 
   if (isLocaleLoading) {
     return <Loading />;
