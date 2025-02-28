@@ -16,6 +16,7 @@ export const getMUIColorByCorrectRatio = (ratio: number): MUIChipColorType => {
 export const verifyCookie = (
   localeCookie: string | undefined
 ): settingLanguageType => {
+  // fallback 고려
   return localeCookie === undefined ||
     !permittedLocales.includes(localeCookie as settingLanguageType)
     ? "en"

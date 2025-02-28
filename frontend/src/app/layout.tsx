@@ -58,12 +58,14 @@ export default async function RootLayout({
   let messages: Record<string, string> = {};
 
   if (!knownRoutes.includes(pathname)) {
+    // 없는 경로일 경우, json 파일을 찾지 않는다.
     messages["id"] = "pathname-not-found";
   } else {
     try {
       messages = (await import(`../../messages/${pathname}/${locale}.json`))
         .default;
     } catch {
+      // json 파일을 찾지 못했을 경우 || 네트워크 에러가 발생했을 경우, isError를 true로 설정한다.
       messages["id"] = "json-network-error";
     }
   }
