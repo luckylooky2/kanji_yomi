@@ -87,4 +87,4 @@ export const quizUserGuideIndex = {
 };
 
 export const permittedLocales: settingLanguageType[] = ["en", "ko"];
-export const knownRoutes = ["landing", "quiz", "setting", "words"];
+export const knownRoutes = ["landing", "quiz", "words"];
