@@ -5,12 +5,15 @@ import { NextIntlClientProvider } from "next-intl";
 import { createContext, useState, useEffect, ReactNode, useRef } from "react";
 
 import { settingLanguageType } from "@/entities/setting/types";
+import { verifyCookie } from "@/shared/lib";
 
 export const LocaleContext = createContext({
   locale: "en" as settingLanguageType,
   messages: {} as Record<string, string>,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setLocale: (locale: settingLanguageType) => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  loadMessages: async (_newLocale: settingLanguageType) => {},
   pathname: "",
 });
 
@@ -39,9 +42,17 @@ export function LocaleProvider({
   }, [pathname, locale]);
 
   const loadMessages = async (newLocale: settingLanguageType) => {
-    const newMessages = (
-      await import(`../../messages/${pathname}/${newLocale}.json`)
-    ).default;
+    newLocale = verifyCookie(newLocale);
+
+    let newMessages: Record<string, string> = {};
+    try {
+      newMessages = (
+        await import(`../../messages/${pathname}/${newLocale}.json`)
+      ).default;
+    } catch {
+      newMessages["id"] = "json-network-error";
+    }
+
     setLocale(newLocale);
     setMessages(newMessages);
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/;`;
@@ -54,6 +65,7 @@ export function LocaleProvider({
         messages,
         setLocale,
         pathname,
+        loadMessages,
       }}
     >
       <NextIntlClientProvider

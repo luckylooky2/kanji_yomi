@@ -1,3 +1,5 @@
+import { settingLanguageType } from "@/entities/setting/types";
+
 import { CorrectRatioType, DifficultyType } from "../types";
 
 export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
@@ -83,3 +85,6 @@ export const quizUserGuideIndex = {
   QUIT_BUTTON: 7,
   FINISH_BUTTON: 8,
 };
+
+export const permittedLocales: settingLanguageType[] = ["en", "ko"];
+export const knownRoutes = ["landing", "quiz", "setting", "words"];

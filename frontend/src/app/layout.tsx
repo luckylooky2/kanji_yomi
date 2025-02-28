@@ -7,7 +7,8 @@ import React from "react";
 import { Slide, ToastContainer } from "react-toastify";
 
 import ReactQueryProviders from "@/ReactQueryProviders";
-import { settingLanguageType } from "@/entities/setting/types";
+import { verifyCookie } from "@/shared/lib";
+import { knownRoutes } from "@/shared/model";
 
 import "../../public/styles/globals.css";
 
@@ -49,13 +50,23 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // SSR을 위한 로직
+  // SSR을 위한 로직: async 함수를 사용해야 하기 때문에 여기서 messages를 만들어야 한다.
   const headersList = headers();
   const pathname = (headersList.get("x-pathname") || "/").slice(1) || "landing";
-  const locale =
-    (cookies().get("NEXT_LOCALE")?.value as settingLanguageType) || "en";
-  const messages = (await import(`../../messages/${pathname}/${locale}.json`))
-    .default;
+  const localeCookie = cookies().get("NEXT_LOCALE")?.value;
+  const locale = verifyCookie(localeCookie);
+  let messages: Record<string, string> = {};
+
+  if (!knownRoutes.includes(pathname)) {
+    messages["id"] = "pathname-not-found";
+  } else {
+    try {
+      messages = (await import(`../../messages/${pathname}/${locale}.json`))
+        .default;
+    } catch {
+      messages["id"] = "json-network-error";
+    }
+  }
 
   return (
     <html lang={locale}>
