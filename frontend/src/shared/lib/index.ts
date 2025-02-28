@@ -1,3 +1,6 @@
+import { settingLanguageType } from "@/entities/setting/types";
+
+import { permittedLocales } from "../model";
 import { MUIChipColorType } from "../types";
 
 export const getMUIColorByCorrectRatio = (ratio: number): MUIChipColorType => {
@@ -8,4 +11,13 @@ export const getMUIColorByCorrectRatio = (ratio: number): MUIChipColorType => {
   } else {
     return "error";
   }
+};
+
+export const verifyCookie = (
+  localeCookie: string | undefined
+): settingLanguageType => {
+  return localeCookie === undefined ||
+    !permittedLocales.includes(localeCookie as settingLanguageType)
+    ? "en"
+    : (localeCookie as settingLanguageType);
 };
