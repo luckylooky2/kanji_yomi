@@ -11,7 +11,7 @@ export const LocaleContext = createContext({
   locale: "en" as settingLanguageType,
   messages: {} as Record<string, string>,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setLocale: (locale: settingLanguageType) => {},
+  setLocale: (_locale: settingLanguageType) => {},
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadMessages: async (_newLocale: settingLanguageType) => {},
   pathname: "",
