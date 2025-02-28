@@ -1,0 +1,15 @@
+{
+  "id": "words",
+  "search-placeholder": "단어를 검색하세요. 예)",
+  "error-title": "단어 가져오기에 실패했습니다 :(",
+  "error-reload": "재시도",
+  "filter-difficulty-title": "JLPT 난이도",
+  "filter-correctRatio-title": "정답률",
+  "All": "All",
+  "High": "높음",
+  "Mid": "중간",
+  "Low": "낮음",
+  "filter-reset": "초기화",
+  "filter-close": "닫기",
+  "count-total": "항목을 찾았습니다."
+}

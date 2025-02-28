@@ -1,23 +1,34 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 import { addClass, startBubbleAnimation, reveal } from "@/entities/landing/lib";
+import LanguageSelectMenu from "@/features/header/components/LanguageSelectMenu";
+import { useLocale } from "@/shared/hooks/useLocale";
+import ErrorComponent from "@/widgets/ErrorComponent/ErrorComponent";
+import Loading from "@/widgets/Loading/Loading";
 
 import "../../public/landing/css/style.css";
 
 import pkg from "../../package.json";
 
 const LandingPage = () => {
+  const t = useTranslations();
   const htmlRef = useRef<HTMLElement>();
   const bodyRef = useRef<HTMLElement>();
   const scrollRevealRef = useRef<scrollReveal.ScrollRevealObject>();
+  const { isError, retryHandler, isLoading } = useLocale();
 
   const currVersion = `v${pkg.version}`;
   const url = `https://github.com/luckylooky2/kanji_yomi/releases/tag/${currVersion}`;
 
   useEffect(() => {
+    if (isError || isLoading) {
+      return;
+    }
+
     // SSR 환경에서는 window 객체가 없기 때문에 동적으로 로드
     async function dynamicLoadScrollReveal() {
       const scrollreveal = await import("scrollreveal");
@@ -63,7 +74,17 @@ const LandingPage = () => {
     }
 
     init();
-  }, []);
+  }, [isError, isLoading]);
+
+  if (isError) {
+    return (
+      <ErrorComponent retryHandler={retryHandler} message="Network Error" />
+    );
+  }
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div id="body" className="is-boxed has-animations">
@@ -86,6 +107,7 @@ const LandingPage = () => {
                   height={40}
                 />
               </div>
+              <LanguageSelectMenu />
             </div>
           </div>
         </header>
@@ -110,11 +132,11 @@ const LandingPage = () => {
                 <div className="hero-copy">
                   <div className="blur">
                     <h2 className="hero-title mt-0">
-                      Typing-based <div className="word-break" />
-                      Japanese Kanji Quiz
+                      {t("hero-title1")} <div className="word-break" />
+                      {t("hero-title2")}
                     </h2>
                     <p className="hero-paragraph sub-title-color">
-                      Boost Your Japanese Reading Fluency!
+                      {t("hero-paragraph")}
                     </p>
                   </div>
                   <div className="hero-cta">
@@ -122,7 +144,7 @@ const LandingPage = () => {
                       className="button button-primary button-wide-mobile"
                       href="/quiz"
                     >
-                      Try Quiz Now →
+                      {t("hero-callToAction")} →
                     </a>
                   </div>
                 </div>
@@ -142,7 +164,7 @@ const LandingPage = () => {
           <section className="features-extended section">
             <div className="features-extended-inner section-inner">
               <div className="features-extended-wrap">
-                <h1 className="section-title">About App</h1>
+                <h1 className="section-title">{t("aboutApp-title")}</h1>
                 <div className="feature-extended feature-grid">
                   <div className="feature-extended-body grid-content is-revealing">
                     <Image
@@ -153,13 +175,10 @@ const LandingPage = () => {
                     />
                     <div className="grid-letter-box">
                       <h4 className="mt-0 mb-16">
-                        The Importance of <br />
-                        Japanese Kanji
+                        {t("aboutApp-subtitle1-1")} <br />
+                        {t("aboutApp-subtitle1-2")}
                       </h4>
-                      <p className="m-0">
-                        Kanji defines both word meaning and pronunciation,
-                        making it essential for mastering Japanese.
-                      </p>
+                      <p className="m-0">{t("aboutApp-paragraph1")}</p>
                     </div>
                   </div>
                   <div className="feature-extended-body grid-content is-revealing">
@@ -171,13 +190,10 @@ const LandingPage = () => {
                     />
                     <div>
                       <h4 className="mt-0 mb-16">
-                        Repetitive Learning <br />
-                        Through Quizzes
+                        {t("aboutApp-subtitle2-1")} <br />
+                        {t("aboutApp-subtitle2-2")}
                       </h4>
-                      <p className="m-0">
-                        Practice Kanji through quizzes to build confidence and
-                        gradually improve with varying difficulty levels.
-                      </p>
+                      <p className="m-0">{t("aboutApp-paragraph2")}</p>
                     </div>
                   </div>
                   <div className="feature-extended-body grid-content is-revealing">
@@ -188,17 +204,14 @@ const LandingPage = () => {
                       height={100}
                     />
                     <div>
-                      <h4 className="mt-0 mb-16">Type, Don’t Choose</h4>
-                      <p className="m-0">
-                        Typing Kanji ensures accurate learning, unlike
-                        multiple-choice, which relies on guessing.
-                      </p>
+                      <h4 className="mt-0 mb-16">{t("aboutApp-subtitle3")}</h4>
+                      <p className="m-0">{t("aboutApp-paragraph3")}</p>
                     </div>
                   </div>
                 </div>
                 <div className="divider" />
                 <div className="container margin-bottom">
-                  <h1 className="section-title">Features</h1>
+                  <h1 className="section-title">{t("features-title")}</h1>
                   <div className="feature-extended">
                     <div className="feature-extended-image">
                       <div className="mockup-bg">
@@ -219,14 +232,10 @@ const LandingPage = () => {
                     </div>
                     <div className="feature-extended-body is-revealing">
                       <h3 className="mt-0 mb-16">
-                        Quiz Based on <br />
-                        Difficulty Levels
+                        {t("features-subtitle1-1")} <br />
+                        {t("features-subtitle1-2")}
                       </h3>
-                      <p className="m-0">
-                        Quizzes are provided based on JLPT levels, from N5 to
-                        N1. You can also select multiple levels for a
-                        comprehensive learning experience.
-                      </p>
+                      <p className="m-0">{t("features-paragraph1")}</p>
                     </div>
                   </div>
                   <div className="feature-extended">
@@ -249,15 +258,10 @@ const LandingPage = () => {
                     </div>
                     <div className="feature-extended-body is-revealing">
                       <h3 className="mt-0 mb-16">
-                        Improve Learning Efficiency with Hints
+                        {t("features-subtitle2-1")}
+                        <br /> {t("features-subtitle2-2")}
                       </h3>
-                      <p className="m-0">
-                        Our app provides hints, such as pronunciations and
-                        dictionary definitions, to help you find the correct
-                        answer easily. However, it is recommended to attempt
-                        solving the questions on your own first before using
-                        hints.
-                      </p>
+                      <p className="m-0">{t("features-paragraph2")}</p>
                     </div>
                   </div>
                   <div className="feature-extended">
@@ -280,14 +284,10 @@ const LandingPage = () => {
                     </div>
                     <div className="feature-extended-body is-revealing">
                       <h3 className="mt-0 mb-16">
-                        Quick Summary of <br />
-                        Your Performance
+                        {t("features-subtitle3-1")} <br />
+                        {t("features-subtitle3-2")}
                       </h3>
-                      <p className="m-0">
-                        The result screen shows correct and incorrect answers at
-                        a glance. Check your time, accuracy, and other stats to
-                        evaluate your progress.
-                      </p>
+                      <p className="m-0">{t("features-paragraph3")}</p>
                     </div>
                   </div>
                 </div>
@@ -304,17 +304,14 @@ const LandingPage = () => {
               <div className="container-sm">
                 <div className="cta-inner section-inner">
                   <div className="cta-header text-center">
-                    <h2 className="section-title mt-0">Don’t Miss Out!</h2>
-                    <p className="section-paragraph">
-                      Get started now and be among the first to experience the
-                      power of learning Japanese with us.
-                    </p>
+                    <h2 className="section-title mt-0">{t("footer-title")}</h2>
+                    <p className="section-paragraph">{t("footer-paragraph")}</p>
                     <div className="cta-cta">
                       <a
                         className="button button-primary button-wide-mobile"
                         href="/quiz"
                       >
-                        Play the Quiz →
+                        {t("footer-callToAction")} →
                       </a>
                     </div>
                   </div>
@@ -328,14 +325,14 @@ const LandingPage = () => {
                 <div className="brand footer-brand"></div>
                 <ul className="footer-links list-reset">
                   <li>
-                    <a href="mailto:dev.chanhyung@gmail.com">Contact</a>
+                    <a href="mailto:dev.chanhyung@gmail.com">{t("contact")}</a>
                   </li>
                   <li>
                     <a
                       href="https://github.com/luckylooky2/kanji_yomi/issues/new/choose"
                       target="_blank"
                     >
-                      Suggestion
+                      {t("suggestion")}
                     </a>
                   </li>
                   <li>
@@ -364,7 +361,7 @@ const LandingPage = () => {
                   </li>
                 </ul>
                 <div className="footer-copyright">
-                  &copy; 2024 Kanjiyomi, all rights reserved
+                  &copy; 2025 Kanjiyomi, all rights reserved
                 </div>
               </div>
             </div>

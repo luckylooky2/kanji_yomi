@@ -14,6 +14,7 @@ import {
 import { saveAs } from "file-saver";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { throttle } from "lodash";
+import { useTranslations } from "next-intl";
 import {
   SyntheticEvent,
   useCallback,
@@ -55,6 +56,7 @@ const QuizResult = () => {
   const optionDifficulty = useAtomValue(quizOptionDifficultyState);
   const [isDownloadMenuOpen, setIsDownloadMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const t = useTranslations("result");
 
   const accuracy = calculateAccuracy(correct, totalRetries);
   const correctCount = quizResult.filter(
@@ -137,22 +139,22 @@ const QuizResult = () => {
 
   return (
     <QuizResultContainer>
-      <h2>Result</h2>
+      <h2>{t("title")}</h2>
       <QuizResultStat>
         <QuizResultStatItem
-          title="Score"
+          title={`${t("stat-score")}`}
           content={correctCount}
           formattingFn={scoreFormattingFn}
           colorFormattingFn={scoreColorFormattingFn}
         />
         <QuizResultStatItem
-          title="Accuracy"
+          title={`${t("stat-accuracy")}`}
           content={accuracy}
           formattingFn={accuracyFormattingFn}
           colorFormattingFn={accuracyColorFormattingFn}
         />
         <QuizResultStatItem
-          title="Time"
+          title={`${t("stat-time")}`}
           content={getTotalSeconds(quizStartTime, quizEndTime)}
           formattingFn={timeFormattingFn}
         />
@@ -168,7 +170,7 @@ const QuizResult = () => {
               <CustomTab
                 key={type + index}
                 icon={<ColorCircle type={type} size={15} />}
-                label={type}
+                label={t(type)}
                 value={type}
                 iconPosition="start"
                 aria-controls="quiz-result-list"
@@ -199,9 +201,7 @@ const QuizResult = () => {
               </QuizResultListItem>
             ))
           ) : (
-            <QuizResultListEmpty>
-              Play and learn more words :)
-            </QuizResultListEmpty>
+            <QuizResultListEmpty>{t("no-words")}</QuizResultListEmpty>
           )}
         </QuizResultList>
       </QuizResultListContainer>
@@ -232,12 +232,12 @@ const QuizResult = () => {
           >
             <DownloadCSVButton onClick={throttledDownloadCSV}>
               <InsertDriveFileOutlinedIcon />
-              Download CSV
+              {t("csv")}
             </DownloadCSVButton>
           </DownloadButtonGroup>
         </Popper>
         <OptionButton variant="contained" onClick={handleGoToQuizOption}>
-          Back To Option
+          {t("back")}
         </OptionButton>
       </QuizResultButtonGroup>
     </QuizResultContainer>

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Tab, Tabs } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { SyntheticEvent, useState } from "react";
 
 import { theme } from "../../../shared/styles/theme";
@@ -12,6 +13,7 @@ const QuizInputUserGuide = () => {
   const [platform, setPlatform] = useState(0);
   const [pcOS, setPcOS] = useState(0);
   const [mobileOS, setMobileOS] = useState(0);
+  const t = useTranslations("guide");
 
   const handleValue =
     (setter: (_newValue: number) => void) =>
@@ -71,34 +73,44 @@ const QuizInputUserGuide = () => {
       {platform === PC && pcOS === WINDOWS && (
         <InputUserGuideContent>
           <div>
-            <span>1. </span>Open Settings.
+            <span>1. </span>
+            {t("step2-Windows1")}
           </div>
           <div>
-            <span>2. </span> [ Time & Language ] → [ Language & region ] → [
-            Preferred languages ] → [ Add a language ]
+            <span>2. </span>
+            {t("step2-Windows2")}
           </div>
           <div>
-            <span>3. </span> Search for Japanese, and install it.
+            <span>3. </span>
+            {t("step2-Windows3")}
           </div>
           <div>
-            <span>4. </span>Press Windows + Space to switch to Japanese.
+            <span>4. </span>
+            {t("step2-Windows4")}
           </div>
         </InputUserGuideContent>
       )}
       {platform === PC && pcOS === MACOS && (
         <InputUserGuideContent>
           <div>
-            <span>1. </span>Open System Settings.
+            <span>1. </span>
+            {t("step2-MacOS1")}
           </div>
           <div>
-            <span>2. </span>[ Keyboard ] → [ Text Input ] → [ Input Sources ] →
-            [ Edit ] → [ + ]
+            <span>2. </span>
+            {t("step2-MacOS2")}
           </div>
           <div>
-            <span>3. </span>Search for Japanese, and add it.
+            <span>3. </span>
+            {t("step2-MacOS3")}
           </div>
           <div>
-            <span>4. </span>Press Control + Space to switch to Japanese.
+            <span>4. </span>
+            {t("step2-MacOS4")}
+          </div>
+          <div>
+            <span>5. </span>
+            {t("step2-MacOS5")}
           </div>
         </InputUserGuideContent>
       )}
@@ -106,58 +118,64 @@ const QuizInputUserGuide = () => {
         <InputUserGuideContent>
           <div>
             <span>1. </span>
-            Open Settings.
+            {t("step2-Linux1")}
           </div>
           <div>
-            <span>2. </span>[ Region & Language ] → [ System ] → [ Manage
-            Installed Languages ] → [ Install / Remove Languages ]
+            <span>2. </span>
+            {t("step2-Linux2")}
           </div>
           <div>
-            <span>3. </span>Select Japanese, and click apply button.
+            <span>3. </span>
+            {t("step2-Linux3")}
           </div>
           <div>
-            <span>4. </span>[ Keyboard ] → [ Add Input Source ] → [ Japanese ] →
-            [ Add Japanese(Mozc) ]
+            <span>4. </span>
+            {t("step2-Linux4")}
           </div>
           <div>
-            <span>5. </span>Press Super + Space to switch to Japanese.
+            <span>5. </span>
+            {t("step2-Linux5")}
           </div>
         </InputUserGuideContent>
       )}
       {platform === MOBILE && mobileOS === IOS && (
         <InputUserGuideContent>
           <div>
-            <span>1. </span>Open Settings.
+            <span>1. </span>
+            {t("step2-iOS1")}
           </div>
           <div>
-            <span>2. </span>[ General ] → [ Keyboard ] → [ Keyboard ] → [ Add
-            New Keyboard ]
+            <span>2. </span>
+            {t("step2-iOS2")}
           </div>
           <div>
-            <span>3. </span>Search for Japanese, and add it.
+            <span>3. </span>
+            {t("step2-iOS3")}
           </div>
           <div>
-            <span>4. </span>Switch keyboards by tapping the globe icon while
-            typing.
+            <span>4. </span>
+            {t("step2-iOS4")}
           </div>
         </InputUserGuideContent>
       )}
       {platform === MOBILE && mobileOS === ANDROID && (
         <InputUserGuideContent>
           <div>
-            <span>1. </span>Open Settings.
+            <span>1. </span>
+            {t("step2-Android1")}
           </div>
           <div>
             <div>
-              <span>2. </span>[ General ] → [ Languages & input ] → [ Language ]
-              → [ Add Language ]
+              <span>2. </span>
+              {t("step2-Android2")}
             </div>
             <div>
-              <span>3. </span>Search for Japanese, and add it.
+              <span>3. </span>
+              {t("step2-Android3")}
             </div>
             <div>
-              <span>4. </span>Switch keyboards by tapping the globe icon while
-              typing.
+              <span>4. </span>
+              {t("step2-Android4")}
             </div>
           </div>
         </InputUserGuideContent>

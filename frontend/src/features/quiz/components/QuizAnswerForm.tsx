@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import dayjs from "dayjs";
 import { useSetAtom, useAtomValue, useAtom } from "jotai";
 import throttle from "lodash/throttle";
+import { useTranslations } from "next-intl";
 import React, { useState, useRef, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -50,6 +51,7 @@ const QuizAnswerForm = () => {
   } = useForm<AnswerInputType>();
   const timeId = useRef<NodeJS.Timeout | null>(null);
   const { currStep, setNextStep } = useQuizUserGuideStep();
+  const t = useTranslations("game");
 
   const getNextQuestion = (isSkipped: boolean) => {
     setRetries((prevRetries) => {
@@ -147,7 +149,7 @@ const QuizAnswerForm = () => {
           id="answer-input"
           className={shake ? "shake" : ""}
           autoComplete="off"
-          placeholder="Type in Hiragana. ex) きょう, あした"
+          placeholder={`${t("placeholder")} きょう, あした`}
           onFocus={handlePullUpScrollToTarget}
           isGuideSelected={
             currStep === quizUserGuideIndex.ANSWER_INPUT ||
@@ -165,7 +167,7 @@ const QuizAnswerForm = () => {
         disabled={!!errorCurrentKanji}
         isGuideSelected={currStep === quizUserGuideIndex.SUBMIT_BUTTON}
       >
-        submit
+        {t("submit")}
       </QuizAnswerSubmitButton>
       <QuizAnswerSkipButton
         id="skip-button"
@@ -174,7 +176,7 @@ const QuizAnswerForm = () => {
         disabled={!!errorCurrentKanji}
         isGuideSelected={currStep === quizUserGuideIndex.SKIP_BUTTON}
       >
-        skip
+        {t("skip")}
       </QuizAnswerSkipButton>
     </QuizAnswerSection>
   );

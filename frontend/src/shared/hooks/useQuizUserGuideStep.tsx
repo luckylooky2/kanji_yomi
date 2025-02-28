@@ -1,4 +1,5 @@
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
 import {
@@ -15,6 +16,7 @@ export function useQuizUserGuideStep() {
   const [userGuideStep, setUserGuideStep] = useAtom(quizUserGuideStepState);
   const [, setIsHintMenuOpen] = useAtom(quizHintMenuOpenState);
   const [, setShowUserGuide] = useAtom(quizUserGuideShowState);
+  const t = useTranslations("guide");
 
   const quizUserGuideList: (QuizUserGuideType | null)[] = [
     null,
@@ -24,87 +26,75 @@ export function useQuizUserGuideStep() {
       content: (
         <div>
           <div>
-            The answer should be submitted in <span>Japanese Hiragana</span>{" "}
-            only.
+            {t("step1-content1")} <span>{t("step1-content2")}</span>
+            {t("step1-content3")}
           </div>
           <div>&nbsp;• きょう &#40;O&#41;</div>
           <div>&nbsp;• 今日 &#40;X&#41;</div>
           <div>&nbsp;• キョウ &#40;X&#41;</div>
         </div>
       ),
-      title: "Input Format",
+      title: t("step1-title"),
     },
     {
       anchorEl: document.getElementById("answer-input"),
       position: "top",
       content: <QuizInputUserGuide />,
-      title: "Japanese Keyboard Setup",
+      title: t("step2-title"),
     },
     {
       anchorEl: document.getElementById("submit-button"),
       position: "top",
       content: (
         <div>
-          <div>Press ENTER or SUBMIT BUTTON to submit the answer.</div>
+          <div>{t("step3-content1")}</div>
           <br />
-          <div>
-            If it’s correct, you will proceed to the next question. Otherwise,
-            you can enter the answer again.
-          </div>
+          <div>{t("step3-content2")}</div>
         </div>
       ),
-      title: "Submit",
+      title: t("step3-title"),
     },
     {
       anchorEl: document.getElementById("skip-button"),
       position: "top",
-      content: (
-        <div>
-          If you don’t know the answer, you can press the SKIP BUTTON to move to
-          the next question.
-        </div>
-      ),
-      title: "Skip",
+      content: <div>{t("step4-content1")}</div>,
+      title: t("step4-title"),
     },
     {
       anchorEl: document.getElementById("progress-bar"),
       position: "bottom",
-      content: "Shows the current round and the total rounds.",
-      title: "Quiz Rounds",
+      content: t("step5-content1"),
+      title: t("step5-title"),
     },
     {
       anchorEl: document.getElementById("quiz-hint"),
       position: "top",
-      content: (
-        <div>
-          <div>Listen with TTS or check how to read it in the Dictionary.</div>
-        </div>
-      ),
-      title: "Hints",
+      content: t("step6-content1"),
+      title: t("step6-title"),
     },
     {
       anchorEl: document.getElementById("quit-button"),
       position: "bottom",
       content: (
         <div>
-          <div>Return to Quiz option page.</div>
+          <div>{t("step7-content1")}</div>
           <br />
-          <div>The current quiz progress will not be saved.</div>
+          <div>{t("step7-content2")}</div>
         </div>
       ),
-      title: "Quit",
+      title: t("step7-title"),
     },
     {
       anchorEl: document.getElementById("finish-button"),
       position: "bottom",
       content: (
         <div>
-          <div>Move immediately to Quiz result page.</div>
+          <div>{t("step8-content1")}</div>
           <br />
-          <div>You can click without completing all rounds.</div>
+          <div>{t("step8-content2")}</div>
         </div>
       ),
-      title: "Finish",
+      title: t("step8-title"),
     },
   ];
 

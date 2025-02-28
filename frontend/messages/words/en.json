@@ -1,0 +1,16 @@
+{
+  "id": "words",
+  "search-placeholder": "Search words. ex",
+  "error-title": "Failed to fetch words :(",
+  "error-reload": "Reload",
+  "filter-difficulty-title": "JLPT Difficulty",
+  "filter-correctRatio-title": "Correct Ratio",
+  "All": "All",
+  "High": "High",
+  "Mid": "Mid",
+  "Low": "Low",
+  "filter-reset": "Reset",
+  "filter-close": "Close",
+  "count-error": "Failed to load count.",
+  "count-total": "items found."
+}

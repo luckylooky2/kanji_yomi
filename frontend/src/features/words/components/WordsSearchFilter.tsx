@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
+import { useTranslations } from "next-intl";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReset } from "react-hook-form";
 
@@ -42,6 +43,7 @@ const WordsSearchFilter = ({
 }: Props) => {
   const isMobile = useMediaQuery(theme.breakpoints.mobile);
   const size = useResponsiveSize();
+  const t = useTranslations();
   const difficultyList = ["All" as WordsSearchFilterDifficultyType, ...d];
   const correctRatioList = ["All" as WordsSearchFilterCorrectRatioType, ...cr];
 
@@ -102,7 +104,7 @@ const WordsSearchFilter = ({
     <WordsSearchFilterConatiner>
       <WordsSearchFilterOptionLayout isMobile={isMobile}>
         <WordsSearchFilterOption>
-          <h3>Difficulty</h3>
+          <h3>{t("filter-difficulty-title")}</h3>
           {difficultyList.map((difficulty, index) => (
             <FormControlLabel
               key={index}
@@ -118,13 +120,13 @@ const WordsSearchFilter = ({
           ))}
         </WordsSearchFilterOption>
         <WordsSearchFilterOption>
-          <h3>Correct Ratio</h3>
+          <h3>{t("filter-correctRatio-title")}</h3>
           {correctRatioList.map((ratio, index) => (
             <FormControlLabel
               checked={selectedCorrectRatio[ratio]}
               key={index}
               control={<Checkbox size={size} />}
-              label={ratio}
+              label={t(ratio)}
               onChange={createHandleCheckboxChange<WordsSearchFilterCorrectRatioType>(
                 setSelectedCorrectRatio,
                 ratio,
@@ -136,10 +138,10 @@ const WordsSearchFilter = ({
       </WordsSearchFilterOptionLayout>
       <WordsSearchFilterButtonGroup>
         <ResponsiveButton variant="contained" onClick={resetFilter}>
-          Reset
+          {t("filter-reset")}
         </ResponsiveButton>
         <ResponsiveButton variant="outlined" onClick={toggleHandler}>
-          Close
+          {t("filter-close")}
         </ResponsiveButton>
       </WordsSearchFilterButtonGroup>
     </WordsSearchFilterConatiner>

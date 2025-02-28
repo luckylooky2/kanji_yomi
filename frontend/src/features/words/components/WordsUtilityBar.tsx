@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 import { MouseEvent } from "react";
 
 import { wordsSearchFilterState, wordsView } from "@/entities/words/store";
@@ -32,6 +33,11 @@ const WordsUtilityBar = () => {
       wordsSearchFilterState
     );
     const { data, isLoading, isError } = useQuery(queryOption());
+    const t = useTranslations();
+
+    const convertNumberToThousandSeperated = (num: number) => {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
 
     function queryOption() {
       return queryOptions({
@@ -57,12 +63,12 @@ const WordsUtilityBar = () => {
     }
 
     if (isError) {
-      return <span>Failed to load count.</span>;
+      return <span>{t("count-error")}</span>;
     }
 
     return (
       <span>
-        Found <i>{data.totalCount}</i> items.
+        {convertNumberToThousandSeperated(data.totalCount)} {t("count-total")}
       </span>
     );
   };

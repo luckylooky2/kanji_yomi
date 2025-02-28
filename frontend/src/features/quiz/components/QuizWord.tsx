@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 
 import { quizCurrentKanjiState } from "@/entities/quiz/store";
 import { QuizWordCategory } from "@/entities/quiz/types";
@@ -12,6 +13,7 @@ import QuizWordHint from "./QuizWordHint";
 const QuizWord = () => {
   // error가 발생한 경우는 상위 컴포넌트에서 처리되었기 때문에 !를 사용하였다.
   const [{ data: kanji }] = useAtom(quizCurrentKanjiState);
+  const t = useTranslations("game");
 
   const difficulties = kanji!.meanings.map((meaning) => meaning.difficulty);
   const uniqueDifficulties = difficulties.filter(
@@ -28,7 +30,7 @@ const QuizWord = () => {
   if (kanji!.meanings.length >= 2) {
     meaningsCategories.push({
       kind: "multianswer",
-      value: "Multi-answer",
+      value: t("multiAnswer"),
       color: "secondary",
     });
   }

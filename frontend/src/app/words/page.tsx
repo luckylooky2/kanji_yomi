@@ -5,6 +5,7 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -20,7 +21,9 @@ import WordsDisplay from "@/features/words/components/WordsDisplay";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
 import WordsUtilityBar from "@/features/words/components/WordsUtilityBar";
 import { useFetchWords } from "@/shared/hooks/useFetchWords";
+import { useLocale } from "@/shared/hooks/useLocale";
 import { theme } from "@/shared/styles/theme";
+import ErrorComponent from "@/widgets/ErrorComponent/ErrorComponent";
 import Loading from "@/widgets/Loading/Loading";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
@@ -40,6 +43,12 @@ const WordsPage = () => {
   const [searchInput, setSearchInput] = useAtom(wordsSearchFilterSearchInput);
   const isWordSelected = currentWordIndex !== null;
   const { isLoading, isError } = useFetchWords();
+  const t = useTranslations();
+  const {
+    isLoading: isLocaleLoading,
+    isError: isLocaleError,
+    retryHandler,
+  } = useLocale();
 
   const onSubmit = ({ search }: WordsSearchInputType) => {
     setDifficulty({ ...selectedDifficulty });
@@ -59,20 +68,31 @@ const WordsPage = () => {
 
   const toggleSearchFilter = () => setIsSearchPageOpen(!isSearchPageOpen);
 
+  if (isLocaleError) {
+    return (
+      <ErrorComponent retryHandler={retryHandler} message="Network Error" />
+    );
+  }
+
+  if (isLocaleLoading) {
+    return <Loading />;
+  }
+
   if (isError) {
     return (
       <WordsErrorContainer>
-        <h3>Failed to fetch words :(</h3>
+        <h3>{t("error-title")}</h3>
         <Button
           size="small"
           variant="contained"
           onClick={() => window.location.reload()}
         >
-          Reload
+          {t("error-reload")}
         </Button>
       </WordsErrorContainer>
     );
   }
+
   return (
     <WordsContainer>
       <WordsSearchContainer>
@@ -80,7 +100,7 @@ const WordsPage = () => {
           <WordsSearchInput
             {...register(SearchInputKey)}
             autoComplete="off"
-            placeholder="Search words. ex) 日, ひ"
+            placeholder={`${t("search-placeholder")} 日, ひ`}
             defaultValue={searchInput}
           />
         </WordsSearchForm>
