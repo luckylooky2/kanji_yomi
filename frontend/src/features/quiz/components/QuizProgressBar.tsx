@@ -22,12 +22,9 @@ const QuizProgressBar = () => {
       aria-labelledby="progress-rate"
       isGuideSelected={currStep === quizUserGuideIndex.PROGRESS_BAR}
     >
-      <ProgressBar
-        variant="determinate"
-        value={((currRound + 1) / maxRound) * 100}
-      />
+      <ProgressBar variant="determinate" value={(currRound / maxRound) * 100} />
       <ProgressRate id="progress-rate">
-        {`${currRound + 1} / ${maxRound}`}
+        {`${currRound} / ${maxRound}`}
       </ProgressRate>
     </ProgressBarLayout>
   );
