@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 import { wordsCurrentWordIndex, wordsView } from "@/entities/words/store";
@@ -13,8 +14,9 @@ const WordsDisplay = () => {
     wordsCurrentWordIndex
   );
   const [view] = useAtom(wordsView);
-  const { words, isError } = useFetchWords();
   const itemRefs = useRef<HTMLDivElement[]>([]);
+  const { words, isError } = useFetchWords();
+  const t = useTranslations();
   const isWordSelected = currentWordIndex !== null;
 
   useEffect(() => {
@@ -52,7 +54,7 @@ const WordsDisplay = () => {
   if (words.length === 0) {
     return (
       <WordsNotFound>
-        <h3>No words found :(</h3>
+        <h3>{t("not-found")} :(</h3>
       </WordsNotFound>
     );
   }

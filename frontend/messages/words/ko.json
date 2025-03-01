@@ -11,5 +11,6 @@
   "Low": "낮음",
   "filter-reset": "초기화",
   "filter-close": "닫기",
-  "count-total": "항목을 찾았습니다."
+  "count-total": "항목을 찾았습니다.",
+  "not-found": "검색 결과가 없습니다"
 }
