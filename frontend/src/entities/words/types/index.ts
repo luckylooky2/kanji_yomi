@@ -1,6 +1,5 @@
 import { CorrectRatioType, DifficultyType } from "@/shared/types";
 
-export const SearchInputKey = "search";
 export type WordsSearchInputType = {
   search: string;
 };
