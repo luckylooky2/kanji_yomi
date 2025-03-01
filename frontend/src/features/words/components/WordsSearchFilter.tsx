@@ -3,7 +3,6 @@ import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useTranslations } from "next-intl";
 import { Dispatch, SetStateAction } from "react";
-import { UseFormReset } from "react-hook-form";
 
 import {
   wordsSearchFilterCorrectRatioDefaultValues as correctRatioDefaultValues,
@@ -12,7 +11,6 @@ import {
 import {
   WordsSearchFilterCorrectRatioType,
   WordsSearchFilterDifficultyType,
-  WordsSearchInputType,
 } from "@/entities/words/types";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { useResponsiveSize } from "@/shared/hooks/useResponsiveSize";
@@ -22,7 +20,7 @@ import ResponsiveButton from "@/widgets/Responsive/ResponsiveButton";
 
 interface Props {
   toggleHandler: () => void;
-  resetInput: UseFormReset<WordsSearchInputType>;
+  resetInput: () => void;
   selectedDifficulty: Record<WordsSearchFilterDifficultyType, boolean>;
   setSelectedDifficulty: Dispatch<
     SetStateAction<Record<WordsSearchFilterDifficultyType, boolean>>
@@ -97,7 +95,7 @@ const WordsSearchFilter = ({
   const resetFilter = () => {
     setSelectedDifficulty({ ...difficultyDefaultValues });
     setSelectedCorrectRatio({ ...correctRatioDefaultValues });
-    resetInput({ search: "" });
+    resetInput();
   };
 
   return (
