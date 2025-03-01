@@ -16,7 +16,6 @@ import {
   wordsSearchFilterSearchInput,
   wordsSearchInputTempState,
 } from "@/entities/words/store";
-import { WordsSearchInputType } from "@/entities/words/types";
 import WordsCurrentWord from "@/features/words/components/WordsCurrentWord";
 import WordsDisplay from "@/features/words/components/WordsDisplay";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
@@ -29,7 +28,6 @@ import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 const WordsPage = () => {
   const [isSearchPageOpen, setIsSearchPageOpen] = useState(false);
-  const { handleSubmit } = useForm<WordsSearchInputType>();
   const [difficulty, setDifficulty] = useAtom(wordsSearchFilterDifficulty);
   const [correctRatio, setCorrectRatio] = useAtom(
     wordsSearchFilterCorrectRatio
@@ -44,10 +42,11 @@ const WordsPage = () => {
   const [searchInputTemp, setSearchInputTemp] = useAtom(
     wordsSearchInputTempState
   );
-  const isWordSelected = currentWordIndex !== null;
+  const { handleSubmit } = useForm();
   const { isLoading, isError } = useFetchWords();
-  const t = useTranslations();
   const { isLoading: isLocaleLoading } = useLocale();
+  const t = useTranslations();
+  const isWordSelected = currentWordIndex !== null;
 
   const onSubmit = () => {
     setDifficulty({ ...selectedDifficulty });
