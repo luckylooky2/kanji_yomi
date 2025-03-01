@@ -6,14 +6,8 @@ import dayjs from "dayjs";
 import { useSetAtom, useAtomValue, useAtom } from "jotai";
 import throttle from "lodash/throttle";
 import { useTranslations } from "next-intl";
-import {
-  useState,
-  useRef,
-  useMemo,
-  MouseEvent,
-  KeyboardEvent,
-  ChangeEvent,
-} from "react";
+import { useState, useRef, useMemo, MouseEvent, ChangeEvent } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 import {
@@ -51,6 +45,7 @@ const QuizAnswerForm = () => {
   const { currStep, setNextStep } = useQuizUserGuideStep();
   const t = useTranslations("game");
   const { data: kanji, isError } = useQuizQuestion();
+  const { handleSubmit } = useForm();
   const popup = usePopup();
   const { refetch } = useQuery({
     queryKey: ["quizAnswer"],
@@ -167,19 +162,13 @@ const QuizAnswerForm = () => {
     setNextStep();
   };
 
-  const enterKeyHandler = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter") {
-      throttledOnSubmit();
-    }
-  };
-
   const handleUserAnswer = (e: ChangeEvent<HTMLInputElement>) => {
     setUserAnswer(e.target.value);
   };
 
   return (
-    <QuizAnswerSection onKeyDown={enterKeyHandler}>
-      <QuizAnswerWrapper>
+    <QuizAnswerSection>
+      <QuizAnswerWrapper onSubmit={handleSubmit(throttledOnSubmit)}>
         <QuizAnswerInput
           id="answer-input"
           className={shake ? "shake" : ""}
@@ -200,7 +189,7 @@ const QuizAnswerForm = () => {
       <QuizAnswerSubmitButton
         id="submit-button"
         variant="contained"
-        onClick={throttledOnSubmit}
+        onClick={handleSubmit(throttledOnSubmit)}
         disabled={isError}
         isGuideSelected={currStep === quizUserGuideIndex.SUBMIT_BUTTON}
       >
@@ -227,7 +216,7 @@ const QuizAnswerSection = styled.section`
   gap: ${theme.spacing.small};
 `;
 
-const QuizAnswerWrapper = styled.div`
+const QuizAnswerWrapper = styled.form`
   display: flex;
   gap: ${theme.spacing.xsmall};
 `;
