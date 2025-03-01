@@ -1,11 +1,10 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import dayjs from "dayjs";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { useTranslations } from "next-intl";
 
 import {
-  quizCurrentKanjiState,
   quizCurrentRetries,
   quizCurrentRoundState,
   quizTimerState,
@@ -14,6 +13,7 @@ import { quizStatusState } from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
 import ModalBase from "@/features/modal/components/ModalBase";
+import { useQuizQuestion } from "@/shared/hooks/useQuizQuestion";
 import { theme } from "@/shared/styles/theme";
 
 interface Props {
@@ -25,7 +25,7 @@ const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
   const setQuizStatus = useSetAtom(quizStatusState);
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
   const [retries, setRetries] = useAtom(quizCurrentRetries);
-  const { data: kanji } = useAtomValue(quizCurrentKanjiState);
+  const { data: kanji } = useQuizQuestion();
   const [currentRound] = useAtom(quizCurrentRoundState);
   const [, setQuizResult] = useAtom(quizResultState);
   const [, setFilter] = useAtom(quizResultFilter);

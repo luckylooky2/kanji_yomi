@@ -1,9 +1,8 @@
 import styled from "@emotion/styled";
-import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
 
-import { quizCurrentKanjiState } from "@/entities/quiz/store";
 import { QuizWordCategory } from "@/entities/quiz/types";
+import { useQuizQuestion } from "@/shared/hooks/useQuizQuestion";
 import { getMUIColorByCorrectRatio } from "@/shared/lib";
 import { theme } from "@/shared/styles/theme";
 
@@ -12,10 +11,14 @@ import QuizWordHint from "./QuizWordHint";
 
 const QuizWord = () => {
   // error가 발생한 경우는 상위 컴포넌트에서 처리되었기 때문에 !를 사용하였다.
-  const [{ data: kanji }] = useAtom(quizCurrentKanjiState);
+  const { data: kanji } = useQuizQuestion();
   const t = useTranslations("game");
 
-  const difficulties = kanji!.meanings.map((meaning) => meaning.difficulty);
+  if (!kanji) {
+    return <QuizWordLayout />;
+  }
+
+  const difficulties = kanji.meanings.map((meaning) => meaning.difficulty);
   const uniqueDifficulties = difficulties.filter(
     (item, index) => difficulties.indexOf(item) === index
   );
@@ -27,7 +30,7 @@ const QuizWord = () => {
     })
   );
 
-  if (kanji!.meanings.length >= 2) {
+  if (kanji.meanings.length >= 2) {
     meaningsCategories.push({
       kind: "multianswer",
       value: t("multiAnswer"),
@@ -38,8 +41,8 @@ const QuizWord = () => {
   const categories: QuizWordCategory[] = meaningsCategories.concat([
     {
       kind: "correctRatio",
-      value: kanji!.correctRatio + "%",
-      color: getMUIColorByCorrectRatio(kanji!.correctRatio),
+      value: kanji.correctRatio + "%",
+      color: getMUIColorByCorrectRatio(kanji.correctRatio),
     },
   ]);
 
@@ -53,7 +56,7 @@ const QuizWord = () => {
         </QuizWordCategoryLayout>
         <QuizWordHint />
       </QuizWordUtilityLayout>
-      <QuizWordWrapper>{kanji!.word}</QuizWordWrapper>
+      <QuizWordWrapper>{kanji.word}</QuizWordWrapper>
     </QuizWordLayout>
   );
 };
@@ -79,6 +82,12 @@ const QuizWordWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  height: 220px;
+
+  @media (min-width: 480px) {
+    height: 110px;
+  }
 `;
 
 const QuizWordUtilityLayout = styled.div`

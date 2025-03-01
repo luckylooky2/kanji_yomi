@@ -8,11 +8,9 @@ import { Button, ButtonGroup, Popper } from "@mui/material";
 import { useAtom } from "jotai";
 import { useState } from "react";
 
-import {
-  quizCurrentKanjiState,
-  quizHintMenuOpenState,
-} from "@/entities/quiz/store";
+import { quizHintMenuOpenState } from "@/entities/quiz/store";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
+import { useQuizQuestion } from "@/shared/hooks/useQuizQuestion";
 import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
 import { useTTS } from "@/shared/hooks/useTTS";
 import { quizUserGuideIndex } from "@/shared/model";
@@ -22,12 +20,12 @@ import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 import QuizWordHintSpeakSetting from "./QuizWordHintSpeakSetting";
 
 const QuizWordHint = () => {
-  const [{ data: kanji }] = useAtom(quizCurrentKanjiState);
   const [isMenuOpen, setIsMenuOpen] = useAtom(quizHintMenuOpenState);
   const [isSpeakSettingOpen, setIsSpeakSettingOpen] = useState(false);
   const { playTTS } = useTTS();
   const { currStep } = useQuizUserGuideStep();
   const isMobile = useMediaQuery(theme.breakpoints.mobile);
+  const { data: kanji } = useQuizQuestion();
 
   const handleSpeakWord = () => {
     if (!kanji) {
