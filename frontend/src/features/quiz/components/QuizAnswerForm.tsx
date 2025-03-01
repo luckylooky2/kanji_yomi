@@ -34,6 +34,8 @@ import { theme } from "@/shared/styles/theme";
 import "../../../../public/styles/utils.css";
 import { QuizService } from "../api";
 
+import { usePopup } from "./QuizAnswerStatusPopupProvider";
+
 const QuizAnswerForm = () => {
   const maxRound = useAtomValue(quizOptionRoundState);
   const [userAnswer, setUserAnswer] = useAtom(quizAnswerInputState);
@@ -49,25 +51,28 @@ const QuizAnswerForm = () => {
   const { currStep, setNextStep } = useQuizUserGuideStep();
   const t = useTranslations("game");
   const { data: kanji, isError } = useQuizQuestion();
+  const popup = usePopup();
   const { refetch } = useQuery({
     queryKey: ["quizAnswer"],
-    queryFn: async () => {
-      if (!kanji) {
-        return;
-      }
-
-      try {
-        return QuizService.getAnswer({
-          id: kanji.id,
-          word: kanji.word,
-          answer: userAnswer,
-        });
-      } catch {
-        throw new Error("Network Error");
-      }
-    },
+    queryFn: queryFn,
     enabled: false,
   });
+
+  async function queryFn() {
+    if (!kanji) {
+      return;
+    }
+
+    try {
+      return QuizService.getAnswer({
+        id: kanji.id,
+        word: kanji.word,
+        answer: userAnswer,
+      });
+    } catch {
+      throw new Error("Network Error");
+    }
+  }
 
   const getNextQuestion = (isSkipped: boolean) => {
     setRetries((prevRetries) => {
@@ -101,7 +106,8 @@ const QuizAnswerForm = () => {
 
   const onSubmit = async () => {
     if (!userAnswer) {
-      toast.info("Please fill in the answer.");
+      // 답을 입력하지 않은 경우
+      popup.info(t("popup-noinput"));
       return;
     }
 
@@ -113,15 +119,18 @@ const QuizAnswerForm = () => {
     }
 
     if (answerResult.result) {
+      popup.success(t("popup-correct"));
       getNextQuestion(false);
     } else {
+      // 틀린 경우
+      popup.error(t("popup-incorrect"));
       triggerShake();
       setRetries((prev) => prev + 1);
     }
   };
 
   const throttledOnSubmit = useMemo(
-    () => throttle(onSubmit, 500),
+    () => throttle(onSubmit, 1500),
     [kanji, userAnswer]
   );
 
@@ -136,7 +145,7 @@ const QuizAnswerForm = () => {
       setShake(false);
       setStatus(AnswerStatus.BEFORE);
       timeId.current = null;
-    }, 500);
+    }, 1500);
     timeId.current = id;
   };
 

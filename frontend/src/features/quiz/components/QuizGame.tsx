@@ -14,6 +14,8 @@ import QuizWordContainer from "@/features/quiz/components/QuizWordContainer";
 import { quizUserGuideIndex } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
+import QuizAnswerStatusPopupProvider from "./QuizAnswerStatusPopupProvider";
+
 const QuizGame = () => {
   const [showUserGuide] = useAtom(quizUserGuideShowState);
   const [, setUserGuideStep] = useAtom(quizUserGuideStepState);
@@ -31,7 +33,9 @@ const QuizGame = () => {
       <QuizStatusControlButtons />
       <QuizProgressBar />
       <QuizWordContainer />
-      <QuizAnswerForm />
+      <QuizAnswerStatusPopupProvider>
+        <QuizAnswerForm />
+      </QuizAnswerStatusPopupProvider>
     </QuizGameContainer>
   );
 };
