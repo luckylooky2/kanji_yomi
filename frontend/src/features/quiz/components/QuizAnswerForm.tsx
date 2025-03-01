@@ -1,57 +1,73 @@
 import styled from "@emotion/styled";
 import HelpIcon from "@mui/icons-material/Help";
 import Button from "@mui/material/Button";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useSetAtom, useAtomValue, useAtom } from "jotai";
 import throttle from "lodash/throttle";
 import { useTranslations } from "next-intl";
-import React, { useState, useRef, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import {
+  useState,
+  useRef,
+  useMemo,
+  MouseEvent,
+  KeyboardEvent,
+  ChangeEvent,
+} from "react";
 import { toast } from "react-toastify";
 
 import {
   quizCurrentRoundState,
   quizStatusState,
-  quizCurrentKanjiState,
-  quizAnswerResultState,
   quizTimerState,
   quizCurrentRetries,
+  quizAnswerInputState,
 } from "@/entities/quiz/store";
-import {
-  AnswerInputType,
-  AnswerStatus,
-  QuizStatus,
-} from "@/entities/quiz/types";
+import { AnswerStatus, QuizStatus } from "@/entities/quiz/types";
 import { quizOptionRoundState } from "@/entities/quizOption/store";
 import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
+import { useQuizQuestion } from "@/shared/hooks/useQuizQuestion";
 import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
 import { quizUserGuideIndex } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
 import "../../../../public/styles/utils.css";
+import { QuizService } from "../api";
 
 const QuizAnswerForm = () => {
   const maxRound = useAtomValue(quizOptionRoundState);
-  const [currentRound, setCurrentRound] = useAtom(quizCurrentRoundState);
+  const [userAnswer, setUserAnswer] = useAtom(quizAnswerInputState);
   const setQuizStatus = useSetAtom(quizStatusState);
-  const [, inquireAnswer] = useAtom(quizAnswerResultState);
-  const { data: kanji, error: errorCurrentKanji } = useAtomValue(
-    quizCurrentKanjiState
-  );
-  const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
   const [, setRetries] = useAtom(quizCurrentRetries);
   const [, setFilter] = useAtom(quizResultFilter);
   const [, setQuizResult] = useAtom(quizResultState);
+  const [currentRound, setCurrentRound] = useAtom(quizCurrentRoundState);
+  const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
   const [shake, setShake] = useState(false);
   const [, setStatus] = useState(AnswerStatus.BEFORE);
-  const {
-    register,
-    handleSubmit,
-    reset: resetInput,
-  } = useForm<AnswerInputType>();
   const timeId = useRef<NodeJS.Timeout | null>(null);
   const { currStep, setNextStep } = useQuizUserGuideStep();
   const t = useTranslations("game");
+  const { data: kanji, isError } = useQuizQuestion();
+  const { refetch } = useQuery({
+    queryKey: ["quizAnswer"],
+    queryFn: async () => {
+      if (!kanji) {
+        return;
+      }
+
+      try {
+        return QuizService.getAnswer({
+          id: kanji.id,
+          word: kanji.word,
+          answer: userAnswer,
+        });
+      } catch {
+        throw new Error("Network Error");
+      }
+    },
+    enabled: false,
+  });
 
   const getNextQuestion = (isSkipped: boolean) => {
     setRetries((prevRetries) => {
@@ -72,9 +88,9 @@ const QuizAnswerForm = () => {
       ]);
       return 0;
     });
-    resetInput();
+    setUserAnswer("");
     setCurrentRound((prev) => {
-      if (prev + 1 === maxRound) {
+      if (prev === maxRound) {
         setQuizStatus(QuizStatus.RESULT);
         setFilter("All");
         setQuizTimer({ ...quizTimer, quizEndTime: dayjs(new Date()) });
@@ -83,22 +99,20 @@ const QuizAnswerForm = () => {
     });
   };
 
-  const onSubmit = async ({ answer }: AnswerInputType) => {
-    if (!answer) {
+  const onSubmit = async () => {
+    if (!userAnswer) {
       toast.info("Please fill in the answer.");
       return;
     }
 
-    // answer은 이 컴포넌트에 강하게 결합되어 있어, 상태값으로 사용할 경우 동기적으로 answer이 전달이 불가능하다.
-    const { data: answerResult, error: errorInquireAnswer } =
-      await inquireAnswer(answer);
+    const { data: answerResult, isError } = await refetch();
 
-    if (errorInquireAnswer) {
+    if (isError) {
       toast.error("Network Error: Please try again.");
       return;
     }
 
-    if (answerResult?.result) {
+    if (answerResult.result) {
       getNextQuestion(false);
     } else {
       triggerShake();
@@ -106,7 +120,10 @@ const QuizAnswerForm = () => {
     }
   };
 
-  const throttledOnSubmit = useMemo(() => throttle(onSubmit, 500), [kanji]);
+  const throttledOnSubmit = useMemo(
+    () => throttle(onSubmit, 500),
+    [kanji, userAnswer]
+  );
 
   const triggerShake = () => {
     if (timeId.current) {
@@ -136,20 +153,31 @@ const QuizAnswerForm = () => {
     getNextQuestion(true);
   };
 
-  const handleStartUserGuide = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleStartUserGuide = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setNextStep();
   };
 
+  const enterKeyHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter") {
+      throttledOnSubmit();
+    }
+  };
+
+  const handleUserAnswer = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserAnswer(e.target.value);
+  };
+
   return (
-    <QuizAnswerSection>
-      <QuizAnswerFormWrapper onSubmit={handleSubmit(throttledOnSubmit)}>
+    <QuizAnswerSection onKeyDown={enterKeyHandler}>
+      <QuizAnswerWrapper>
         <QuizAnswerInput
-          {...register("answer")}
           id="answer-input"
           className={shake ? "shake" : ""}
           autoComplete="off"
+          value={userAnswer}
           placeholder={`${t("placeholder")} きょう, あした`}
+          onChange={handleUserAnswer}
           onFocus={handlePullUpScrollToTarget}
           isGuideSelected={
             currStep === quizUserGuideIndex.ANSWER_INPUT ||
@@ -159,12 +187,12 @@ const QuizAnswerForm = () => {
         <QuizStartUserGuideButton onClick={handleStartUserGuide}>
           <HelpIcon />
         </QuizStartUserGuideButton>
-      </QuizAnswerFormWrapper>
+      </QuizAnswerWrapper>
       <QuizAnswerSubmitButton
         id="submit-button"
         variant="contained"
-        onClick={handleSubmit(throttledOnSubmit)}
-        disabled={!!errorCurrentKanji}
+        onClick={throttledOnSubmit}
+        disabled={isError}
         isGuideSelected={currStep === quizUserGuideIndex.SUBMIT_BUTTON}
       >
         {t("submit")}
@@ -173,7 +201,7 @@ const QuizAnswerForm = () => {
         id="skip-button"
         variant="outlined"
         onClick={handleSkip}
-        disabled={!!errorCurrentKanji}
+        disabled={isError}
         isGuideSelected={currStep === quizUserGuideIndex.SKIP_BUTTON}
       >
         {t("skip")}
@@ -190,7 +218,7 @@ const QuizAnswerSection = styled.section`
   gap: ${theme.spacing.small};
 `;
 
-const QuizAnswerFormWrapper = styled.form`
+const QuizAnswerWrapper = styled.div`
   display: flex;
   gap: ${theme.spacing.xsmall};
 `;
