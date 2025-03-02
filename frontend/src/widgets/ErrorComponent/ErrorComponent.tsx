@@ -35,7 +35,7 @@ const ErrorComponentContainer = styled.div`
   font-size: 25px;
 
   @media (min-width: 480px) {
-    height: 280px;
+    height: 250px;
   }
 
   div {
