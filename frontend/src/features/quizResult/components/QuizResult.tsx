@@ -85,7 +85,7 @@ const QuizResult = () => {
       .map(({ round, word, meanings, type }) => {
         return [
           sanitizeCSVCell(type),
-          sanitizeCSVCell((round + 1).toString()),
+          sanitizeCSVCell(round.toString()),
           sanitizeCSVCell(word),
           ...meanings.map((v) => sanitizeCSVCell(v.meaning)),
         ].join(",");
@@ -190,7 +190,7 @@ const QuizResult = () => {
                   <QuizResultListCell>
                     <QuizResultListCellHeader>
                       <ColorCircle type={item.type} size={20}>
-                        {item.round + 1}
+                        {item.round}
                       </ColorCircle>
                       <h3>{item.word}</h3>
                     </QuizResultListCellHeader>

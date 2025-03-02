@@ -12,5 +12,6 @@
   "filter-reset": "Reset",
   "filter-close": "Close",
   "count-error": "Failed to load count.",
-  "count-total": "items found."
+  "count-total": "items found.",
+  "not-found": "No search results"
 }

@@ -14,8 +14,8 @@ import {
   wordsSearchFilterCorrectRatio,
   wordsSearchFilterDifficulty,
   wordsSearchFilterSearchInput,
+  wordsSearchInputTempState,
 } from "@/entities/words/store";
-import { SearchInputKey, WordsSearchInputType } from "@/entities/words/types";
 import WordsCurrentWord from "@/features/words/components/WordsCurrentWord";
 import WordsDisplay from "@/features/words/components/WordsDisplay";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
@@ -29,7 +29,6 @@ import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 const WordsPage = () => {
   const [isSearchPageOpen, setIsSearchPageOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm<WordsSearchInputType>();
   const [difficulty, setDifficulty] = useAtom(wordsSearchFilterDifficulty);
   const [correctRatio, setCorrectRatio] = useAtom(
     wordsSearchFilterCorrectRatio
@@ -40,20 +39,24 @@ const WordsPage = () => {
   const [currentWordIndex, setCurrentWordIndex] = useAtom(
     wordsCurrentWordIndex
   );
-  const [searchInput, setSearchInput] = useAtom(wordsSearchFilterSearchInput);
-  const isWordSelected = currentWordIndex !== null;
+  const [, setSearchInput] = useAtom(wordsSearchFilterSearchInput);
+  const [searchInputTemp, setSearchInputTemp] = useAtom(
+    wordsSearchInputTempState
+  );
+  const { handleSubmit } = useForm();
   const { isLoading, isError } = useFetchWords();
-  const t = useTranslations();
   const {
     isLoading: isLocaleLoading,
-    isError: isLocaleError,
+    isError: isErrorLocale,
     retryHandler,
   } = useLocale();
+  const t = useTranslations();
+  const isWordSelected = currentWordIndex !== null;
 
-  const onSubmit = ({ search }: WordsSearchInputType) => {
+  const onSubmit = () => {
     setDifficulty({ ...selectedDifficulty });
     setCorrectRatio({ ...selectedCorrectRatio });
-    setSearchInput(search);
+    setSearchInput(searchInputTemp);
     setIsSearchPageOpen(false);
     setCurrentWordIndex(null);
   };
@@ -68,9 +71,20 @@ const WordsPage = () => {
 
   const toggleSearchFilter = () => setIsSearchPageOpen(!isSearchPageOpen);
 
-  if (isLocaleError) {
+  const handleSearchInputTemp = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInputTemp(e.target.value);
+  };
+
+  const resetInput = () => {
+    setSearchInputTemp("");
+  };
+
+  if (isErrorLocale) {
     return (
-      <ErrorComponent retryHandler={retryHandler} message="Network Error" />
+      <ErrorComponent
+        retryHandler={retryHandler}
+        message="Failed to load Locale"
+      />
     );
   }
 
@@ -98,10 +112,10 @@ const WordsPage = () => {
       <WordsSearchContainer>
         <WordsSearchForm onSubmit={handleSubmit(onSubmit)}>
           <WordsSearchInput
-            {...register(SearchInputKey)}
             autoComplete="off"
             placeholder={`${t("search-placeholder")} 日, ひ`}
-            defaultValue={searchInput}
+            value={searchInputTemp}
+            onChange={handleSearchInputTemp}
           />
         </WordsSearchForm>
         <WordsSearchFilterButton onClick={toggleSearchFilter}>
@@ -113,7 +127,7 @@ const WordsPage = () => {
         {isSearchPageOpen && (
           <WordsSearchFilter
             toggleHandler={toggleSearchFilter}
-            resetInput={reset}
+            resetInput={resetInput}
             selectedDifficulty={selectedDifficulty}
             selectedCorrectRatio={selectedCorrectRatio}
             setSelectedDifficulty={setSelectedDifficulty}

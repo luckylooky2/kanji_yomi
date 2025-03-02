@@ -70,7 +70,10 @@
     "rate": "Rate",
     "pitch": "Pitch",
     "volume": "Volume",
-    "multiAnswer": "Multi-answer"
+    "multiAnswer": "Multi-answer",
+    "popup-noinput": "Please type the answer.",
+    "popup-correct": "Correct!",
+    "popup-incorrect": "Incorrect!"
   },
   "result": {
     "title": "Result",

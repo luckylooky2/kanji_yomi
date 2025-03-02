@@ -3,7 +3,6 @@
 import { useAtomValue, useSetAtom } from "jotai";
 
 import {
-  quizCurrentKanjiState,
   quizCurrentRetries,
   quizCurrentRoundState,
   quizStatusState,
@@ -21,7 +20,6 @@ import Loading from "@/widgets/Loading/Loading";
 const QuizPage = () => {
   const quizStatus = useAtomValue(quizStatusState);
   const setCurrentRound = useSetAtom(quizCurrentRoundState);
-  const refreshKanji = useSetAtom(quizCurrentKanjiState);
   const setQuizTimer = useSetAtom(quizTimerState);
   const setCurrentRetries = useSetAtom(quizCurrentRetries);
   const setQuizResult = useSetAtom(quizResultState);
@@ -32,12 +30,14 @@ const QuizPage = () => {
     setCurrentRetries(0);
     setQuizResult([]);
     setQuizTimer({ quizStartTime: null, quizEndTime: null });
-    refreshKanji();
   }
 
   if (isError) {
     return (
-      <ErrorComponent retryHandler={retryHandler} message="Network Error" />
+      <ErrorComponent
+        retryHandler={retryHandler}
+        message="Failed to load Locale"
+      />
     );
   }
 

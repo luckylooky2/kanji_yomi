@@ -70,7 +70,10 @@
     "rate": "빠르기",
     "pitch": "높낮이",
     "volume": "음량",
-    "multiAnswer": "다중 정답"
+    "multiAnswer": "다중 정답",
+    "popup-noinput": "답을 입력하세요.",
+    "popup-correct": "정답입니다!",
+    "popup-incorrect": "오답입니다!"
   },
   "result": {
     "title": "결과",

@@ -10,12 +10,17 @@ import dayjs from "dayjs";
 import { useAtom, useSetAtom } from "jotai";
 import { useTranslations } from "next-intl";
 
-import { quizStatusState, quizTimerState } from "@/entities/quiz/store";
+import {
+  quizCurrentRoundState,
+  quizStatusState,
+  quizTimerState,
+} from "@/entities/quiz/store";
 import { QuizStatus } from "@/entities/quiz/types";
 import {
   quizOptionRoundState,
   quizOptionDifficultyState,
 } from "@/entities/quizOption/store";
+import { QuizOptionDifficulty } from "@/entities/quizOption/types";
 import { difficulties, roundMarks } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
@@ -24,6 +29,7 @@ import QuizOptionLayout from "./QuizOptionLayout";
 const QuizOptions = () => {
   const [difficulty, setDifficulty] = useAtom(quizOptionDifficultyState);
   const [round, setRound] = useAtom(quizOptionRoundState);
+  const [, setCurrentRound] = useAtom(quizCurrentRoundState);
   const setQuizStatus = useSetAtom(quizStatusState);
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
   const t = useTranslations("options");
@@ -33,7 +39,7 @@ const QuizOptions = () => {
   }: {
     currentTarget: HTMLButtonElement;
   }) => {
-    const currDifficulty = currentTarget.dataset.value as string;
+    const currDifficulty = currentTarget.dataset.value as QuizOptionDifficulty;
     let nextDifficulty;
     if (difficulty.includes(currDifficulty)) {
       nextDifficulty = difficulty.filter((v) => v !== currDifficulty);
@@ -50,6 +56,7 @@ const QuizOptions = () => {
   const startQuiz = () => {
     setQuizTimer({ ...quizTimer, quizStartTime: dayjs(new Date()) });
     setQuizStatus(QuizStatus.ONGOING);
+    setCurrentRound(1);
   };
 
   return (

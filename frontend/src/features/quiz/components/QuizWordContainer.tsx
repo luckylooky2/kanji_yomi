@@ -1,23 +1,19 @@
 "use client";
 
 import styled from "@emotion/styled";
-import { useAtom } from "jotai";
 
-import { quizCurrentKanjiState } from "@/entities/quiz/store";
+import { useQuizQuestion } from "@/shared/hooks/useQuizQuestion";
 import ErrorComponent from "@/widgets/ErrorComponent/ErrorComponent";
 // import MywordRegisterToggle from "@/features/myword/components/MywordRegisterToggle";
 
 import QuizWord from "./QuizWord";
 
 const QuizWordContainer = () => {
-  const [{ error }, refreshKanji] = useAtom(quizCurrentKanjiState);
+  const { error, refetch } = useQuizQuestion();
 
   if (error) {
     return (
-      <ErrorComponent
-        retryHandler={() => refreshKanji()}
-        message={error?.message}
-      />
+      <ErrorComponent retryHandler={() => refetch()} message={error?.message} />
     );
   }
 

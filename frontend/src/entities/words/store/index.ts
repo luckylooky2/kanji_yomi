@@ -32,7 +32,8 @@ export const wordsSearchFilterCorrectRatio = atom<
   Record<WordsSearchFilterCorrectRatioType, boolean>
 >(wordsSearchFilterCorrectRatioDefaultValues);
 
-export const wordsSearchFilterSearchInput = atom<string>("");
+export const wordsSearchFilterSearchInput = atom("");
+export const wordsSearchInputTempState = atom("");
 
 export const wordsSearchFilterState = atom((get) => {
   const difficulty = get(wordsSearchFilterDifficulty);
