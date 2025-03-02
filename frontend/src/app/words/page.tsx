@@ -23,6 +23,7 @@ import WordsUtilityBar from "@/features/words/components/WordsUtilityBar";
 import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { useLocale } from "@/shared/hooks/useLocale";
 import { theme } from "@/shared/styles/theme";
+import ErrorComponent from "@/widgets/ErrorComponent/ErrorComponent";
 import Loading from "@/widgets/Loading/Loading";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
@@ -44,7 +45,11 @@ const WordsPage = () => {
   );
   const { handleSubmit } = useForm();
   const { isLoading, isError } = useFetchWords();
-  const { isLoading: isLocaleLoading } = useLocale();
+  const {
+    isLoading: isLocaleLoading,
+    isError: isErrorLocale,
+    retryHandler,
+  } = useLocale();
   const t = useTranslations();
   const isWordSelected = currentWordIndex !== null;
 
@@ -73,6 +78,15 @@ const WordsPage = () => {
   const resetInput = () => {
     setSearchInputTemp("");
   };
+
+  if (isErrorLocale) {
+    return (
+      <ErrorComponent
+        retryHandler={retryHandler}
+        message="Failed to load Locale"
+      />
+    );
+  }
 
   if (isLocaleLoading) {
     return <Loading />;

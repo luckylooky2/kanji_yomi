@@ -78,7 +78,10 @@ const LandingPage = () => {
 
   if (isError) {
     return (
-      <ErrorComponent retryHandler={retryHandler} message="Network Error" />
+      <ErrorComponent
+        retryHandler={retryHandler}
+        message="Failed to load Locale"
+      />
     );
   }
 
