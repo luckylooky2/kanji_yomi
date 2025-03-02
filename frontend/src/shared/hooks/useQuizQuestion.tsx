@@ -13,11 +13,9 @@ export const useQuizQuestion = () => {
   const [{ quizStartTime }] = useAtom(quizTimerState);
 
   const queryFn = async () => {
-    try {
-      return QuizService.getQuestion({ difficulty });
-    } catch {
-      throw new Error("Network Error");
-    }
+    return QuizService.getQuestion({ difficulty }).catch(() => {
+      throw new Error("Failed to fetch question");
+    });
   };
 
   return useQuery<WordInfo>({

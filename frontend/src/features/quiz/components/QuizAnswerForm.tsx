@@ -58,15 +58,13 @@ const QuizAnswerForm = () => {
       return;
     }
 
-    try {
-      return QuizService.getAnswer({
-        id: kanji.id,
-        word: kanji.word,
-        answer: userAnswer,
-      });
-    } catch {
-      throw new Error("Network Error");
-    }
+    return QuizService.getAnswer({
+      id: kanji.id,
+      word: kanji.word,
+      answer: userAnswer,
+    }).catch(() => {
+      throw new Error("Failed to fetch answer: Please try again later");
+    });
   }
 
   const getNextQuestion = (isSkipped: boolean) => {
@@ -106,10 +104,10 @@ const QuizAnswerForm = () => {
       return;
     }
 
-    const { data: answerResult, isError } = await refetch();
+    const { data: answerResult, isError, error } = await refetch();
 
     if (isError) {
-      toast.error("Network Error: Please try again.");
+      toast.error(error.message);
       return;
     }
 
