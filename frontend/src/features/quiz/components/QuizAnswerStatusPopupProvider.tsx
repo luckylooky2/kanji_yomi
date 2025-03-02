@@ -93,13 +93,13 @@ const PopupContainer = styled.div<{ type: PopupType }>`
   background-color: ${({ type }) => {
     switch (type) {
       case "info":
-        return "#2196f3";
+        return "var(--color-main)";
       case "warn":
-        return "orange";
+        return "var(--color-yellow)";
       case "error":
-        return "red";
+        return "var(--color-red)";
       case "success":
-        return "green";
+        return "var(--color-green)";
     }
   }};
 `;

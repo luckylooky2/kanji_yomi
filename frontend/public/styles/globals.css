@@ -9,6 +9,10 @@
   --radius-medium: 8px;
   --radius-large: 16px;
   --breakpoint-mobile: 480px;
+  --color-main: #2196f3;
+  --color-green: #4caf50;
+  --color-red: #ff6b6b;
+  --color-yellow: #ffd54f;
 }
 
 /* vh는 브라우저에서 주소 표시줄을 고려하지 않기 때문에 스크롤이 발생하는 단점이 있다. */
