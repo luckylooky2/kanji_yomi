@@ -158,6 +158,7 @@ const LandingPage = () => {
                     alt="iPhone Hero"
                     width={350}
                     height={680}
+                    priority
                   />
                 </div>
               </div>
@@ -231,6 +232,7 @@ const LandingPage = () => {
                         alt="feature-option"
                         width={300}
                         height={570}
+                        priority
                       />
                     </div>
                     <div className="feature-extended-body is-revealing">
@@ -257,6 +259,7 @@ const LandingPage = () => {
                         alt="feature-hint"
                         width={300}
                         height={570}
+                        priority
                       />
                     </div>
                     <div className="feature-extended-body is-revealing">
@@ -283,6 +286,7 @@ const LandingPage = () => {
                         alt="feature-result"
                         width={300}
                         height={570}
+                        priority
                       />
                     </div>
                     <div className="feature-extended-body is-revealing">

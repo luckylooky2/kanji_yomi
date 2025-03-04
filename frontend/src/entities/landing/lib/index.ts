@@ -10,14 +10,14 @@ export function reveal(sr: scrollReveal.ScrollRevealObject) {
     distance: "100px",
     easing: "cubic-bezier(0.215, 0.61, 0.355, 1)",
     origin: "bottom",
-    viewFactor: 0.6,
+    viewFactor: 0.3,
   });
   sr.reveal(".feature-extended .feature-extended-body", {
     duration: 600,
     distance: "40px",
     easing: "cubic-bezier(0.215, 0.61, 0.355, 1)",
     origin: "top",
-    viewFactor: 0.6,
+    viewFactor: 0.3,
   });
 }
 
