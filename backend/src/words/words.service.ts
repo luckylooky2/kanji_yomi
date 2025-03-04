@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Word } from './word.entity';
+import { Word } from '../entity/word.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Repository } from 'typeorm';
 import { WordsQueryCountDTO, WordsQueryDto } from './words.dto';

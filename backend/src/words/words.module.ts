@@ -1,10 +1,10 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Word } from './word.entity';
-import { Meaning } from './meaning.entity';
+import { Word } from '../entity/word.entity';
 import { LoggerMiddleware } from '../middleware/LoggerMiddleware';
 import { WordsService } from './words.service';
 import { WordsController } from './words.controller';
+import { Meaning } from 'src/entity/meaning.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Word, Meaning])],
