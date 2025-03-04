@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Word } from './question/word.entity';
-import { Meaning } from './question/meaning.entity';
-import { QuestionModule } from './question/question.module';
-import { WordsModule } from './question/words.module';
+import { Word } from './entity/word.entity';
+import { Meaning } from './entity/meaning.entity';
+import { QuizModule } from './quiz/quiz.module';
+import { WordsModule } from './words/words.module';
 import 'dotenv/config';
+import { Quiz } from './entity/quiz.entity';
+import { QuizDifficulty } from './entity/quizDifficulty.entitiy';
 
 @Module({
   imports: [
@@ -20,11 +22,11 @@ import 'dotenv/config';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [Word, Meaning],
+      entities: [Word, Meaning, Quiz, QuizDifficulty],
       synchronize: true,
       autoLoadEntities: true,
     }),
-    QuestionModule,
+    QuizModule,
     WordsModule,
   ],
 })
