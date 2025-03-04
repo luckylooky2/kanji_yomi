@@ -13,14 +13,12 @@ import { MouseEvent } from "react";
 
 import { wordsSearchFilterState, wordsView } from "@/entities/words/store";
 import { WordsViewType } from "@/entities/words/types";
-import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { theme } from "@/shared/styles/theme";
 
 import { WordsService } from "../api";
 
 const WordsUtilityBar = () => {
   const [view, setView] = useAtom(wordsView);
-  const { isLoading } = useFetchWords();
 
   const handleChange = ({ currentTarget }: MouseEvent<HTMLElement>) => {
     const target = currentTarget as HTMLButtonElement;
@@ -76,16 +74,14 @@ const WordsUtilityBar = () => {
   return (
     <WordsUtilityBarContainer>
       <TotalCount />
-      {!isLoading && (
-        <WordsViewButtonGroup value={view} exclusive onChange={handleChange}>
-          <ToggleButton value="grid" aria-label="grid">
-            <GridViewSharpIcon fontSize="small" />
-          </ToggleButton>
-          <ToggleButton value="list" aria-label="list">
-            <TableRowsSharpIcon fontSize="small" />
-          </ToggleButton>
-        </WordsViewButtonGroup>
-      )}
+      <WordsViewButtonGroup value={view} exclusive onChange={handleChange}>
+        <ToggleButton value="grid" aria-label="grid">
+          <GridViewSharpIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton value="list" aria-label="list">
+          <TableRowsSharpIcon fontSize="small" />
+        </ToggleButton>
+      </WordsViewButtonGroup>
     </WordsUtilityBarContainer>
   );
 };
