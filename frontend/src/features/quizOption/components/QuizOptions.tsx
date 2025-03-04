@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
+import { CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Slider from "@mui/material/Slider";
@@ -21,6 +22,7 @@ import {
   quizOptionDifficultyState,
 } from "@/entities/quizOption/store";
 import { QuizOptionDifficulty } from "@/entities/quizOption/types";
+import { useQuizStartFinish } from "@/shared/hooks/useStartFinishQuiz";
 import { difficulties, roundMarks } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
@@ -33,6 +35,7 @@ const QuizOptions = () => {
   const setQuizStatus = useSetAtom(quizStatusState);
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
   const t = useTranslations("options");
+  const { fetchQuizStart, isQuizStartFetching } = useQuizStartFinish();
 
   const handleDifficultyChange = ({
     currentTarget,
@@ -53,7 +56,8 @@ const QuizOptions = () => {
     setRound(value as number);
   };
 
-  const startQuiz = () => {
+  const startQuiz = async () => {
+    await fetchQuizStart();
     setQuizTimer({ ...quizTimer, quizStartTime: dayjs(new Date()) });
     setQuizStatus(QuizStatus.ONGOING);
     setCurrentRound(1);
@@ -106,9 +110,13 @@ const QuizOptions = () => {
       <Button
         onClick={startQuiz}
         variant="contained"
-        disabled={!(difficulty.length && round)}
+        disabled={!(difficulty.length && round) || isQuizStartFetching}
       >
-        {`${t("start")}`}
+        {isQuizStartFetching ? (
+          <CircularProgress size={24.5} />
+        ) : (
+          `${t("start")}`
+        )}
       </Button>
     </QuizOptionContainer>
   );

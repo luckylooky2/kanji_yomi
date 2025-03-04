@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import HelpIcon from "@mui/icons-material/Help";
+import { CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -20,8 +21,10 @@ import {
 import { AnswerStatus, QuizStatus } from "@/entities/quiz/types";
 import { quizOptionRoundState } from "@/entities/quizOption/store";
 import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
+import { useDelayFetching } from "@/shared/hooks/useDelayFetching";
 import { useQuizQuestion } from "@/shared/hooks/useQuizQuestion";
 import { useQuizUserGuideStep } from "@/shared/hooks/useQuizUserGuideStep";
+import { useQuizStartFinish } from "@/shared/hooks/useStartFinishQuiz";
 import { quizUserGuideIndex } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
@@ -44,14 +47,21 @@ const QuizAnswerForm = () => {
   const timeId = useRef<NodeJS.Timeout | null>(null);
   const { currStep, setNextStep } = useQuizUserGuideStep();
   const t = useTranslations("game");
-  const { data: kanji, isError } = useQuizQuestion();
+  const {
+    data: kanji,
+    isError,
+    isFetching: isQuestionFetchingTEMP,
+  } = useQuizQuestion();
   const { handleSubmit } = useForm();
   const popup = usePopup();
-  const { refetch } = useQuery({
+  const { fetchQuizFinish, isQuizFinishFetching } = useQuizStartFinish();
+  const { refetch, isFetching: isAnswerFetcingTEMP } = useQuery({
     queryKey: ["quizAnswer"],
     queryFn: queryFn,
     enabled: false,
   });
+  const isQuestionFetching = useDelayFetching(isQuestionFetchingTEMP);
+  const isAnswerFetcing = useDelayFetching(isAnswerFetcingTEMP);
 
   async function queryFn() {
     if (!kanji) {
@@ -66,6 +76,16 @@ const QuizAnswerForm = () => {
       throw new Error("Failed to fetch answer: Please try again later");
     });
   }
+
+  const handleQuizFinish = async () => {
+    // 비동기 작업을 수행
+    await fetchQuizFinish();
+
+    // 비동기 작업이 끝난 후 상태 업데이트
+    setQuizStatus(QuizStatus.RESULT);
+    setFilter("All");
+    setQuizTimer({ ...quizTimer, quizEndTime: dayjs(new Date()) });
+  };
 
   const getNextQuestion = (isSkipped: boolean) => {
     setRetries((prevRetries) => {
@@ -89,9 +109,8 @@ const QuizAnswerForm = () => {
     setUserAnswer("");
     setCurrentRound((prev) => {
       if (prev === maxRound) {
-        setQuizStatus(QuizStatus.RESULT);
-        setFilter("All");
-        setQuizTimer({ ...quizTimer, quizEndTime: dayjs(new Date()) });
+        handleQuizFinish();
+        return prev;
       }
       return prev + 1;
     });
@@ -188,19 +207,37 @@ const QuizAnswerForm = () => {
         id="submit-button"
         variant="contained"
         onClick={handleSubmit(throttledOnSubmit)}
-        disabled={isError}
+        disabled={
+          isError ||
+          isQuizFinishFetching ||
+          isQuestionFetching ||
+          isAnswerFetcing
+        }
         isGuideSelected={currStep === quizUserGuideIndex.SUBMIT_BUTTON}
       >
-        {t("submit")}
+        {isQuizFinishFetching || isAnswerFetcing || isQuestionFetching ? (
+          <CircularProgress size={24.5} />
+        ) : (
+          t("submit")
+        )}
       </QuizAnswerSubmitButton>
       <QuizAnswerSkipButton
         id="skip-button"
         variant="outlined"
         onClick={handleSkip}
-        disabled={isError}
+        disabled={
+          isError ||
+          isQuizFinishFetching ||
+          isQuestionFetching ||
+          isAnswerFetcing
+        }
         isGuideSelected={currStep === quizUserGuideIndex.SKIP_BUTTON}
       >
-        {t("skip")}
+        {isQuizFinishFetching || isQuestionFetching || isAnswerFetcing ? (
+          <CircularProgress size={24.5} />
+        ) : (
+          t("skip")
+        )}
       </QuizAnswerSkipButton>
     </QuizAnswerSection>
   );

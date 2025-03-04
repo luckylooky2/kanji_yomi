@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import dayjs from "dayjs";
 import { useAtom, useSetAtom } from "jotai";
 import { useTranslations } from "next-intl";
+import { Dispatch, SetStateAction } from "react";
 
 import {
   quizCurrentRetries,
@@ -14,11 +15,12 @@ import { QuizStatus } from "@/entities/quiz/types";
 import { quizResultFilter, quizResultState } from "@/entities/quizResult/store";
 import ModalBase from "@/features/modal/components/ModalBase";
 import { useQuizQuestion } from "@/shared/hooks/useQuizQuestion";
+import { useQuizStartFinish } from "@/shared/hooks/useStartFinishQuiz";
 import { theme } from "@/shared/styles/theme";
 
 interface Props {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
@@ -30,11 +32,14 @@ const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
   const [, setQuizResult] = useAtom(quizResultState);
   const [, setFilter] = useAtom(quizResultFilter);
   const t = useTranslations("game");
+  const { fetchQuizFinish, isQuizFinishFetching } = useQuizStartFinish();
 
-  const handleQuit = () => {
+  const handleFinish = async () => {
     if (kanji === undefined) {
       return;
     }
+
+    await fetchQuizFinish();
 
     setQuizTimer({ ...quizTimer, quizEndTime: dayjs(new Date()) });
     setQuizResult((prev) => [
@@ -66,11 +71,27 @@ const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
     >
       <QuitModalLayout>
         <div>{t("finish-modal-content")}</div>
-        <Button variant="outlined" onClick={handleQuit}>
-          {t("modal-ok")}
+        <Button
+          variant="outlined"
+          onClick={handleFinish}
+          disabled={isQuizFinishFetching}
+        >
+          {isQuizFinishFetching ? (
+            <CircularProgress size={24.5} />
+          ) : (
+            t("modal-ok")
+          )}
         </Button>
-        <Button variant="contained" onClick={handleCancel}>
-          {t("modal-cancel")}
+        <Button
+          variant="contained"
+          onClick={handleCancel}
+          disabled={isQuizFinishFetching}
+        >
+          {isQuizFinishFetching ? (
+            <CircularProgress size={24.5} />
+          ) : (
+            t("modal-cancel")
+          )}
         </Button>
       </QuitModalLayout>
     </ModalBase>
