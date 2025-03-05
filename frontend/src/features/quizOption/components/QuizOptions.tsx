@@ -10,6 +10,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import dayjs from "dayjs";
 import { useAtom, useSetAtom } from "jotai";
 import { useTranslations } from "next-intl";
+import { toast } from "react-toastify";
 
 import {
   quizCurrentRoundState,
@@ -57,7 +58,13 @@ const QuizOptions = () => {
   };
 
   const startQuiz = async () => {
-    await fetchQuizStart();
+    const { error } = await fetchQuizStart();
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
     setQuizTimer({ ...quizTimer, quizStartTime: dayjs(new Date()) });
     setQuizStatus(QuizStatus.ONGOING);
     setCurrentRound(1);

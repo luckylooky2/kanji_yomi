@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { useAtom, useSetAtom } from "jotai";
 import { useTranslations } from "next-intl";
 import { Dispatch, SetStateAction } from "react";
+import { toast } from "react-toastify";
 
 import {
   quizCurrentRetries,
@@ -39,7 +40,12 @@ const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
       return;
     }
 
-    await fetchQuizFinish();
+    const { error } = await fetchQuizFinish();
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
 
     setQuizTimer({ ...quizTimer, quizEndTime: dayjs(new Date()) });
     setQuizResult((prev) => [
