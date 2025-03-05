@@ -58,6 +58,7 @@ const QuizAnswerForm = () => {
   const { refetch, isFetching: isAnswerFetcingTEMP } = useQuery({
     queryKey: ["quizAnswer"],
     queryFn: queryFn,
+    retry: false,
     enabled: false,
   });
   const isQuestionFetching = useDelayFetching(isQuestionFetchingTEMP);

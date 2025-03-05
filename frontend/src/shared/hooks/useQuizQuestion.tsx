@@ -22,6 +22,7 @@ export const useQuizQuestion = () => {
     queryKey: ["quizQuestion", currentRound, quizStartTime],
     queryFn,
     staleTime: Infinity,
+    retry: false,
     placeholderData: keepPreviousData,
   });
 };

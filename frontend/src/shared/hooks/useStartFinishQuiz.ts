@@ -28,6 +28,7 @@ export function useQuizStartFinish() {
         throw new Error("Failed to start quiz: Please try again later");
       });
     },
+    retry: false,
     enabled: false,
   });
 
@@ -43,6 +44,7 @@ export function useQuizStartFinish() {
           throw new Error("Failed to finish quiz: Please try again later");
         });
       },
+      retry: false,
       enabled: false,
     });
 
