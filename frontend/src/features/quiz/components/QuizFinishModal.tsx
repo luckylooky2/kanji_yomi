@@ -33,10 +33,11 @@ const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
   const [, setQuizResult] = useAtom(quizResultState);
   const [, setFilter] = useAtom(quizResultFilter);
   const t = useTranslations("game");
-  const { fetchQuizFinish, isQuizFinishFetching } = useQuizStartFinish();
+  const { fetchQuizFinish, isQuizFinishFetchingDelay, isQuizFinishFetching } =
+    useQuizStartFinish();
 
   const handleFinish = async () => {
-    if (kanji === undefined) {
+    if (kanji === undefined || isQuizFinishFetching) {
       return;
     }
 
@@ -80,9 +81,9 @@ const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
         <Button
           variant="outlined"
           onClick={handleFinish}
-          disabled={isQuizFinishFetching}
+          disabled={isQuizFinishFetchingDelay}
         >
-          {isQuizFinishFetching ? (
+          {isQuizFinishFetchingDelay ? (
             <CircularProgress size={24.5} />
           ) : (
             t("modal-ok")
@@ -91,9 +92,9 @@ const QuizFinishModal = ({ isOpen, setIsOpen }: Props) => {
         <Button
           variant="contained"
           onClick={handleCancel}
-          disabled={isQuizFinishFetching}
+          disabled={isQuizFinishFetchingDelay}
         >
-          {isQuizFinishFetching ? (
+          {isQuizFinishFetchingDelay ? (
             <CircularProgress size={24.5} />
           ) : (
             t("modal-cancel")

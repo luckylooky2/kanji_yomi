@@ -48,14 +48,16 @@ export function useQuizStartFinish() {
       enabled: false,
     });
 
-  const isStartDelay = useDelayFetching(isQuizStartFetching);
-  const isFinishDelay = useDelayFetching(isQuizFinishFetching);
+  const isQuizStartFetchingDelay = useDelayFetching(isQuizStartFetching);
+  const isQuizFinishFetchingDelay = useDelayFetching(isQuizFinishFetching);
 
   return {
     quizId,
     fetchQuizStart,
-    isQuizStartFetching: isStartDelay,
+    isQuizStartFetchingDelay,
+    isQuizStartFetching,
     fetchQuizFinish,
-    isQuizFinishFetching: isFinishDelay,
+    isQuizFinishFetchingDelay,
+    isQuizFinishFetching,
   };
 }

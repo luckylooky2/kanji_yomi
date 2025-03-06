@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
-import { CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import Chip from "@mui/material/Chip";
 import Slider from "@mui/material/Slider";
 import Stack from "@mui/material/Stack";
@@ -36,7 +36,8 @@ const QuizOptions = () => {
   const setQuizStatus = useSetAtom(quizStatusState);
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
   const t = useTranslations("options");
-  const { fetchQuizStart, isQuizStartFetching } = useQuizStartFinish();
+  const { fetchQuizStart, isQuizStartFetching, isQuizStartFetchingDelay } =
+    useQuizStartFinish();
 
   const handleDifficultyChange = ({
     currentTarget,
@@ -58,6 +59,10 @@ const QuizOptions = () => {
   };
 
   const startQuiz = async () => {
+    if (isQuizStartFetching) {
+      return;
+    }
+
     const { error } = await fetchQuizStart();
 
     if (error) {
@@ -116,10 +121,10 @@ const QuizOptions = () => {
       </QuizOptionSection>
       <Button
         onClick={startQuiz}
+        disabled={!(difficulty.length && round) || isQuizStartFetchingDelay}
         variant="contained"
-        disabled={!(difficulty.length && round) || isQuizStartFetching}
       >
-        {isQuizStartFetching ? (
+        {isQuizStartFetchingDelay ? (
           <CircularProgress size={24.5} />
         ) : (
           `${t("start")}`

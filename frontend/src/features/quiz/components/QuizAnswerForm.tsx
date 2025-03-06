@@ -5,9 +5,8 @@ import Button from "@mui/material/Button";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useSetAtom, useAtomValue, useAtom } from "jotai";
-import throttle from "lodash/throttle";
 import { useTranslations } from "next-intl";
-import { useState, useRef, useMemo, MouseEvent, ChangeEvent } from "react";
+import { useState, useRef, MouseEvent, ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -50,19 +49,20 @@ const QuizAnswerForm = () => {
   const {
     data: kanji,
     isError,
-    isFetching: isQuestionFetchingTEMP,
+    isFetching: isQuestionFetching,
   } = useQuizQuestion();
   const { handleSubmit } = useForm();
   const popup = usePopup();
-  const { fetchQuizFinish, isQuizFinishFetching } = useQuizStartFinish();
-  const { refetch, isFetching: isAnswerFetcingTEMP } = useQuery({
+  const { fetchQuizFinish, isQuizFinishFetchingDelay, isQuizFinishFetching } =
+    useQuizStartFinish();
+  const { refetch, isFetching: isAnswerFetcing } = useQuery({
     queryKey: ["quizAnswer"],
     queryFn: queryFn,
     retry: false,
     enabled: false,
   });
-  const isQuestionFetching = useDelayFetching(isQuestionFetchingTEMP);
-  const isAnswerFetcing = useDelayFetching(isAnswerFetcingTEMP);
+  const isQuestionFetchingDelay = useDelayFetching(isQuestionFetching);
+  const isAnswerFetcingDelay = useDelayFetching(isAnswerFetcing);
 
   async function queryFn() {
     if (!kanji) {
@@ -79,6 +79,10 @@ const QuizAnswerForm = () => {
   }
 
   const handleQuizFinish = async () => {
+    if (isQuizFinishFetching) {
+      return;
+    }
+
     // 비동기 작업을 수행
     await fetchQuizFinish();
 
@@ -124,6 +128,10 @@ const QuizAnswerForm = () => {
       return;
     }
 
+    if (isAnswerFetcing) {
+      return;
+    }
+
     const { data: answerResult, isError, error } = await refetch();
 
     if (isError) {
@@ -142,10 +150,13 @@ const QuizAnswerForm = () => {
     }
   };
 
-  const throttledOnSubmit = useMemo(
-    () => throttle(onSubmit, 1500),
-    [kanji, userAnswer]
-  );
+  const handleSkip = () => {
+    if (isQuestionFetching) {
+      return;
+    }
+
+    getNextQuestion(true);
+  };
 
   const triggerShake = () => {
     if (timeId.current) {
@@ -171,10 +182,6 @@ const QuizAnswerForm = () => {
     }, 200);
   };
 
-  const handleSkip = () => {
-    getNextQuestion(true);
-  };
-
   const handleStartUserGuide = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setNextStep();
@@ -186,7 +193,7 @@ const QuizAnswerForm = () => {
 
   return (
     <QuizAnswerSection>
-      <QuizAnswerWrapper onSubmit={handleSubmit(throttledOnSubmit)}>
+      <QuizAnswerWrapper onSubmit={handleSubmit(onSubmit)}>
         <QuizAnswerInput
           id="answer-input"
           className={shake ? "shake" : ""}
@@ -207,16 +214,18 @@ const QuizAnswerForm = () => {
       <QuizAnswerSubmitButton
         id="submit-button"
         variant="contained"
-        onClick={handleSubmit(throttledOnSubmit)}
+        onClick={handleSubmit(onSubmit)}
         disabled={
           isError ||
-          isQuizFinishFetching ||
-          isQuestionFetching ||
-          isAnswerFetcing
+          isQuizFinishFetchingDelay ||
+          isQuestionFetchingDelay ||
+          isAnswerFetcingDelay
         }
         isGuideSelected={currStep === quizUserGuideIndex.SUBMIT_BUTTON}
       >
-        {isQuizFinishFetching || isAnswerFetcing || isQuestionFetching ? (
+        {isQuizFinishFetchingDelay ||
+        isAnswerFetcingDelay ||
+        isQuestionFetchingDelay ? (
           <CircularProgress size={24.5} />
         ) : (
           t("submit")
@@ -228,13 +237,15 @@ const QuizAnswerForm = () => {
         onClick={handleSkip}
         disabled={
           isError ||
-          isQuizFinishFetching ||
-          isQuestionFetching ||
-          isAnswerFetcing
+          isQuizFinishFetchingDelay ||
+          isQuestionFetchingDelay ||
+          isAnswerFetcingDelay
         }
         isGuideSelected={currStep === quizUserGuideIndex.SKIP_BUTTON}
       >
-        {isQuizFinishFetching || isQuestionFetching || isAnswerFetcing ? (
+        {isQuizFinishFetchingDelay ||
+        isQuestionFetchingDelay ||
+        isAnswerFetcingDelay ? (
           <CircularProgress size={24.5} />
         ) : (
           t("skip")
