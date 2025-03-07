@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   HttpCode,
-  InternalServerErrorException,
   Query,
   UsePipes,
   ValidationPipe,
@@ -11,6 +10,7 @@ import {
 import logger from 'src/middleware/Logger';
 import { WordsService } from './words.service';
 import { WordsQueryCountRequest, WordsQueryRequest } from './words.request';
+import { handleClientError } from 'src/utils/utils';
 
 @Controller('words')
 export class WordsController {
@@ -31,6 +31,8 @@ export class WordsController {
   @HttpCode(200)
   @UsePipes(new ValidationPipe({ transform: true }))
   async getWordsByFilter(@Query() query: WordsQueryRequest) {
+    const logPrefix = 'Words: ';
+
     const allowedParams = [
       'search',
       'difficulty',
@@ -44,10 +46,11 @@ export class WordsController {
       const wordsDto = await this.wordsService.searchWordsByFilter(query);
       const resBody = wordsDto;
 
-      logger.debug('/words:', { ...resBody });
+      logger.debug(logPrefix, { ...resBody });
       return resBody;
-    } catch {
-      throw new InternalServerErrorException('Failed to get words');
+    } catch (error) {
+      logger.error(logPrefix, error);
+      handleClientError(error, 'Failed to get words');
     }
   }
 
@@ -55,6 +58,7 @@ export class WordsController {
   @HttpCode(200)
   @UsePipes(new ValidationPipe({ transform: true }))
   async getWordsCountByFilter(@Query() query: WordsQueryCountRequest) {
+    const logPrefix = 'Words/count: ';
     const allowedParams = ['search', 'difficulty', 'correctRatio'];
     this.validateAllowedParams(query, allowedParams);
 
@@ -62,10 +66,11 @@ export class WordsController {
       const wordsCountDto =
         await this.wordsService.searchWordsCountByFilter(query);
       const resBody = wordsCountDto;
-      logger.debug('/words/count:', { ...resBody });
+      logger.debug(logPrefix, { ...resBody });
       return resBody;
-    } catch {
-      throw new InternalServerErrorException('Failed to get words count');
+    } catch (error) {
+      logger.error(logPrefix, error);
+      handleClientError(error, 'Failed to get words count');
     }
   }
 }
