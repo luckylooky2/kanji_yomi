@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
+import CircularProgress from "@mui/material/CircularProgress";
 import Slider from "@mui/material/Slider";
 import Stack from "@mui/material/Stack";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -9,6 +10,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import dayjs from "dayjs";
 import { useAtom, useSetAtom } from "jotai";
 import { useTranslations } from "next-intl";
+import { toast } from "react-toastify";
 
 import {
   quizCurrentRoundState,
@@ -21,6 +23,7 @@ import {
   quizOptionDifficultyState,
 } from "@/entities/quizOption/store";
 import { QuizOptionDifficulty } from "@/entities/quizOption/types";
+import { useQuizStartFinish } from "@/shared/hooks/useStartFinishQuiz";
 import { difficulties, roundMarks } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
@@ -33,6 +36,8 @@ const QuizOptions = () => {
   const setQuizStatus = useSetAtom(quizStatusState);
   const [quizTimer, setQuizTimer] = useAtom(quizTimerState);
   const t = useTranslations("options");
+  const { fetchQuizStart, isQuizStartFetching, isQuizStartFetchingDelay } =
+    useQuizStartFinish();
 
   const handleDifficultyChange = ({
     currentTarget,
@@ -53,7 +58,18 @@ const QuizOptions = () => {
     setRound(value as number);
   };
 
-  const startQuiz = () => {
+  const startQuiz = async () => {
+    if (isQuizStartFetching) {
+      return;
+    }
+
+    const { error } = await fetchQuizStart();
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
     setQuizTimer({ ...quizTimer, quizStartTime: dayjs(new Date()) });
     setQuizStatus(QuizStatus.ONGOING);
     setCurrentRound(1);
@@ -105,10 +121,14 @@ const QuizOptions = () => {
       </QuizOptionSection>
       <Button
         onClick={startQuiz}
+        disabled={!(difficulty.length && round) || isQuizStartFetchingDelay}
         variant="contained"
-        disabled={!(difficulty.length && round)}
       >
-        {`${t("start")}`}
+        {isQuizStartFetchingDelay ? (
+          <CircularProgress size={24.5} />
+        ) : (
+          `${t("start")}`
+        )}
       </Button>
     </QuizOptionContainer>
   );

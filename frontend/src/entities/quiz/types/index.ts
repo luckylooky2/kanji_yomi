@@ -4,6 +4,15 @@ import { ReactNode } from "react";
 import { QuizResultLegendType } from "@/entities/quizResult/type";
 import { MeaningInfo, MUIChipColorType, WordInfo } from "@/shared/types";
 
+export type QuizStartRequestDTO = {
+  difficulty: string[];
+  round: number;
+};
+
+export type QuizStartResponseDTO = {
+  id: string;
+};
+
 export type QuizQuestionRequestDTO = {
   difficulty: string[];
 };

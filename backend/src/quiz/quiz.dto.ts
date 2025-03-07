@@ -1,5 +1,15 @@
 import { Expose, Type } from 'class-transformer';
 
+export class StartDTO {
+  @Expose()
+  id: string;
+}
+
+export class FinishDTO {
+  @Expose()
+  endTimestamp: string;
+}
+
 export class QuestionDTO {
   @Expose()
   id: number;

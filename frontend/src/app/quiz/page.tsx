@@ -3,6 +3,7 @@
 import { useAtomValue, useSetAtom } from "jotai";
 
 import {
+  quizAnswerInputState,
   quizCurrentRetries,
   quizCurrentRoundState,
   quizStatusState,
@@ -23,11 +24,13 @@ const QuizPage = () => {
   const setQuizTimer = useSetAtom(quizTimerState);
   const setCurrentRetries = useSetAtom(quizCurrentRetries);
   const setQuizResult = useSetAtom(quizResultState);
+  const setAnswerInput = useSetAtom(quizAnswerInputState);
   const { isLoading, isError, retryHandler } = useLocale();
 
   function resetQuizState() {
     setCurrentRound(0);
     setCurrentRetries(0);
+    setAnswerInput("");
     setQuizResult([]);
     setQuizTimer({ quizStartTime: null, quizEndTime: null });
   }

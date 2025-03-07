@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { QuestionDTO } from './question.dto';
+import { QuestionDTO } from '../quiz/quiz.dto';
 
 export class WordsQueryDto {
   @Expose()

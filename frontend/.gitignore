@@ -37,4 +37,4 @@ next-env.d.ts
 
 db.ts
 docs.md
-.env.*
+.env

@@ -1,3 +1,5 @@
+import { InternalServerErrorException } from '@nestjs/common';
+
 export function compareNFCSafe(a: string, b: string): boolean {
   return a.normalize('NFC') === b.normalize('NFC');
 }
@@ -40,3 +42,13 @@ export const ratioCondition = (correctRatios: string[]) => {
   // 조건을 OR로 연결
   return conditions.length > 0 ? `(${conditions.join(' OR ')})` : '1=1';
 };
+
+export function handleClientError(error, ServerErrorMessage: string) {
+  const statusCode = error.getStatus();
+
+  if (statusCode >= 400 && statusCode < 500) {
+    throw error;
+  }
+
+  throw new InternalServerErrorException(ServerErrorMessage);
+}
