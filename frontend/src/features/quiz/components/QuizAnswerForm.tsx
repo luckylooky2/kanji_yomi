@@ -55,14 +55,14 @@ const QuizAnswerForm = () => {
   const popup = usePopup();
   const { fetchQuizFinish, isQuizFinishFetchingDelay, isQuizFinishFetching } =
     useQuizStartFinish();
-  const { refetch, isFetching: isAnswerFetcing } = useQuery({
+  const { refetch, isFetching: isAnswerFetching } = useQuery({
     queryKey: ["quizAnswer"],
     queryFn: queryFn,
     retry: false,
     enabled: false,
   });
   const isQuestionFetchingDelay = useDelayFetching(isQuestionFetching);
-  const isAnswerFetcingDelay = useDelayFetching(isAnswerFetcing);
+  const isAnswerFetchingDelay = useDelayFetching(isAnswerFetching);
 
   async function queryFn() {
     if (!kanji) {
@@ -128,7 +128,7 @@ const QuizAnswerForm = () => {
       return;
     }
 
-    if (isAnswerFetcing) {
+    if (isAnswerFetching) {
       return;
     }
 
@@ -219,12 +219,12 @@ const QuizAnswerForm = () => {
           isError ||
           isQuizFinishFetchingDelay ||
           isQuestionFetchingDelay ||
-          isAnswerFetcingDelay
+          isAnswerFetchingDelay
         }
         isGuideSelected={currStep === quizUserGuideIndex.SUBMIT_BUTTON}
       >
         {isQuizFinishFetchingDelay ||
-        isAnswerFetcingDelay ||
+        isAnswerFetchingDelay ||
         isQuestionFetchingDelay ? (
           <CircularProgress size={24.5} />
         ) : (
@@ -239,13 +239,13 @@ const QuizAnswerForm = () => {
           isError ||
           isQuizFinishFetchingDelay ||
           isQuestionFetchingDelay ||
-          isAnswerFetcingDelay
+          isAnswerFetchingDelay
         }
         isGuideSelected={currStep === quizUserGuideIndex.SKIP_BUTTON}
       >
         {isQuizFinishFetchingDelay ||
         isQuestionFetchingDelay ||
-        isAnswerFetcingDelay ? (
+        isAnswerFetchingDelay ? (
           <CircularProgress size={24.5} />
         ) : (
           t("skip")
