@@ -21,7 +21,7 @@ import {
 import { Word } from '../entity/word.entity';
 import { calculateCorrectRatio, compareNFCSafe } from 'src/utils/utils';
 import { Quiz } from 'src/entity/quiz.entity';
-import { QuizDifficulty } from 'src/entity/quizDifficulty.entitiy';
+import { QuizDifficulty } from 'src/entity/quizDifficulty.entity';
 import { Meaning } from 'src/entity/meaning.entity';
 
 @Injectable()
@@ -52,6 +52,10 @@ export class QuizService {
   }
 
   async startQuiz(request: QuizStartRequest): Promise<StartDTO> {
+    if (request.difficulty.length === 0) {
+      throw new BadRequestException('The value of fields should not be empty');
+    }
+
     // 1. Quiz 엔티티 생성
     const quiz = this.quizRepository.create({
       startTimestamp: new Date(),

@@ -7,7 +7,7 @@ import { QuizModule } from './quiz/quiz.module';
 import { WordsModule } from './words/words.module';
 import 'dotenv/config';
 import { Quiz } from './entity/quiz.entity';
-import { QuizDifficulty } from './entity/quizDifficulty.entitiy';
+import { QuizDifficulty } from './entity/quizDifficulty.entity';
 
 @Module({
   imports: [

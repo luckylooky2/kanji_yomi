@@ -5,7 +5,7 @@ import { QuizService } from './quiz.service';
 import { QuizController } from './quiz.controller';
 import { LoggerMiddleware } from '../middleware/LoggerMiddleware';
 import { Quiz } from 'src/entity/quiz.entity';
-import { QuizDifficulty } from 'src/entity/quizDifficulty.entitiy';
+import { QuizDifficulty } from 'src/entity/quizDifficulty.entity';
 import { Meaning } from 'src/entity/meaning.entity';
 
 // module.ts: 하나의 기능 단위 / 애플리케이션의 구성 요소를 정의하고 관리하는 핵심 역할
