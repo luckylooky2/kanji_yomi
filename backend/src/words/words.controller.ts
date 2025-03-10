@@ -73,4 +73,25 @@ export class WordsController {
       handleClientError(error, 'Failed to get words count');
     }
   }
+
+  @Get('/:id')
+  @HttpCode(200)
+  async getWordById(@Param('id') id: string) {
+    const logPrefix = 'Words/:id: ';
+    const questionId = parseInt(id, 10);
+    if (isNaN(questionId)) {
+      throw new BadRequestException('Get Word: Invalid Param ID');
+    }
+
+    try {
+      const questionDto = await this.wordsService.getWordById(questionId);
+      const resBody = questionDto;
+      logger.debug(logPrefix, { ...resBody });
+      return resBody;
+    } catch (error) {
+      logger.error(logPrefix, error);
+      handleClientError(error, 'Failed to get word by ID');
+    }
+  }
+
 }

@@ -121,25 +121,7 @@ export class QuizService {
       throw new Error('No matching meaning found');
     }
 
-    const questionDAO = this.makeQuestionDTO(randomWord);
-
-    return plainToInstance(QuestionDTO, questionDAO, {
-      excludeExtraneousValues: true,
-    });
-  }
-
-  async getQuestionById(questionId: number): Promise<QuestionDTO> {
-    const wordById = await this.wordRepository
-      .createQueryBuilder('word')
-      .innerJoinAndSelect('word.meanings', 'meaning')
-      .where('word.id = :id', { id: questionId })
-      .getOne();
-
-    if (!wordById) {
-      throw new Error('No matching meaning found');
-    }
-
-    const questionDAO = this.makeQuestionDTO(wordById);
+    const questionDAO = makeQuestionDTO(randomWord);
 
     return plainToInstance(QuestionDTO, questionDAO, {
       excludeExtraneousValues: true,

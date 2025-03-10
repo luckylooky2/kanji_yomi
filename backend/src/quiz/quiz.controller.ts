@@ -42,7 +42,7 @@ export class QuizController {
     const logPrefix = 'Quiz/finish: ';
 
     if (!id) {
-      throw new BadRequestException('Invalid ID');
+      throw new BadRequestException('Finish Quiz: Invalid Param ID');
     }
 
     try {
@@ -69,26 +69,6 @@ export class QuizController {
     } catch (error) {
       logger.error(logPrefix, error);
       handleClientError(error, 'Failed to get question');
-    }
-  }
-
-  @Post('/question/:id')
-  @HttpCode(200)
-  async getQuestion(@Param('id') id: string) {
-    const logPrefix = 'Quiz/question/:id: ';
-    const questionId = parseInt(id, 10);
-    if (isNaN(questionId)) {
-      throw new BadRequestException('Invalid ID');
-    }
-
-    try {
-      const questionDto = await this.quizService.getQuestionById(questionId);
-      const resBody = questionDto;
-      logger.debug(logPrefix, { ...resBody });
-      return resBody;
-    } catch (error) {
-      logger.error(logPrefix, error);
-      handleClientError(error, 'Failed to get question by ID');
     }
   }
 
