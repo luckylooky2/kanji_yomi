@@ -14,3 +14,18 @@ export class WordsQueryCountDTO {
   @Expose()
   totalCount: number;
 }
+
+export class WordsCreateDTO {
+  @Expose()
+  id: number;
+}
+
+export class WordsEditDTO {
+  @Expose()
+  id: number;
+}
+
+export class WordsDeleteDTO {
+  @Expose()
+  id: number;
+}
