@@ -1,15 +1,24 @@
 import {
   BadRequestException,
+  Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
+  Param,
+  Post,
+  Put,
   Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import logger from 'src/middleware/Logger';
 import { WordsService } from './words.service';
-import { WordsQueryCountRequest, WordsQueryRequest } from './words.request';
+import {
+  WordsCreateRequest,
+  WordsQueryCountRequest,
+  WordsQueryRequest,
+} from './words.request';
 import { handleClientError } from 'src/utils/utils';
 
 @Controller('words')
@@ -94,4 +103,62 @@ export class WordsController {
     }
   }
 
+  // 새로운 단어 추가
+  @Post('/')
+  @HttpCode(200)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async createNewWord(@Body() query: WordsCreateRequest) {
+    const logPrefix = 'New Words: ';
+
+    try {
+      const resBody = await this.wordsService.createNewWord(query);
+      logger.debug(logPrefix, { ...resBody });
+      return resBody;
+    } catch (error) {
+      logger.error(logPrefix, error);
+      handleClientError(error, 'Failed to create new word');
+    }
+  }
+
+  // 단어 수정
+  @Put('/:id')
+  @HttpCode(200)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async editWord(@Param('id') id: string, @Body() query: WordsCreateRequest) {
+    const logPrefix = 'Edit Words: ';
+    const wordId = parseInt(id, 10);
+    if (isNaN(wordId)) {
+      throw new BadRequestException('Edit Word: Invalid Param ID');
+    }
+
+    try {
+      const resBody = await this.wordsService.editWord(wordId, query);
+      logger.debug(logPrefix, { ...resBody });
+      return resBody;
+    } catch (error) {
+      logger.error(logPrefix, error);
+      handleClientError(error, 'Failed to get words count');
+    }
+  }
+
+  // 단어 삭제
+  @Delete('/:id')
+  @HttpCode(200)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async deleteWord(@Param('id') id: string) {
+    const logPrefix = 'Delete Words: ';
+    const wordId = parseInt(id, 10);
+    if (isNaN(wordId)) {
+      throw new BadRequestException('Delete Word: Invalid Param ID');
+    }
+
+    try {
+      const resBody = await this.wordsService.deleteWord(wordId);
+      logger.debug(logPrefix, { ...resBody });
+      return resBody;
+    } catch (error) {
+      logger.error(logPrefix, error);
+      handleClientError(error, 'Failed to get words count');
+    }
+  }
 }
