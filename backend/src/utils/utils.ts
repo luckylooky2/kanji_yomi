@@ -1,4 +1,6 @@
 import { InternalServerErrorException } from '@nestjs/common';
+import { Word } from 'src/entity/word.entity';
+import { MeaningDTO, QuestionDTO } from 'src/quiz/quiz.dto';
 
 export function compareNFCSafe(a: string, b: string): boolean {
   return a.normalize('NFC') === b.normalize('NFC');
@@ -51,4 +53,18 @@ export function handleClientError(error, ServerErrorMessage: string) {
   }
 
   throw new InternalServerErrorException(ServerErrorMessage);
+}
+
+export function makeQuestionDTO(word: Word): QuestionDTO {
+  const meanings: MeaningDTO[] = word.meanings.map((meaning) => ({
+    meaning: meaning.meaning,
+    difficulty: meaning.difficulty,
+  }));
+
+  return {
+    id: word.id,
+    word: word.word,
+    meanings,
+    correctRatio: calculateCorrectRatio(word.correctCount, word.incorrectCount),
+  };
 }
