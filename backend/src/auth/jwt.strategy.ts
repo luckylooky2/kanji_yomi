@@ -11,6 +11,11 @@ interface JwtPayload {
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
+    // TODO: configService를 이용한 코드로 변경
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET 환경 변수가 설정되지 않았습니다.');
+    }
+
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
