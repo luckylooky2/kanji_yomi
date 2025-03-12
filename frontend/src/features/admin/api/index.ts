@@ -5,7 +5,7 @@ export const AdminService = {
     const options = {
       method: "POST",
       body: JSON.stringify(body),
-      Credentials: "include",
+      credential: "include",
       ...BASE_OPTIONS,
     };
 
