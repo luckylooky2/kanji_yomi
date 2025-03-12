@@ -1,0 +1,14 @@
+.loginContainer {
+  margin: auto;
+  width: 400px;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xsmall);
+}
+
+.loginFailure {
+  color: red;
+}
