@@ -45,14 +45,15 @@ const AdminLogin = () => {
 
   return (
     <div className={styles.loginContainer}>
-      <h1>Administration</h1>
+      <h1>관리자 로그인</h1>
       <br />
       <form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>
-        <input placeholder="E-mail" {...register("email")} />
+        <input placeholder="E-mail" {...register("email")} aria-label="email" />
         <input
           type="password"
           placeholder="Password"
           {...register("password")}
+          aria-label="password"
         />
         <Button
           type="submit"
