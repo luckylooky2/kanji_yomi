@@ -10,15 +10,11 @@ export default async function AdminLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <body>
-        <AppRouterCacheProvider>
-          <ReactQueryProviders>
-            <Header />
-            {children}
-          </ReactQueryProviders>
-        </AppRouterCacheProvider>
-      </body>
-    </html>
+    <AppRouterCacheProvider>
+      <ReactQueryProviders>
+        <Header />
+        {children}
+      </ReactQueryProviders>
+    </AppRouterCacheProvider>
   );
 }
