@@ -1,8 +1,10 @@
 import {
+  WordsCreateNewWordRequestDTO,
   WordsSearchFilterCorrectRatioType,
   WordsSearchFilterDifficultyType,
+  WordsUpdateWordRequestDTO,
 } from "@/entities/words/types";
-import { API_URL, responseInterceptor } from "@/shared/model";
+import { API_URL, BASE_OPTIONS, responseInterceptor } from "@/shared/model";
 
 function createQueryStringWithFilters(
   search: string,
@@ -65,5 +67,28 @@ export const WordsService = {
       correctRatio
     );
     return responseInterceptor(`${API_URL}/words/count${queryString}`);
+  },
+
+  createNewWord: async (body: WordsCreateNewWordRequestDTO) => {
+    return responseInterceptor(`${API_URL}/words`, {
+      method: "POST",
+      body: JSON.stringify(body),
+      ...BASE_OPTIONS,
+    });
+  },
+
+  updateWord: async (body: WordsUpdateWordRequestDTO) => {
+    return responseInterceptor(`${API_URL}/words/${body.id}`, {
+      method: "PUT",
+      body: JSON.stringify(body),
+      ...BASE_OPTIONS,
+    });
+  },
+
+  deleteWord: async (id: number) => {
+    return responseInterceptor(`${API_URL}/words/${id}`, {
+      method: "DELETE",
+      ...BASE_OPTIONS,
+    });
   },
 };
