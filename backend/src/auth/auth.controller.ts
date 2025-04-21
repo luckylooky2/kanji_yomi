@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   Post,
   Res,
@@ -34,7 +35,7 @@ export class AuthController {
 
       res.cookie('access_token', access_token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production' || true,
         sameSite: 'none',
         maxAge: null, // session cookie
       });
@@ -58,6 +59,20 @@ export class AuthController {
     } catch (error) {
       logger.error(logPrefix, error);
       handleClientError(error, 'Failed to register');
+    }
+  }
+
+  @Get('/me')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('admin')
+  @HttpCode(200)
+  async getMe(@Res() res: Response) {
+    const logPrefix = 'Auth/me: ';
+    try {
+      return res.json({ message: 'Get user successful' });
+    } catch (error) {
+      logger.error(logPrefix, error);
+      return res.json({ message: 'Failed to get user' });
     }
   }
 }
