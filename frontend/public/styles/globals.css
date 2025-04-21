@@ -10,6 +10,7 @@
   --radius-large: 16px;
   --breakpoint-mobile: 480px;
   --color-main: #2196f3;
+  --color-main-opacity: rgba(33, 150, 243, 0.5);
   --color-green: #4caf50;
   --color-red: #ff6b6b;
   --color-yellow: #ffd54f;
