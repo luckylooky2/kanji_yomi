@@ -38,7 +38,7 @@ export function useScroll(callback: () => void) {
         currentRef.removeEventListener("scroll", handleScroll);
       }
     };
-  }, []);
+  });
 
   useEffect(() => {
     if (scrollRef.current) {

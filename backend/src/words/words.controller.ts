@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -20,6 +21,9 @@ import {
   WordsQueryRequest,
 } from './words.request';
 import { handleClientError } from 'src/utils/utils';
+import { AuthGuard } from '@nestjs/passport';
+import { Roles } from 'src/decorator/roles';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @Controller('words')
 export class WordsController {
@@ -105,7 +109,9 @@ export class WordsController {
 
   // 새로운 단어 추가
   @Post('/')
-  @HttpCode(200)
+  @HttpCode(201)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('admin')
   @UsePipes(new ValidationPipe({ transform: true }))
   async createNewWord(@Body() query: WordsCreateRequest) {
     const logPrefix = 'New Words: ';
@@ -123,6 +129,8 @@ export class WordsController {
   // 단어 수정
   @Put('/:id')
   @HttpCode(200)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('admin')
   @UsePipes(new ValidationPipe({ transform: true }))
   async editWord(@Param('id') id: string, @Body() query: WordsCreateRequest) {
     const logPrefix = 'Edit Words: ';
@@ -137,13 +145,15 @@ export class WordsController {
       return resBody;
     } catch (error) {
       logger.error(logPrefix, error);
-      handleClientError(error, 'Failed to get words count');
+      handleClientError(error, 'Failed to edit word');
     }
   }
 
   // 단어 삭제
   @Delete('/:id')
   @HttpCode(200)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('admin')
   @UsePipes(new ValidationPipe({ transform: true }))
   async deleteWord(@Param('id') id: string) {
     const logPrefix = 'Delete Words: ';
@@ -158,7 +168,7 @@ export class WordsController {
       return resBody;
     } catch (error) {
       logger.error(logPrefix, error);
-      handleClientError(error, 'Failed to get words count');
+      handleClientError(error, 'Failed to delete word');
     }
   }
 }

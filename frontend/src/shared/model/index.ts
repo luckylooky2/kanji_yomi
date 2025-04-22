@@ -1,13 +1,16 @@
+import { toast } from "react-toastify";
+
 import { settingLanguageType } from "@/entities/setting/types";
 
 import { CorrectRatioType, DifficultyType } from "../types";
 
 export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
-export const BASE_OPTIONS = {
+export const BASE_OPTIONS: RequestInit = {
   headers: {
     "Content-Type": "application/json",
   },
+  credentials: "include",
 };
 
 export async function responseInterceptor(
@@ -28,6 +31,10 @@ export async function responseInterceptor(
     });
 
     clearTimeout(timeoutId);
+
+    if (response.status === 401) {
+      toast.error("로그인 정보가 유효하지 않습니다.");
+    }
 
     if (!response.ok) {
       throw new Error(`Error: ${response.status}`);

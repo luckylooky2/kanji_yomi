@@ -120,7 +120,7 @@ const LandingPage = () => {
             <div className="hero-particles-container">
               <div className="hero-bg-wrapper">
                 <Image
-                  src="/landing/images/hero-canvas-winter.webp"
+                  src="/landing/images/hero-canvas.jpg"
                   alt="hero-canvas"
                   className="hero-canvas"
                   sizes="1080px"
