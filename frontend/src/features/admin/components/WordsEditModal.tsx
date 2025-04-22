@@ -82,7 +82,6 @@ const WordsEditModal = ({
       <DialogTitle>{CRUDMode}</DialogTitle>
       <DialogContent>
         <WordsTextField
-          autoFocus
           required
           margin="dense"
           id="word"
@@ -95,7 +94,6 @@ const WordsEditModal = ({
           variant="standard"
         />
         <WordsTextField
-          autoFocus
           required
           margin="dense"
           id="meaning1"
@@ -114,7 +112,6 @@ const WordsEditModal = ({
           ariaLabel="row-radio-buttons-difficulty1"
         />
         <WordsTextField
-          autoFocus
           margin="dense"
           id="meaning2"
           name="meaning2"
@@ -132,7 +129,6 @@ const WordsEditModal = ({
           ariaLabel="row-radio-buttons-difficulty2"
         />
         <WordsTextField
-          autoFocus
           margin="dense"
           id="meaning3"
           name="meaning3"
