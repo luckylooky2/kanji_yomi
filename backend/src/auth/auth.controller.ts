@@ -35,7 +35,7 @@ export class AuthController {
 
       res.cookie('access_token', access_token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production' || true,
+        secure: true,
         sameSite: 'none',
         maxAge: null, // session cookie
       });
