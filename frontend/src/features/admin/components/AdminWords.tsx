@@ -77,7 +77,11 @@ const AdminWords = () => {
 
   useEffect(() => {
     const getMe = async () => {
-      await AdminService.me();
+      try {
+        await AdminService.me();
+      } catch {
+        console.log("/auth/me", "로그인 정보가 유효하지 않습니다.");
+      }
     };
 
     getMe();
