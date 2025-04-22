@@ -107,17 +107,12 @@ const WordsEditModal = ({
           fullWidth
           variant="standard"
         />
-        <FormControl>
-          <RadioGroup
-            row
-            aria-labelledby="row-radio-buttons-group1-label"
-            name="row-radio-buttons-group1"
-            value={input.difficulty1}
-            onChange={handleInputChange("difficulty1")}
-          >
-            <DifficultyFormControls />
-          </RadioGroup>
-        </FormControl>
+        <DifficultyFormControls
+          value={input.difficulty1}
+          onChange={handleInputChange("difficulty1")}
+          name="row-radio-buttons-difficulty1"
+          ariaLabel="row-radio-buttons-difficulty1"
+        />
         <WordsTextField
           autoFocus
           margin="dense"
@@ -130,17 +125,12 @@ const WordsEditModal = ({
           fullWidth
           variant="standard"
         />
-        <FormControl>
-          <RadioGroup
-            row
-            aria-labelledby="row-radio-buttons-group2-label"
-            name="row-radio-buttons-group2"
-            onChange={handleInputChange("difficulty2")}
-            value={input.difficulty2}
-          >
-            <DifficultyFormControls />
-          </RadioGroup>
-        </FormControl>
+        <DifficultyFormControls
+          value={input.difficulty2}
+          onChange={handleInputChange("difficulty2")}
+          name="row-radio-buttons-difficulty2"
+          ariaLabel="row-radio-buttons-difficulty2"
+        />
         <WordsTextField
           autoFocus
           margin="dense"
@@ -153,17 +143,12 @@ const WordsEditModal = ({
           fullWidth
           variant="standard"
         />
-        <FormControl>
-          <RadioGroup
-            row
-            aria-labelledby="row-radio-buttons-group3-label"
-            name="row-radio-buttons-group3"
-            onChange={handleInputChange("difficulty3")}
-            value={input.difficulty3}
-          >
-            <DifficultyFormControls />
-          </RadioGroup>
-        </FormControl>
+        <DifficultyFormControls
+          value={input.difficulty3}
+          onChange={handleInputChange("difficulty3")}
+          name="row-radio-buttons-difficulty3"
+          ariaLabel="row-radio-buttons-difficulty3"
+        />
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={handleModalClose}>
