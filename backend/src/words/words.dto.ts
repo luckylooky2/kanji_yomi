@@ -15,17 +15,17 @@ export class WordsQueryCountDTO {
   totalCount: number;
 }
 
-export class WordsCreateDTO {
+export class WordsCreateResponseDTO {
   @Expose()
   id: number;
 }
 
-export class WordsEditDTO {
+export class WordsEditResponseDTO {
   @Expose()
   id: number;
 }
 
-export class WordsDeleteDTO {
+export class WordsDeleteResponseDTO {
   @Expose()
   id: number;
 }

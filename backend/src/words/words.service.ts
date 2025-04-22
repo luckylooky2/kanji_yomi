@@ -3,9 +3,9 @@ import { Word } from '../entity/word.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Repository } from 'typeorm';
 import {
-  WordsCreateDTO,
-  WordsDeleteDTO,
-  WordsEditDTO,
+  WordsCreateResponseDTO,
+  WordsDeleteResponseDTO,
+  WordsEditResponseDTO,
   WordsQueryCountDTO,
   WordsQueryDto,
 } from './words.dto';
@@ -152,7 +152,9 @@ export class WordsService {
     });
   }
 
-  async createNewWord(word: WordsCreateRequest): Promise<WordsCreateDTO> {
+  async createNewWord(
+    word: WordsCreateRequest,
+  ): Promise<WordsCreateResponseDTO> {
     const existingWord = await this.wordRepository.findOne({
       where: { word: word.word.normalize('NFC') },
     });
@@ -173,7 +175,7 @@ export class WordsService {
   async editWord(
     wordId: number,
     newWord: WordsEditRequest,
-  ): Promise<WordsEditDTO> {
+  ): Promise<WordsEditResponseDTO> {
     const existingWord = await this.joinAndSelectById(wordId);
 
     if (!existingWord) {
@@ -222,7 +224,7 @@ export class WordsService {
     return { id: wordId };
   }
 
-  async deleteWord(wordId: number): Promise<WordsDeleteDTO> {
+  async deleteWord(wordId: number): Promise<WordsDeleteResponseDTO> {
     const existingWord = await this.wordRepository.findOne({
       where: { id: wordId },
     });
