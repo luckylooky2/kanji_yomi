@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import {
   Button,
   Dialog,
@@ -35,9 +36,9 @@ const WordsDeleteModal = ({
     <Dialog open={open} onClose={handleModalClose}>
       <DialogTitle>{CRUDMode}</DialogTitle>
       <DialogContent>
-        <div style={{ fontSize: "24px", textAlign: "center" }}>
+        <WordsDeleteModalWord>
           <strong>{words[currentWordIndex!].word}</strong>
-        </div>
+        </WordsDeleteModalWord>
         <div>단어를 삭제하시겠습니까?</div>
       </DialogContent>
       <DialogActions>
@@ -65,3 +66,8 @@ const WordsDeleteModal = ({
 };
 
 export default WordsDeleteModal;
+
+const WordsDeleteModalWord = styled.div`
+  font-size: 24px;
+  text-align: center;
+`;
