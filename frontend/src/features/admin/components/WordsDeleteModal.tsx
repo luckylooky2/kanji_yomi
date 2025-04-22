@@ -32,12 +32,16 @@ const WordsDeleteModal = ({
   const router = useRouter();
   const queryClient = useQueryClient();
 
+  if (!currentWordIndex) {
+    return;
+  }
+
   return (
     <Dialog open={open} onClose={handleModalClose}>
       <DialogTitle>{CRUDMode}</DialogTitle>
       <DialogContent>
         <WordsDeleteModalWord>
-          <strong>{words[currentWordIndex!].word}</strong>
+          <strong>{words[currentWordIndex].word}</strong>
         </WordsDeleteModalWord>
         <div>단어를 삭제하시겠습니까?</div>
       </DialogContent>
@@ -50,7 +54,7 @@ const WordsDeleteModal = ({
           type="submit"
           onClick={async () => {
             try {
-              await WordsService.deleteWord(words[currentWordIndex!].id);
+              await WordsService.deleteWord(words[currentWordIndex].id);
               queryClient.invalidateQueries({ queryKey: ["words"] });
               handleModalClose();
             } catch {
