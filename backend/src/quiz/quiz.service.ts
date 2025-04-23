@@ -11,15 +11,9 @@ import {
   QuestionRequest,
   QuizStartRequest,
 } from './quiz.request';
-import {
-  AnswerDTO,
-  FinishDTO,
-  MeaningDTO,
-  QuestionDTO,
-  StartDTO,
-} from './quiz.dto';
+import { AnswerDTO, FinishDTO, QuestionDTO, StartDTO } from './quiz.dto';
 import { Word } from '../entity/word.entity';
-import { calculateCorrectRatio, compareNFCSafe } from 'src/utils/utils';
+import { compareNFCSafe, makeQuestionDTO } from 'src/utils/utils';
 import { Quiz } from 'src/entity/quiz.entity';
 import { QuizDifficulty } from 'src/entity/quizDifficulty.entity';
 import { Meaning } from 'src/entity/meaning.entity';
@@ -33,23 +27,6 @@ export class QuizService {
     @InjectRepository(QuizDifficulty)
     private quizDifficultyRepository: Repository<QuizDifficulty>,
   ) {}
-
-  private makeQuestionDTO(word: Word): QuestionDTO {
-    const meanings: MeaningDTO[] = word.meanings.map((meaning) => ({
-      meaning: meaning.meaning,
-      difficulty: meaning.difficulty,
-    }));
-
-    return {
-      id: word.id,
-      word: word.word,
-      meanings,
-      correctRatio: calculateCorrectRatio(
-        word.correctCount,
-        word.incorrectCount,
-      ),
-    };
-  }
 
   async startQuiz(request: QuizStartRequest): Promise<StartDTO> {
     if (request.difficulty.length === 0) {
@@ -144,25 +121,7 @@ export class QuizService {
       throw new Error('No matching meaning found');
     }
 
-    const questionDAO = this.makeQuestionDTO(randomWord);
-
-    return plainToInstance(QuestionDTO, questionDAO, {
-      excludeExtraneousValues: true,
-    });
-  }
-
-  async getQuestionById(questionId: number): Promise<QuestionDTO> {
-    const wordById = await this.wordRepository
-      .createQueryBuilder('word')
-      .innerJoinAndSelect('word.meanings', 'meaning')
-      .where('word.id = :id', { id: questionId })
-      .getOne();
-
-    if (!wordById) {
-      throw new Error('No matching meaning found');
-    }
-
-    const questionDAO = this.makeQuestionDTO(wordById);
+    const questionDAO = makeQuestionDTO(randomWord);
 
     return plainToInstance(QuestionDTO, questionDAO, {
       excludeExtraneousValues: true,

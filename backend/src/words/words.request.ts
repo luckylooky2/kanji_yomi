@@ -1,6 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
+  ArrayMinSize,
   IsArray,
   IsIn,
   IsInt,
@@ -9,6 +10,7 @@ import {
   IsString,
   Max,
   Min,
+  ValidateNested,
 } from 'class-validator';
 
 function checkNumberRegex({ value }: { value: string }) {
@@ -57,3 +59,34 @@ export class WordsQueryRequest extends IWordsQueryRequest {
 }
 
 export class WordsQueryCountRequest extends IWordsQueryRequest {}
+
+export class Meaning {
+  @IsString()
+  meaning: string;
+
+  @IsIn(['N5', 'N4', 'N3', 'N2', 'N1'])
+  difficulty: 'N5' | 'N4' | 'N3' | 'N2' | 'N1';
+}
+
+export class WordsCreateRequest {
+  @IsString()
+  word: string;
+
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  // class-transformer가 meanings의 타입 변환을 수행하지 못하여 유효성 검사가 실패함
+  @Type(() => Meaning)
+  meanings: Meaning[];
+}
+
+export class WordsEditRequest {
+  @IsString()
+  word: string;
+
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => Meaning)
+  meanings: Meaning[];
+}

@@ -18,7 +18,7 @@ const Header = () => {
             width={33}
             height={33}
           />
-          <Link href="/">漢字読み</Link>
+          <Link href="/quiz">漢字読み</Link>
         </div>
         <div className={styles.languageSelectLayout}>
           <LanguageSelectMenu />

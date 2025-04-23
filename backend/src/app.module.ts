@@ -8,6 +8,8 @@ import { WordsModule } from './words/words.module';
 import 'dotenv/config';
 import { Quiz } from './entity/quiz.entity';
 import { QuizDifficulty } from './entity/quizDifficulty.entity';
+import { User } from './entity/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,12 +24,13 @@ import { QuizDifficulty } from './entity/quizDifficulty.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [Word, Meaning, Quiz, QuizDifficulty],
+      entities: [Word, Meaning, Quiz, QuizDifficulty, User],
       synchronize: true,
       autoLoadEntities: true,
     }),
     QuizModule,
     WordsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
