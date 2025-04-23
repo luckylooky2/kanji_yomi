@@ -31,6 +31,10 @@ const WordsDeleteModal = ({
   const router = useRouter();
   const queryClient = useQueryClient();
 
+  if (currentWordIndex === null) {
+    return;
+  }
+
   return (
     <Dialog open={open} onClose={handleModalClose}>
       <DialogTitle>{CRUDMode}</DialogTitle>

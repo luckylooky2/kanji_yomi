@@ -37,7 +37,6 @@ export class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        maxAge: null, // session cookie
       });
 
       return res.json({ message: 'Login Successful', user });

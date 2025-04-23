@@ -124,9 +124,9 @@ const AdminWords = () => {
     createData(
       word.id,
       word.word,
-      word.meanings[0],
-      word.meanings[1],
-      word.meanings[2],
+      word.meanings[0] ?? null,
+      word.meanings[1] ?? null,
+      word.meanings[2] ?? null,
       word.correctRatio
     )
   );
@@ -186,10 +186,10 @@ const AdminWords = () => {
               ))}
             </TableRow>
           </WordsTableHead>
+          {rows.length === 0 && (
+            <TableCellNoContent>검색된 단어가 없습니다.</TableCellNoContent>
+          )}
           <TableBody>
-            {rows.length === 0 && (
-              <TableCellNoContent>검색된 단어가 없습니다.</TableCellNoContent>
-            )}
             {rows.map((row, index) => (
               <TableRow
                 selected={currentWordIndex === index}
