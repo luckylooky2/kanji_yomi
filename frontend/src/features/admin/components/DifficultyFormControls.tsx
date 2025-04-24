@@ -4,9 +4,9 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
+import { ChangeEvent } from "react";
 
 import ChipByDifficulty from "./ChipByDifficulty";
-import { ChangeEvent } from "react";
 
 interface Props {
   value: string;
