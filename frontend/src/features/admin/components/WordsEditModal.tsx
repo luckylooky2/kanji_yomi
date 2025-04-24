@@ -11,6 +11,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { toast } from "react-toastify";
 
 import { wordsCurrentWordIndex } from "@/entities/words/store";
 import { WordsCreateNewWordRequestDTO } from "@/entities/words/types";
@@ -171,8 +172,14 @@ const WordsEditModal = ({
               }
               queryClient.invalidateQueries({ queryKey: ["words"] });
               handleModalClose();
-            } catch {
-              router.push("/admin/login");
+            } catch (error) {
+              if (error instanceof Error) {
+                if (error.message === "401") {
+                  router.push("/admin/login");
+                } else if (error.message === "400") {
+                  toast.error("단어가 이미 존재합니다.");
+                }
+              }
             }
           }}
         >
