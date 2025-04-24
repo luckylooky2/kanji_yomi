@@ -37,6 +37,7 @@ export class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
+        domain: process.env.COOKIE_DOMAIN,
       });
 
       return res.json({ message: 'Login Successful', user });
