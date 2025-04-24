@@ -32,7 +32,7 @@ const WordsDeleteModal = ({
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  if (!currentWordIndex) {
+  if (currentWordIndex === null) {
     return;
   }
 
