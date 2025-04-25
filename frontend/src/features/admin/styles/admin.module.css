@@ -1,6 +1,7 @@
 .loginContainer {
   margin: auto;
-  width: 400px;
+  width: 80%;
+  max-width: 350px;
 }
 
 .loginForm {
