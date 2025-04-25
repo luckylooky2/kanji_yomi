@@ -1,5 +1,6 @@
 "use client";
 import styled from "@emotion/styled";
+import CloseIcon from "@mui/icons-material/Close";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SearchIcon from "@mui/icons-material/Search";
@@ -79,9 +80,7 @@ const AdminWords = () => {
     const getMe = async () => {
       try {
         await AdminService.me();
-      } catch {
-        console.log("/auth/me", "로그인 정보가 유효하지 않습니다.");
-      }
+      } catch {}
     };
 
     getMe();
@@ -120,11 +119,7 @@ const AdminWords = () => {
     return { id, word, meaning1, meaning2, meaning3, correctRatio };
   }
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  const rows = words.map((word) =>
+  const rows = words?.map((word) =>
     createData(
       word.id,
       word.word,
@@ -156,11 +151,20 @@ const AdminWords = () => {
       <WordsSearchContainer>
         <WordsSearchForm onSubmit={handleSubmit(onSubmit)}>
           <WordsSearchInput
+            autoFocus
             autoComplete="off"
             placeholder="단어를 입력하세요."
             {...register("search")}
           />
         </WordsSearchForm>
+        <WordsSearchFilterButton
+          onClick={() => {
+            resetInput();
+            setSearchInput("");
+          }}
+        >
+          <ResponsiveIcon icon={CloseIcon} />
+        </WordsSearchFilterButton>
         <WordsSearchFilterButton onClick={toggleSearchFilter}>
           <ResponsiveIcon icon={determineFilterIcon()} />
         </WordsSearchFilterButton>
@@ -179,43 +183,47 @@ const AdminWords = () => {
         )}
       </WordsSearchContainer>
       <WordsScrollContainer isMobile={isMobile} ref={scrollRef}>
-        <Table aria-label="simple table">
-          <WordsTableHead>
-            <TableRow>
-              <TableCell>Id</TableCell>
-              {columnsList.map((title) => (
-                <TableCell key={title} align="center">
-                  <TableCellContainer>{title}</TableCellContainer>
-                </TableCell>
-              ))}
-            </TableRow>
-          </WordsTableHead>
-          {rows.length === 0 && (
-            <TableCellNoContent>검색된 단어가 없습니다.</TableCellNoContent>
-          )}
-          <TableBody>
-            {rows.map((row, index) => (
-              <TableRow
-                selected={currentWordIndex === index}
-                key={row.id}
-                onClick={() => {
-                  if (currentWordIndex === index) setCurrentWordIndex(null);
-                  else setCurrentWordIndex(index);
-                }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.id}
-                </TableCell>
-                <TableCell component="th" scope="row" align="center">
-                  <strong>{row.word}</strong>
-                </TableCell>
-                <AdminWordsMeaning meaning={row.meaning1} />
-                <AdminWordsMeaning meaning={row.meaning2} />
-                <AdminWordsMeaning meaning={row.meaning3} />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <Table aria-label="simple table">
+            <WordsTableHead>
+              <TableRow>
+                <TableCell>Id</TableCell>
+                {columnsList.map((title) => (
+                  <TableCell key={title} align="center">
+                    <TableCellContainer>{title}</TableCellContainer>
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </WordsTableHead>
+            {rows.length === 0 && (
+              <TableCellNoContent>검색된 단어가 없습니다.</TableCellNoContent>
+            )}
+            <TableBody>
+              {rows.map((row, index) => (
+                <TableRow
+                  selected={currentWordIndex === index}
+                  key={row.id}
+                  onClick={() => {
+                    if (currentWordIndex === index) setCurrentWordIndex(null);
+                    else setCurrentWordIndex(index);
+                  }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.id}
+                  </TableCell>
+                  <TableCell component="th" scope="row" align="center">
+                    <strong>{row.word}</strong>
+                  </TableCell>
+                  <AdminWordsMeaning meaning={row.meaning1} />
+                  <AdminWordsMeaning meaning={row.meaning2} />
+                  <AdminWordsMeaning meaning={row.meaning3} />
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </WordsScrollContainer>
     </WordsContainer>
   );
@@ -225,7 +233,6 @@ export default AdminWords;
 
 const WordsContainer = styled.div`
   width: 90%;
-  height: 70%;
   overflow: hidden;
   padding-top: 30px;
   z-index: 0;
@@ -296,6 +303,7 @@ const AdminWordsMeaningContainer = styled.div`
 `;
 
 const TableCellContainer = styled.div`
+  margin: 0 auto;
   width: 150px;
 `;
 
