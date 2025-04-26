@@ -234,7 +234,7 @@ export default AdminWords;
 const WordsContainer = styled.div`
   width: 90%;
   overflow: hidden;
-  padding-top: 30px;
+  padding-top: 64px;
   z-index: 0;
   margin: auto;
 `;
