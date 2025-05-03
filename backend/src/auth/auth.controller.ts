@@ -47,6 +47,39 @@ export class AuthController {
     }
   }
 
+  @Post('/login/admin')
+  @HttpCode(200)
+  async loginAdmin(
+    @Body() body: { email: string; password: string },
+    @Res() res: Response,
+  ) {
+    const logPrefix = 'Auth/login/admin: ';
+
+    try {
+      const { email, password } = body;
+      const { access_token, user } = await this.authService.login(
+        email,
+        password,
+      );
+
+      if (user.role !== 'admin') {
+        return res.status(403).json({ message: 'Forbidden' });
+      }
+
+      res.cookie('access_token', access_token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        domain: process.env.COOKIE_DOMAIN,
+      });
+
+      return res.json({ message: 'Admin Login Successful', user });
+    } catch (error) {
+      logger.error(logPrefix, error);
+      handleClientError(error, 'Failed to admin login');
+    }
+  }
+
   @Post('/register')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('admin')
