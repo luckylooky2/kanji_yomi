@@ -16,7 +16,6 @@ interface IFormInput {
 }
 
 const AdminLogin = () => {
-  const [isLoginFailed, setIsLoginFailed] = useState(false);
   const { register, handleSubmit } = useForm<IFormInput>();
   const router = useRouter();
 
@@ -33,13 +32,20 @@ const AdminLogin = () => {
     }
 
     try {
-      await AdminService.login({
-        email: email,
-        password: password,
-      });
+      await AdminService.loginAdmin(
+        {
+          email: email,
+          password: password,
+        },
+        "이메일 또는 비밀번호가 일치하지 않습니다."
+      );
       router.push("/admin");
-    } catch {
-      setIsLoginFailed(true);
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message === "403") {
+          toast.error("관리자 권한이 없습니다.");
+        }
+      }
     }
   };
 
@@ -63,9 +69,6 @@ const AdminLogin = () => {
           Log in
         </Button>
       </form>
-      {isLoginFailed && (
-        <div className={styles.loginFailure}>로그인에 실패하였습니다.</div>
-      )}
     </div>
   );
 };
