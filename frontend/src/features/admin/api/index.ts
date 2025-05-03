@@ -1,14 +1,21 @@
 import { API_URL, BASE_OPTIONS, responseInterceptor } from "@/shared/model";
 
 export const AdminService = {
-  login: async (body: { email: string; password: string }) => {
+  loginAdmin: async (
+    body: { email: string; password: string },
+    unauthorizedMessage?: string
+  ) => {
     const options = {
       method: "POST",
       body: JSON.stringify(body),
       ...BASE_OPTIONS,
     };
 
-    return responseInterceptor(`${API_URL}/auth/login`, options);
+    return responseInterceptor(
+      `${API_URL}/auth/login/admin`,
+      options,
+      unauthorizedMessage
+    );
   },
 
   me: async (token?: string) => {
