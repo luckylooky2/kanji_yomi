@@ -15,7 +15,8 @@ export const BASE_OPTIONS: RequestInit = {
 
 export async function responseInterceptor(
   url: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  unauthorizedMessage: string = "로그인 정보가 유효하지 않습니다."
 ) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 5000);
@@ -33,7 +34,7 @@ export async function responseInterceptor(
     clearTimeout(timeoutId);
 
     if (response.status === 401) {
-      toast.error("로그인 정보가 유효하지 않습니다.");
+      toast.error(unauthorizedMessage);
     }
 
     if (!response.ok) {
