@@ -11,8 +11,10 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -21,17 +23,17 @@ import {
   wordsSearchFilterDifficulty,
   wordsSearchFilterSearchInput,
 } from "@/entities/words/store";
-import { AdminService } from "@/features/admin/api";
 import ChipByDifficulty from "@/features/admin/components/ChipByDifficulty";
 import WordsToolbar from "@/features/admin/components/WordsToolbar";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
 import { useFetchWords } from "@/shared/hooks/useFetchWords";
-import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { useScroll } from "@/shared/hooks/useScroll";
 import { theme } from "@/shared/styles/theme";
 import { DifficultyType } from "@/shared/types";
 import Loading from "@/widgets/Loading/Loading";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
+
+import { AdminService } from "../api";
 
 const NOT_AVAILABLE = "";
 
@@ -69,22 +71,25 @@ const AdminWords = () => {
     wordsCurrentWordIndex
   );
   const [, setSearchInput] = useAtom(wordsSearchFilterSearchInput);
-  const isMobile = useMediaQuery(theme.breakpoints.mobile);
   const { handleSubmit, register, reset } = useForm<{ search: string }>();
   const { isLoading, isError, words, fetchNextPage } = useFetchWords();
   const { scrollRef } = useScroll(fetchNextPage);
+  const router = useRouter();
   const isWordSelected = currentWordIndex !== null;
   const columnsList = ["Word", "Meaning1", "Meaning2", "Meaning3"];
 
-  useEffect(() => {
-    const getMe = async () => {
+  useQuery({
+    queryKey: ["me"],
+    queryFn: async () => {
       try {
         await AdminService.me();
-      } catch {}
-    };
-
-    getMe();
-  }, []);
+      } catch {
+        router.push("/admin/login");
+      }
+      return true;
+    },
+    refetchInterval: 10 * 60 * 1000,
+  });
 
   const onSubmit = ({ search }: { search: string }) => {
     setDifficulty({ ...selectedDifficulty });
@@ -152,7 +157,6 @@ const AdminWords = () => {
         <WordsSearchForm onSubmit={handleSubmit(onSubmit)}>
           <WordsSearchInput
             autoFocus
-            autoComplete="off"
             placeholder="단어를 입력하세요."
             {...register("search")}
           />
@@ -182,7 +186,7 @@ const AdminWords = () => {
           />
         )}
       </WordsSearchContainer>
-      <WordsScrollContainer isMobile={isMobile} ref={scrollRef}>
+      <WordsScrollContainer ref={scrollRef}>
         {isLoading ? (
           <Loading />
         ) : (
@@ -286,8 +290,8 @@ const WordsErrorContainer = styled.div`
   }
 `;
 
-const WordsScrollContainer = styled(TableContainer)<{ isMobile: boolean }>`
-  height: ${({ isMobile }) => (isMobile ? "400" : "500")}px;
+const WordsScrollContainer = styled(TableContainer)`
+  height: 400px;
 `;
 
 const WordsTableHead = styled(TableHead)`
