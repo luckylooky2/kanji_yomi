@@ -29,7 +29,7 @@ import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
 import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { useScroll } from "@/shared/hooks/useScroll";
 import { theme } from "@/shared/styles/theme";
-import { DifficultyType } from "@/shared/types";
+import { DifficultyType, WordInfo } from "@/shared/types";
 import Loading from "@/widgets/Loading/Loading";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
@@ -111,29 +111,22 @@ const AdminWords = () => {
 
   const resetInput = () => {
     reset();
+    setSearchInput("");
   };
 
-  function createData(
-    id: number,
-    word: string,
-    meaning1: TMeaning,
-    meaning2: TMeaning | null,
-    meaning3: TMeaning | null,
-    correctRatio: number
-  ) {
-    return { id, word, meaning1, meaning2, meaning3, correctRatio };
-  }
+  const handleSelectWord = (index: number) => {
+    if (currentWordIndex === index) setCurrentWordIndex(null);
+    else setCurrentWordIndex(index);
+  };
 
-  const rows = words?.map((word) =>
-    createData(
-      word.id,
-      word.word,
-      word.meanings[0] ?? null,
-      word.meanings[1] ?? null,
-      word.meanings[2] ?? null,
-      word.correctRatio
-    )
-  );
+  const rows = words?.map((word: WordInfo) => ({
+    id: word.id,
+    word: word.word,
+    meaning1: word.meanings[0] ?? null,
+    meaning2: word.meanings[1] ?? null,
+    meaning3: word.meanings[2] ?? null,
+    correctRatio: word.correctRatio,
+  }));
 
   if (isError) {
     return (
@@ -161,12 +154,7 @@ const AdminWords = () => {
             {...register("search")}
           />
         </WordsSearchForm>
-        <WordsSearchFilterButton
-          onClick={() => {
-            resetInput();
-            setSearchInput("");
-          }}
-        >
+        <WordsSearchFilterButton onClick={resetInput}>
           <ResponsiveIcon icon={CloseIcon} />
         </WordsSearchFilterButton>
         <WordsSearchFilterButton onClick={toggleSearchFilter}>
@@ -209,10 +197,7 @@ const AdminWords = () => {
                 <TableRow
                   selected={currentWordIndex === index}
                   key={row.id}
-                  onClick={() => {
-                    if (currentWordIndex === index) setCurrentWordIndex(null);
-                    else setCurrentWordIndex(index);
-                  }}
+                  onClick={() => handleSelectWord(index)}
                 >
                   <TableCell component="th" scope="row">
                     {row.id}
