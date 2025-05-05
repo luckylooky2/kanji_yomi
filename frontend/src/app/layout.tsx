@@ -7,6 +7,7 @@ import React from "react";
 import { Slide, ToastContainer } from "react-toastify";
 
 import ReactQueryProviders from "@/ReactQueryProviders";
+import WordMenu from "@/features/wordMenu/components/WordMenu";
 import { verifyCookie } from "@/shared/lib";
 import { knownRoutes } from "@/shared/model";
 
@@ -84,6 +85,7 @@ export default async function RootLayout({
                 autoClose={3000}
                 closeOnClick={true}
               />
+              <WordMenu />
               {children}
             </ReactQueryProviders>
           </AppRouterCacheProvider>
