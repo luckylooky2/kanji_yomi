@@ -1,5 +1,6 @@
 "use client";
 import styled from "@emotion/styled";
+import CheckIcon from "@mui/icons-material/Check";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
@@ -15,6 +16,8 @@ import {
 } from "@mui/material";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 import {
   wordMenuAnchorPositionState,
@@ -28,15 +31,32 @@ const WordMenu = () => {
     wordMenuAnchorPositionState
   );
   const [selectedWord] = useAtom(wordMenuSelectedWordState);
+  const [copied, setCopied] = useState(false);
+  const timeId = useRef<NodeJS.Timeout | null>(null);
   const { playTTS } = useTTS();
   const router = useRouter();
+  const clearTime = 2000;
 
   const handleSpeakWord = () => {
     playTTS(selectedWord ?? "");
   };
 
-  // copy 완료 UI 적용
-  const handleCopyWord = () => {};
+  const handleCopyWord = async (textToCopy: string) => {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      setCopied(true);
+      if (timeId.current) {
+        clearTimeout(timeId.current);
+      }
+
+      timeId.current = setTimeout(() => {
+        setCopied(false);
+        timeId.current = null;
+      }, clearTime);
+    } catch {
+      toast.error("복사에 실패하였습니다.");
+    }
+  };
 
   const handleRedirectDictionary = () =>
     window.open(`https://jisho.org/search/${selectedWord}`, "_blank");
@@ -58,26 +78,26 @@ const WordMenu = () => {
           <ListItemIcon>
             <ResponsiveIcon icon={VolumeUpIcon} />
           </ListItemIcon>
-          <ListItemText>Speak</ListItemText>
+          <ListItemText>단어 발음 듣기</ListItemText>
         </MenuItemContainer>
-        <MenuItemContainer onClick={handleCopyWord}>
+        <MenuItemContainer onClick={() => handleCopyWord(selectedWord ?? "")}>
           <ListItemIcon>
-            <ResponsiveIcon icon={ContentCopyIcon} />
+            <ResponsiveIcon icon={copied ? CheckIcon : ContentCopyIcon} />
           </ListItemIcon>
-          <ListItemText>Copy</ListItemText>
+          <ListItemText>{copied ? "복사되었습니다!" : "복사"}</ListItemText>
         </MenuItemContainer>
         <MenuItemContainer onClick={handleRedirectDictionary}>
           <ListItemIcon>
             <ResponsiveIcon icon={TravelExploreIcon} />
           </ListItemIcon>
-          <ListItemText>Find in Dictionary</ListItemText>
+          <ListItemText>사전에서 찾기</ListItemText>
           <OpenInNew />
         </MenuItemContainer>
         <MenuItemContainer onClick={handleRedirectSetting}>
           <ListItemIcon>
             <ResponsiveIcon icon={TuneIcon} />
           </ListItemIcon>
-          <ListItemText>Speak Setting</ListItemText>
+          <ListItemText>단어 발음 설정</ListItemText>
         </MenuItemContainer>
       </MenuList>
     </Popover>

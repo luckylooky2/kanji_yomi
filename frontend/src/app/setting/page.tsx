@@ -24,7 +24,7 @@ const SettingPage = () => {
 
   return (
     <SpeakSettingContainer>
-      <h2>음성 설정</h2>
+      <h2>단어 발음 설정</h2>
       <QuizWordHintSpeakSetting />
     </SpeakSettingContainer>
   );
