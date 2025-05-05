@@ -65,19 +65,19 @@ const QuizWordHint = () => {
           aria-label="Hint button group"
           isMobile={isMobile}
         >
-          <QuizWordHintButton onClick={handleSpeakWord}>
+          <Button onClick={handleSpeakWord}>
             <ResponsiveIcon icon={VolumeUpIcon} />
-          </QuizWordHintButton>
-          <QuizWordHintButton
+          </Button>
+          <Button
             onClick={() => setIsSpeakSettingOpen(!isSpeakSettingOpen)}
             variant={isSpeakSettingOpen ? "contained" : "outlined"}
           >
             <ResponsiveIcon icon={TuneIcon} />
-          </QuizWordHintButton>
+          </Button>
           {isSpeakSettingOpen && <QuizWordHintSpeakSetting />}
-          <QuizWordHintButton onClick={handleRedirectDictionary}>
+          <Button onClick={handleRedirectDictionary}>
             <ResponsiveIcon icon={TravelExploreIcon} />
-          </QuizWordHintButton>
+          </Button>
         </QuizWordHintButtonGroup>
       </QuizWordHintPopper>
     </QuizWordHintLayout>
@@ -103,8 +103,6 @@ const QuizWordHintButtonGroup = styled(ButtonGroup)<{ isMobile: boolean }>`
 const QuizWordHintMenuButton = styled(Button)`
   padding: 0;
 `;
-
-const QuizWordHintButton = styled(Button)``;
 
 const QuizWordHintPopper = styled(Popper)<{ isGuideSelected?: boolean }>`
   .MuiButtonGroup-root {
