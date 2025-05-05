@@ -1,0 +1,11 @@
+{
+  "id": "admin",
+  "filter-difficulty-title": "JLPT 난이도",
+  "filter-correctRatio-title": "정답률",
+  "filter-reset": "초기화",
+  "filter-close": "닫기",
+  "All": "All",
+  "High": "높음",
+  "Mid": "중간",
+  "Low": "낮음"
+}
