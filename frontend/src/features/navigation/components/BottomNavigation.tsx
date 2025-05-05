@@ -1,5 +1,6 @@
 import AppsIcon from "@mui/icons-material/Apps";
 import QuizIcon from "@mui/icons-material/Quiz";
+import SettingsIcon from "@mui/icons-material/Settings";
 import Navigation from "@mui/material/BottomNavigation";
 import { headers } from "next/headers";
 import React from "react";
@@ -13,11 +14,11 @@ const BottomNavigation = () => {
   const menus = [
     { label: "Quiz", href: "quiz", icon: <QuizIcon fontSize="small" /> },
     { label: "Words", href: "words", icon: <AppsIcon fontSize="small" /> },
-    // {
-    //   label: "Setting",
-    //   href: "setting",
-    //   icon: <SettingsIcon fontSize="small" />,
-    // },
+    {
+      label: "Setting",
+      href: "setting",
+      icon: <SettingsIcon fontSize="small" />,
+    },
     // { label: "Community", href: "community", icon: <ForumIcon /> },
     // { label: "My Page", href: "mypage", icon: <AccountCircleIcon /> },
   ];

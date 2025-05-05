@@ -1,0 +1,9 @@
+{
+  "id": "setting",
+  "speak": {
+    "voice": "음성",
+    "rate": "빠르기",
+    "pitch": "높낮이",
+    "volume": "음량"
+  }
+}

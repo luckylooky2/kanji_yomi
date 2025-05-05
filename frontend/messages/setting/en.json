@@ -1,0 +1,9 @@
+{
+  "id": "setting",
+  "speak": {
+    "voice": "Voice",
+    "rate": "Rate",
+    "pitch": "Pitch",
+    "volume": "Volume"
+  }
+}
