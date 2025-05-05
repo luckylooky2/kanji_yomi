@@ -41,6 +41,7 @@ import {
   quizResultState,
 } from "@/entities/quizResult/store";
 import { QuizResultLegendType } from "@/entities/quizResult/type";
+import WordMenuTrigger from "@/features/wordMenu/components/WordMenuTrigger";
 import { theme } from "@/shared/styles/theme";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
@@ -114,7 +115,7 @@ const QuizResult = () => {
 
   const handleFilter = (
     _event: SyntheticEvent,
-    newValue: "Correct" | "Retried" | "Skipped"
+    newValue: QuizResultLegendType
   ) => {
     setFilter(filter === newValue ? "All" : newValue);
   };
@@ -192,10 +193,22 @@ const QuizResult = () => {
                       <ColorCircle type={item.type} size={20}>
                         {item.round}
                       </ColorCircle>
-                      <h3>{item.word}</h3>
+                      <WordMenuTrigger>
+                        <WordMenuTriggerContainer>
+                          <h3>{item.word}</h3>
+                        </WordMenuTriggerContainer>
+                      </WordMenuTrigger>
                     </QuizResultListCellHeader>
                     <Divider orientation="vertical" />
-                    <h3>{item.meanings.map((v) => v.meaning).join(", ")}</h3>
+                    <WordMeaningContainer>
+                      {item.meanings.map((v, i) => (
+                        <WordMenuTrigger key={i}>
+                          <WordMenuTriggerContainer>
+                            <h3>{v.meaning}</h3>
+                          </WordMenuTriggerContainer>
+                        </WordMenuTrigger>
+                      ))}
+                    </WordMeaningContainer>
                   </QuizResultListCell>
                 </QuizResultListCellLayout>
               </QuizResultListItem>
@@ -396,4 +409,13 @@ const DownloadCSVButton = styled(Button)`
   gap: ${theme.spacing.small};
   background-color: white;
   text-transform: none;
+`;
+
+const WordMenuTriggerContainer = styled.div`
+  padding: 0 5px;
+`;
+
+const WordMeaningContainer = styled.div`
+  display: flex;
+  gap: var(--spacing-small);
 `;
