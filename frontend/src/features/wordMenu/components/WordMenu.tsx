@@ -41,7 +41,7 @@ const WordMenu = () => {
   const router = useRouter();
   const isMobile = useMediaQuery(theme.breakpoints.mobile);
   const t = useTranslations("wordMenu");
-  const clearTime = 2000;
+  const clearTime = 1000;
 
   const handleSpeakWord = () => {
     playTTS(selectedWord ?? "");
