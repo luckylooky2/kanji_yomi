@@ -7,7 +7,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCellBasic from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -25,6 +25,7 @@ import {
 } from "@/entities/words/store";
 import ChipByDifficulty from "@/features/admin/components/ChipByDifficulty";
 import WordsToolbar from "@/features/admin/components/WordsToolbar";
+import WordMenuTrigger from "@/features/wordMenu/components/WordMenuTrigger";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
 import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { useScroll } from "@/shared/hooks/useScroll";
@@ -48,8 +49,12 @@ const AdminWordsMeaning = ({ meaning }: AdminWordsMeaningProps) => {
     <TableCell align="center">
       {meaning ? (
         <AdminWordsMeaningContainer>
-          <div>{`${meaning.meaning}`}</div>
           <ChipByDifficulty difficulty={meaning.difficulty} />
+          <TableWordContainer>
+            <WordMenuTrigger>
+              <strong>{`${meaning.meaning}`}</strong>
+            </WordMenuTrigger>
+          </TableWordContainer>
         </AdminWordsMeaningContainer>
       ) : (
         NOT_AVAILABLE
@@ -203,7 +208,11 @@ const AdminWords = () => {
                     {row.id}
                   </TableCell>
                   <TableCell component="th" scope="row" align="center">
-                    <strong>{row.word}</strong>
+                    <TableWordContainer>
+                      <WordMenuTrigger>
+                        <strong>{row.word}</strong>
+                      </WordMenuTrigger>
+                    </TableWordContainer>
                   </TableCell>
                   <AdminWordsMeaning meaning={row.meaning1} />
                   <AdminWordsMeaning meaning={row.meaning2} />
@@ -241,7 +250,7 @@ const WordsSearchForm = styled.form`
 `;
 
 const WordsSearchInput = styled.input`
-  fontsize: ${theme.spacing.medium};
+  font-size: ${theme.spacing.medium};
   width: 100%;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -291,6 +300,10 @@ const AdminWordsMeaningContainer = styled.div`
   gap: ${theme.spacing.small};
 `;
 
+const TableCell = styled(TableCellBasic)`
+  font-size: ${theme.spacing.medium};
+`;
+
 const TableCellContainer = styled.div`
   margin: 0 auto;
   width: 150px;
@@ -298,4 +311,13 @@ const TableCellContainer = styled.div`
 
 const TableCellNoContent = styled.div`
   width: max-content;
+`;
+
+const TableWordContainer = styled.div`
+  width: fit-content;
+  margin: auto;
+
+  > div {
+    padding: 0 10px;
+  }
 `;
