@@ -2,12 +2,13 @@ import styled from "@emotion/styled";
 import { useTranslations } from "next-intl";
 
 import { QuizWordCategory } from "@/entities/quiz/types";
+import WordMenuTrigger from "@/features/wordMenu/components/WordMenuTrigger";
 import { useQuizQuestion } from "@/shared/hooks/useQuizQuestion";
-import { getMUIColorByCorrectRatio } from "@/shared/lib";
+import { getDifficultyColor, getMUIColorByCorrectRatio } from "@/shared/lib";
 import { theme } from "@/shared/styles/theme";
+import { DifficultyType } from "@/shared/types";
 
 import QuizWordCategoryChip from "./QuizWordCategoryChip";
-import QuizWordHint from "./QuizWordHint";
 
 const QuizWord = () => {
   // error가 발생한 경우는 상위 컴포넌트에서 처리되었기 때문에 !를 사용하였다.
@@ -23,10 +24,10 @@ const QuizWord = () => {
     (item, index) => difficulties.indexOf(item) === index
   );
   const meaningsCategories: QuizWordCategory[] = uniqueDifficulties.map(
-    (difficulty: string) => ({
+    (difficulty: DifficultyType) => ({
       kind: "difficulty",
       value: difficulty,
-      color: "primary",
+      color: getDifficultyColor(difficulty),
     })
   );
 
@@ -34,7 +35,7 @@ const QuizWord = () => {
     meaningsCategories.push({
       kind: "multianswer",
       value: t("multiAnswer"),
-      color: "secondary",
+      color: "default",
     });
   }
 
@@ -43,6 +44,7 @@ const QuizWord = () => {
       kind: "correctRatio",
       value: kanji.correctRatio + "%",
       color: getMUIColorByCorrectRatio(kanji.correctRatio),
+      variant: "outlined",
     },
   ]);
 
@@ -54,9 +56,14 @@ const QuizWord = () => {
             <QuizWordCategoryChip key={index} category={category} />
           ))}
         </QuizWordCategoryLayout>
-        <QuizWordHint />
       </QuizWordUtilityLayout>
-      <QuizWordWrapper>{kanji.word}</QuizWordWrapper>
+      <QuizWordWrapper>
+        <WordMenuTrigger>
+          <WordMenuTriggerContainer id="quiz-word">
+            {kanji.word}
+          </WordMenuTriggerContainer>
+        </WordMenuTrigger>
+      </QuizWordWrapper>
     </QuizWordLayout>
   );
 };
@@ -99,4 +106,8 @@ const QuizWordCategoryLayout = styled.div`
   display: flex;
   width: 100%;
   gap: ${theme.spacing.small};
+`;
+
+const WordMenuTriggerContainer = styled.div`
+  padding: 0 20px;
 `;

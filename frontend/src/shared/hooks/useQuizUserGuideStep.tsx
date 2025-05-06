@@ -3,20 +3,38 @@ import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
 import {
-  quizHintMenuOpenState,
   quizUserGuideShowState,
   quizUserGuideStepState,
 } from "@/entities/quiz/store";
 import { QuizUserGuideType } from "@/entities/quiz/types";
+import {
+  wordMenuAnchorPositionState,
+  wordMenuSelectedWordState,
+} from "@/entities/wordMenu/store";
 import QuizInputUserGuide from "@/features/quiz/components/QuizInputUserGuide";
 
 import { quizUserGuideIndex } from "../model";
 
 export function useQuizUserGuideStep() {
   const [userGuideStep, setUserGuideStep] = useAtom(quizUserGuideStepState);
-  const [, setIsHintMenuOpen] = useAtom(quizHintMenuOpenState);
+  const [, setAnchorPosition] = useAtom(wordMenuAnchorPositionState);
   const [, setShowUserGuide] = useAtom(quizUserGuideShowState);
+  const [, setSelectedWord] = useAtom(wordMenuSelectedWordState);
   const t = useTranslations("guide");
+
+  const getQuizWordCoord = () => {
+    const quizWordRect = document
+      .getElementById("quiz-word")
+      ?.getClientRects()[0];
+    return {
+      top: quizWordRect ? (quizWordRect.top + quizWordRect.bottom) / 2 : 0,
+      left: quizWordRect ? quizWordRect.left : 0,
+    };
+  };
+
+  const getCurrentWord = () => {
+    return document.getElementById("quiz-word")?.textContent ?? "";
+  };
 
   const quizUserGuideList: (QuizUserGuideType | null)[] = [
     null,
@@ -67,7 +85,7 @@ export function useQuizUserGuideStep() {
       title: t("step5-title"),
     },
     {
-      anchorEl: document.getElementById("quiz-hint"),
+      anchorEl: document.getElementById("quiz-word"),
       position: "top",
       content: t("step6-content1"),
       title: t("step6-title"),
@@ -101,7 +119,10 @@ export function useQuizUserGuideStep() {
   const setPrevStep = () => {
     setUserGuideStep((prev) => {
       const prevIndex = prev - 1;
-      setIsHintMenuOpen(prevIndex === quizUserGuideIndex.HINT_MENU);
+      setAnchorPosition(
+        prevIndex === quizUserGuideIndex.HINT_MENU ? getQuizWordCoord() : null
+      );
+      setSelectedWord(getCurrentWord());
       return Math.max(0, prev - 1);
     });
   };
@@ -109,18 +130,22 @@ export function useQuizUserGuideStep() {
   const setNextStep = () => {
     setUserGuideStep((prev) => {
       const nextIndex = prev + 1;
-      setIsHintMenuOpen(nextIndex === quizUserGuideIndex.HINT_MENU);
+      setAnchorPosition(
+        nextIndex === quizUserGuideIndex.HINT_MENU ? getQuizWordCoord() : null
+      );
+      setSelectedWord(getCurrentWord());
       return Math.min(quizUserGuideList.length - 1, prev + 1);
     });
   };
 
   const initializeStep = () => {
-    setIsHintMenuOpen(false);
     setUserGuideStep(0);
+    setAnchorPosition(null);
   };
 
   const disableShowUserGuide = () => {
     setShowUserGuide(false);
+    setAnchorPosition(null);
   };
 
   useEffect(() => {

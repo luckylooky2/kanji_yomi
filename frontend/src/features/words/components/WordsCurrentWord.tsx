@@ -1,23 +1,19 @@
 import styled from "@emotion/styled";
 import CloseButton from "@mui/icons-material/Close";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import Button from "@mui/material/Button";
 import { useAtom } from "jotai";
 
 import { wordsCurrentWordIndex } from "@/entities/words/store";
+import WordMenuTrigger from "@/features/wordMenu/components/WordMenuTrigger";
 import { useFetchWords } from "@/shared/hooks/useFetchWords";
-import { useTTS } from "@/shared/hooks/useTTS";
-import { getMUIColorByCorrectRatio } from "@/shared/lib";
+import { getDifficultyColor, getMUIColorByCorrectRatio } from "@/shared/lib";
 import { theme } from "@/shared/styles/theme";
-import ResponsiveButton from "@/widgets/Responsive/ResponsiveButton";
 import ResponsiveChip from "@/widgets/Responsive/ResponsiveChip";
-import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 const WordsCurrentWord = () => {
   const [currentWordIndex, setCurrentWordIndex] = useAtom(
     wordsCurrentWordIndex
   );
-  const { playTTS } = useTTS();
   const { words, isLoading } = useFetchWords();
   const isWordSelected = currentWordIndex !== null;
 
@@ -31,9 +27,13 @@ const WordsCurrentWord = () => {
   return (
     <WordsCurrentWordContainer isWordSelected={isWordSelected}>
       <WordsCurrentWordTitle>
-        <h1>{word.word}</h1>
+        <WordMenuTrigger>
+          <WordsCurrentWordWordContainer>
+            <h1>{word.word}</h1>
+          </WordsCurrentWordWordContainer>
+        </WordMenuTrigger>
         <ResponsiveChip
-          // variant="outlined"
+          variant="outlined"
           color={getMUIColorByCorrectRatio(correctRatio)}
           label={correctRatio + "%"}
         />
@@ -41,11 +41,13 @@ const WordsCurrentWord = () => {
       <WordsCurrentWordMeaningLayout>
         {word.meanings.map(({ meaning, difficulty }, index) => (
           <WordsCurrentWordMeaning key={index}>
-            <ResponsiveChip color="primary" label={difficulty} />
-            <h2>{meaning}</h2>
-            <ResponsiveButton onClick={() => playTTS(meaning)}>
-              <ResponsiveIcon icon={VolumeUpIcon} />
-            </ResponsiveButton>
+            <ResponsiveChip
+              color={getDifficultyColor(difficulty)}
+              label={difficulty}
+            />
+            <WordMenuTrigger>
+              <h2>{meaning}</h2>
+            </WordMenuTrigger>
           </WordsCurrentWordMeaning>
         ))}
       </WordsCurrentWordMeaningLayout>
@@ -108,6 +110,7 @@ const WordsCurrentWordMeaningLayout = styled.div`
 
 const WordsCurrentWordMeaning = styled.div`
   display: flex;
+  gap: ${theme.spacing.small};
 
   h2 {
     margin: auto ${theme.spacing.small};
@@ -127,4 +130,8 @@ const WordsCurrentWordMeaning = styled.div`
 const WordsCurrentWordCloseButton = styled(Button)`
   position: absolute;
   right: 0;
+`;
+
+const WordsCurrentWordWordContainer = styled.div`
+  padding: 0 10px;
 `;

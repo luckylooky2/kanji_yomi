@@ -7,7 +7,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCellBasic from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -25,11 +25,12 @@ import {
 } from "@/entities/words/store";
 import ChipByDifficulty from "@/features/admin/components/ChipByDifficulty";
 import WordsToolbar from "@/features/admin/components/WordsToolbar";
+import WordMenuTrigger from "@/features/wordMenu/components/WordMenuTrigger";
 import WordsSearchFilter from "@/features/words/components/WordsSearchFilter";
 import { useFetchWords } from "@/shared/hooks/useFetchWords";
 import { useScroll } from "@/shared/hooks/useScroll";
 import { theme } from "@/shared/styles/theme";
-import { DifficultyType } from "@/shared/types";
+import { DifficultyType, WordInfo } from "@/shared/types";
 import Loading from "@/widgets/Loading/Loading";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
@@ -48,8 +49,12 @@ const AdminWordsMeaning = ({ meaning }: AdminWordsMeaningProps) => {
     <TableCell align="center">
       {meaning ? (
         <AdminWordsMeaningContainer>
-          <div>{`${meaning.meaning}`}</div>
           <ChipByDifficulty difficulty={meaning.difficulty} />
+          <TableWordContainer>
+            <WordMenuTrigger>
+              <strong>{`${meaning.meaning}`}</strong>
+            </WordMenuTrigger>
+          </TableWordContainer>
         </AdminWordsMeaningContainer>
       ) : (
         NOT_AVAILABLE
@@ -111,29 +116,22 @@ const AdminWords = () => {
 
   const resetInput = () => {
     reset();
+    setSearchInput("");
   };
 
-  function createData(
-    id: number,
-    word: string,
-    meaning1: TMeaning,
-    meaning2: TMeaning | null,
-    meaning3: TMeaning | null,
-    correctRatio: number
-  ) {
-    return { id, word, meaning1, meaning2, meaning3, correctRatio };
-  }
+  const handleSelectWord = (index: number) => {
+    if (currentWordIndex === index) setCurrentWordIndex(null);
+    else setCurrentWordIndex(index);
+  };
 
-  const rows = words?.map((word) =>
-    createData(
-      word.id,
-      word.word,
-      word.meanings[0] ?? null,
-      word.meanings[1] ?? null,
-      word.meanings[2] ?? null,
-      word.correctRatio
-    )
-  );
+  const rows = words?.map((word: WordInfo) => ({
+    id: word.id,
+    word: word.word,
+    meaning1: word.meanings[0] ?? null,
+    meaning2: word.meanings[1] ?? null,
+    meaning3: word.meanings[2] ?? null,
+    correctRatio: word.correctRatio,
+  }));
 
   if (isError) {
     return (
@@ -161,12 +159,7 @@ const AdminWords = () => {
             {...register("search")}
           />
         </WordsSearchForm>
-        <WordsSearchFilterButton
-          onClick={() => {
-            resetInput();
-            setSearchInput("");
-          }}
-        >
+        <WordsSearchFilterButton onClick={resetInput}>
           <ResponsiveIcon icon={CloseIcon} />
         </WordsSearchFilterButton>
         <WordsSearchFilterButton onClick={toggleSearchFilter}>
@@ -209,16 +202,17 @@ const AdminWords = () => {
                 <TableRow
                   selected={currentWordIndex === index}
                   key={row.id}
-                  onClick={() => {
-                    if (currentWordIndex === index) setCurrentWordIndex(null);
-                    else setCurrentWordIndex(index);
-                  }}
+                  onClick={() => handleSelectWord(index)}
                 >
                   <TableCell component="th" scope="row">
                     {row.id}
                   </TableCell>
                   <TableCell component="th" scope="row" align="center">
-                    <strong>{row.word}</strong>
+                    <TableWordContainer>
+                      <WordMenuTrigger>
+                        <strong>{row.word}</strong>
+                      </WordMenuTrigger>
+                    </TableWordContainer>
                   </TableCell>
                   <AdminWordsMeaning meaning={row.meaning1} />
                   <AdminWordsMeaning meaning={row.meaning2} />
@@ -256,7 +250,7 @@ const WordsSearchForm = styled.form`
 `;
 
 const WordsSearchInput = styled.input`
-  fontsize: ${theme.spacing.medium};
+  font-size: ${theme.spacing.medium};
   width: 100%;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -306,6 +300,10 @@ const AdminWordsMeaningContainer = styled.div`
   gap: ${theme.spacing.small};
 `;
 
+const TableCell = styled(TableCellBasic)`
+  font-size: ${theme.spacing.medium};
+`;
+
 const TableCellContainer = styled.div`
   margin: 0 auto;
   width: 150px;
@@ -313,4 +311,13 @@ const TableCellContainer = styled.div`
 
 const TableCellNoContent = styled.div`
   width: max-content;
+`;
+
+const TableWordContainer = styled.div`
+  width: fit-content;
+  margin: auto;
+
+  > div {
+    padding: 0 10px;
+  }
 `;

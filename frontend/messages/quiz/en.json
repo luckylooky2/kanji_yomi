@@ -46,7 +46,7 @@
     "step5-title": "Quiz Rounds",
     "step5-content1": "Shows the current round and the total rounds.",
     "step6-title": "Hints",
-    "step6-content1": "Listen with TTS or check how to read it in the Dictionary.",
+    "step6-content1": "Click the word to listen to TTS or check how to read it in the dictionary.",
     "step7-title": "Quit",
     "step7-content1": "Return to Quiz option page.",
     "step7-content2": "The current quiz progress will not be saved.",
@@ -66,10 +66,6 @@
     "modal-cancel": "No",
     "finish": "Finish",
     "placeholder": "Type Hiragana. ex)",
-    "voice": "Voice",
-    "rate": "Rate",
-    "pitch": "Pitch",
-    "volume": "Volume",
     "multiAnswer": "Multi-answer",
     "popup-noinput": "Please type the answer.",
     "popup-correct": "Correct!",
@@ -87,5 +83,13 @@
     "no-words": "Play and learn more words :)",
     "back": "Back to Option",
     "csv": "Download Result CSV"
+  },
+  "wordMenu": {
+    "speak": "Speak",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "copyError": "Failed to copy.",
+    "findInDictionary": "Find in Dictionary",
+    "speakSetting": "Speak Setting"
   }
 }

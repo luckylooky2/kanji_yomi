@@ -22,15 +22,19 @@ const QuizUserGuidePopover = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (guideContent === null || guideContent.anchorEl === null) {
+      const paperEl = document.getElementById("quiz-user-guide-paper");
+      if (
+        guideContent === null ||
+        guideContent.anchorEl === null ||
+        paperEl === null
+      ) {
         return;
       }
 
       const { left: anchorLeft, right: anchorRight } =
         guideContent.anchorEl.getBoundingClientRect();
-      const { left: popoverLeft, right: popoverRight } = document
-        .getElementsByClassName("MuiPopover-paper")[0]
-        .getBoundingClientRect();
+      const { left: popoverLeft, right: popoverRight } =
+        paperEl.getBoundingClientRect();
       // anchor의 중간이 popover의 몇 %에 위치하는지 계산
       const anchorMid = (anchorLeft + anchorRight) / 2;
       const popoverWidth = popoverRight - popoverLeft;
@@ -74,6 +78,11 @@ const QuizUserGuidePopover = () => {
       arrowPosition={arrowPosition}
       disablePortal
       mid={mid}
+      slotProps={{
+        paper: {
+          id: "quiz-user-guide-paper",
+        },
+      }}
     >
       <QuizUserGuidePopoverTitle>
         <h3>{guideContent.title}</h3>

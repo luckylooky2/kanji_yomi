@@ -24,6 +24,7 @@ import {
 } from "@/entities/quizOption/store";
 import { QuizOptionDifficulty } from "@/entities/quizOption/types";
 import { useQuizStartFinish } from "@/shared/hooks/useStartFinishQuiz";
+import { getDifficultyColor } from "@/shared/lib";
 import { difficulties, roundMarks } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
@@ -98,7 +99,7 @@ const QuizOptions = () => {
               <Chip
                 key={index}
                 variant={difficulty.includes(item) ? "filled" : "outlined"}
-                color="primary"
+                color={getDifficultyColor(item)}
                 component="button"
                 label={item}
                 data-value={item}

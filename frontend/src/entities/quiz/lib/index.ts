@@ -17,6 +17,10 @@ export const findVoiceIndex = (
   voiceList: SpeechSynthesisVoice[],
   voiceName: string
 ) => {
+  if (!voiceList || voiceList.length === 0) {
+    return -1;
+  }
+
   let index = 0;
   voiceList.forEach((voice, i) => {
     if (voice.name === voiceName) {

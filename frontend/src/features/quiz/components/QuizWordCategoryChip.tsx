@@ -12,7 +12,7 @@ const QuizWordCategoryChip = ({ category }: Props) => {
   const isMobile = useMediaQuery(theme.breakpoints.mobile);
   return (
     <Chip
-      // variant="outlined"
+      variant={category.variant ?? "filled"}
       color={category.color}
       size={isMobile ? "small" : "medium"}
       label={category.value}

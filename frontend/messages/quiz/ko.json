@@ -46,7 +46,7 @@
     "step5-title": "퀴즈 라운드",
     "step5-content1": "현재 라운드와 총 라운드를 표시합니다.",
     "step6-title": "힌트",
-    "step6-content1": "TTS로 듣거나 사전에서 읽는 방법을 확인할 수 있습니다.",
+    "step6-content1": "단어를 클릭하여 TTS로 듣거나 사전에서 읽는 방법을 확인할 수 있습니다.",
     "step7-title": "포기",
     "step7-content1": "퀴즈 옵션 선택 페이지로 돌아갑니다.",
     "step7-content2": "현재 퀴즈 진행 상황은 저장되지 않습니다.",
@@ -66,10 +66,6 @@
     "modal-cancel": "아니요",
     "finish": "종료",
     "placeholder": "히라가나로 입력하세요. 예)",
-    "voice": "음성",
-    "rate": "빠르기",
-    "pitch": "높낮이",
-    "volume": "음량",
     "multiAnswer": "다중 정답",
     "popup-noinput": "답을 입력하세요.",
     "popup-correct": "정답입니다!",
@@ -87,5 +83,13 @@
     "no-words": "더 많은 단어를 공부해보세요 :)",
     "back": "옵션 선택으로 되돌아가기",
     "csv": "결과 CSV 다운로드"
+  },
+  "wordMenu": {
+    "speak": "발음 듣기",
+    "copy": "복사",
+    "copied": "완료!",
+    "copyError": "복사에 실패했습니다.",
+    "findInDictionary": "사전에서 찾기",
+    "speakSetting": "발음 설정"
   }
 }

@@ -60,6 +60,7 @@ export interface QuizWordCategory {
   kind: string;
   value: string;
   color: MUIChipColorType;
+  variant?: "outlined" | "filled";
 }
 
 export interface QuizHintSpeakSetting {
