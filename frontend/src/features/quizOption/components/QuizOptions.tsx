@@ -95,17 +95,15 @@ const QuizOptions = () => {
         </QuizOptionLayout>
         <QuizOptionLayout title={`${t("difficulty")}`}>
           <Stack direction="row" spacing={1}>
-            {difficulties.map((difficulty, index) => (
+            {difficulties.map((item, index) => (
               <Chip
                 key={index}
-                variant={
-                  difficulty.includes(difficulty) ? "filled" : "outlined"
-                }
-                color={getDifficultyColor(difficulty)}
+                variant={difficulty.includes(item) ? "filled" : "outlined"}
+                color={getDifficultyColor(item)}
                 component="button"
-                label={difficulty}
-                data-value={difficulty}
-                aria-label={difficulty}
+                label={item}
+                data-value={item}
+                aria-label={item}
                 onClick={handleDifficultyChange}
               />
             ))}
