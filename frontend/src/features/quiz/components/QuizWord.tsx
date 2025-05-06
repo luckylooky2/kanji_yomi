@@ -8,7 +8,6 @@ import { getMUIColorByCorrectRatio } from "@/shared/lib";
 import { theme } from "@/shared/styles/theme";
 
 import QuizWordCategoryChip from "./QuizWordCategoryChip";
-import QuizWordHint from "./QuizWordHint";
 
 const QuizWord = () => {
   // error가 발생한 경우는 상위 컴포넌트에서 처리되었기 때문에 !를 사용하였다.
@@ -55,11 +54,12 @@ const QuizWord = () => {
             <QuizWordCategoryChip key={index} category={category} />
           ))}
         </QuizWordCategoryLayout>
-        <QuizWordHint />
       </QuizWordUtilityLayout>
       <QuizWordWrapper>
         <WordMenuTrigger>
-          <WordMenuTriggerContainer>{kanji.word}</WordMenuTriggerContainer>
+          <WordMenuTriggerContainer id="quiz-word">
+            {kanji.word}
+          </WordMenuTriggerContainer>
         </WordMenuTrigger>
       </QuizWordWrapper>
     </QuizWordLayout>

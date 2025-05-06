@@ -68,6 +68,7 @@ const WordMenu = () => {
       open={Boolean(anchorPosition)}
       anchorReference="anchorPosition"
       anchorPosition={anchorPosition ?? { top: 0, left: 0 }}
+      disablePortal
       onClose={() => setAnchorPosition(null)}
     >
       <MenuList>
@@ -84,7 +85,7 @@ const WordMenu = () => {
           <ListItemIcon>
             <ResponsiveIcon icon={copied ? CheckIcon : ContentCopyIcon} />
           </ListItemIcon>
-          <ListItemText>{copied ? "복사되었습니다!" : "복사"}</ListItemText>
+          <ListItemText>{copied ? "완료!" : "복사"}</ListItemText>
         </MenuItemContainer>
         <MenuItemContainer onClick={handleRedirectDictionary}>
           <ListItemIcon>
