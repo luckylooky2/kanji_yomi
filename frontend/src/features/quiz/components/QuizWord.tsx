@@ -4,8 +4,9 @@ import { useTranslations } from "next-intl";
 import { QuizWordCategory } from "@/entities/quiz/types";
 import WordMenuTrigger from "@/features/wordMenu/components/WordMenuTrigger";
 import { useQuizQuestion } from "@/shared/hooks/useQuizQuestion";
-import { getMUIColorByCorrectRatio } from "@/shared/lib";
+import { getDifficultyColor, getMUIColorByCorrectRatio } from "@/shared/lib";
 import { theme } from "@/shared/styles/theme";
+import { DifficultyType } from "@/shared/types";
 
 import QuizWordCategoryChip from "./QuizWordCategoryChip";
 
@@ -23,10 +24,10 @@ const QuizWord = () => {
     (item, index) => difficulties.indexOf(item) === index
   );
   const meaningsCategories: QuizWordCategory[] = uniqueDifficulties.map(
-    (difficulty: string) => ({
+    (difficulty: DifficultyType) => ({
       kind: "difficulty",
       value: difficulty,
-      color: "primary",
+      color: getDifficultyColor(difficulty),
     })
   );
 
@@ -34,7 +35,7 @@ const QuizWord = () => {
     meaningsCategories.push({
       kind: "multianswer",
       value: t("multiAnswer"),
-      color: "secondary",
+      color: "default",
     });
   }
 
@@ -43,6 +44,7 @@ const QuizWord = () => {
       kind: "correctRatio",
       value: kanji.correctRatio + "%",
       color: getMUIColorByCorrectRatio(kanji.correctRatio),
+      variant: "outlined",
     },
   ]);
 

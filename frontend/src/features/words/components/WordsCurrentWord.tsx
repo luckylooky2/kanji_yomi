@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import { wordsCurrentWordIndex } from "@/entities/words/store";
 import WordMenuTrigger from "@/features/wordMenu/components/WordMenuTrigger";
 import { useFetchWords } from "@/shared/hooks/useFetchWords";
-import { getMUIColorByCorrectRatio } from "@/shared/lib";
+import { getDifficultyColor, getMUIColorByCorrectRatio } from "@/shared/lib";
 import { theme } from "@/shared/styles/theme";
 import ResponsiveChip from "@/widgets/Responsive/ResponsiveChip";
 
@@ -33,7 +33,7 @@ const WordsCurrentWord = () => {
           </WordsCurrentWordWordContainer>
         </WordMenuTrigger>
         <ResponsiveChip
-          // variant="outlined"
+          variant="outlined"
           color={getMUIColorByCorrectRatio(correctRatio)}
           label={correctRatio + "%"}
         />
@@ -41,7 +41,10 @@ const WordsCurrentWord = () => {
       <WordsCurrentWordMeaningLayout>
         {word.meanings.map(({ meaning, difficulty }, index) => (
           <WordsCurrentWordMeaning key={index}>
-            <ResponsiveChip color="primary" label={difficulty} />
+            <ResponsiveChip
+              color={getDifficultyColor(difficulty)}
+              label={difficulty}
+            />
             <WordMenuTrigger>
               <h2>{meaning}</h2>
             </WordMenuTrigger>

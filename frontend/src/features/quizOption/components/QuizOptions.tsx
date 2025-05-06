@@ -24,6 +24,7 @@ import {
 } from "@/entities/quizOption/store";
 import { QuizOptionDifficulty } from "@/entities/quizOption/types";
 import { useQuizStartFinish } from "@/shared/hooks/useStartFinishQuiz";
+import { getDifficultyColor } from "@/shared/lib";
 import { difficulties, roundMarks } from "@/shared/model";
 import { theme } from "@/shared/styles/theme";
 
@@ -94,15 +95,17 @@ const QuizOptions = () => {
         </QuizOptionLayout>
         <QuizOptionLayout title={`${t("difficulty")}`}>
           <Stack direction="row" spacing={1}>
-            {difficulties.map((item, index) => (
+            {difficulties.map((difficulty, index) => (
               <Chip
                 key={index}
-                variant={difficulty.includes(item) ? "filled" : "outlined"}
-                color="primary"
+                variant={
+                  difficulty.includes(difficulty) ? "filled" : "outlined"
+                }
+                color={getDifficultyColor(difficulty)}
                 component="button"
-                label={item}
-                data-value={item}
-                aria-label={item}
+                label={difficulty}
+                data-value={difficulty}
+                aria-label={difficulty}
                 onClick={handleDifficultyChange}
               />
             ))}
