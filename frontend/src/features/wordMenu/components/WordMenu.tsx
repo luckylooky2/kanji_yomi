@@ -7,6 +7,7 @@ import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import TuneIcon from "@mui/icons-material/Tune";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import {
+  Divider,
   ListItemIcon,
   ListItemText,
   ListSubheader,
@@ -24,7 +25,9 @@ import {
   wordMenuAnchorPositionState,
   wordMenuSelectedWordState,
 } from "@/entities/wordMenu/store";
+import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { useTTS } from "@/shared/hooks/useTTS";
+import { theme } from "@/shared/styles/theme";
 import ResponsiveIcon from "@/widgets/Responsive/ResponsiveIcon";
 
 const WordMenu = () => {
@@ -36,6 +39,7 @@ const WordMenu = () => {
   const timeId = useRef<NodeJS.Timeout | null>(null);
   const { playTTS } = useTTS();
   const router = useRouter();
+  const isMobile = useMediaQuery(theme.breakpoints.mobile);
   const t = useTranslations("wordMenu");
   const clearTime = 2000;
 
@@ -77,31 +81,49 @@ const WordMenu = () => {
         <ListSubheader>
           <h2>{selectedWord}</h2>
         </ListSubheader>
-        <MenuItemContainer onClick={handleSpeakWord}>
-          <ListItemIcon>
-            <ResponsiveIcon icon={VolumeUpIcon} />
-          </ListItemIcon>
-          <ListItemText>{t("speak")}</ListItemText>
-        </MenuItemContainer>
-        <MenuItemContainer onClick={() => handleCopyWord(selectedWord ?? "")}>
-          <ListItemIcon>
-            <ResponsiveIcon icon={copied ? CheckIcon : ContentCopyIcon} />
-          </ListItemIcon>
-          <ListItemText>{t(copied ? "copied" : "copy")}</ListItemText>
-        </MenuItemContainer>
-        <MenuItemContainer onClick={handleRedirectDictionary}>
-          <ListItemIcon>
-            <ResponsiveIcon icon={TravelExploreIcon} />
-          </ListItemIcon>
-          <ListItemText>{t("findInDictionary")}</ListItemText>
-          <OpenInNew />
-        </MenuItemContainer>
-        <MenuItemContainer onClick={handleRedirectSetting}>
-          <ListItemIcon>
-            <ResponsiveIcon icon={TuneIcon} />
-          </ListItemIcon>
-          <ListItemText>{t("speakSetting")}</ListItemText>
-        </MenuItemContainer>
+        <MenuDivider />
+        <MenuItemMobileContainer $isMobile={isMobile}>
+          <MenuItemContainer onClick={handleSpeakWord} $isMobile={isMobile}>
+            <ListItemIcon>
+              <ResponsiveIcon icon={VolumeUpIcon} />
+            </ListItemIcon>
+            {!isMobile && <ListItemText>{t("speak")}</ListItemText>}
+          </MenuItemContainer>
+          <MenuItemContainer
+            onClick={() => handleCopyWord(selectedWord ?? "")}
+            $isMobile={isMobile}
+          >
+            <ListItemIcon>
+              <ResponsiveIcon icon={copied ? CheckIcon : ContentCopyIcon} />
+            </ListItemIcon>
+            {!isMobile && (
+              <ListItemText>{t(copied ? "copied" : "copy")}</ListItemText>
+            )}
+          </MenuItemContainer>
+          <MenuItemContainer
+            onClick={handleRedirectDictionary}
+            $isMobile={isMobile}
+          >
+            <ListItemIcon>
+              <ResponsiveIcon icon={TravelExploreIcon} />
+            </ListItemIcon>
+            {!isMobile && (
+              <>
+                <ListItemText>{t("findInDictionary")}</ListItemText>
+                <OpenInNew />
+              </>
+            )}
+          </MenuItemContainer>
+          <MenuItemContainer
+            onClick={handleRedirectSetting}
+            $isMobile={isMobile}
+          >
+            <ListItemIcon>
+              <ResponsiveIcon icon={TuneIcon} />
+            </ListItemIcon>
+            {!isMobile && <ListItemText>{t("speakSetting")}</ListItemText>}
+          </MenuItemContainer>
+        </MenuItemMobileContainer>
       </MenuList>
     </Popover>
   );
@@ -109,11 +131,26 @@ const WordMenu = () => {
 
 export default WordMenu;
 
-const MenuItemContainer = styled(MenuItem)`
+const MenuItemContainer = styled(MenuItem)<{ $isMobile: boolean }>`
   min-height: 36px;
+
+  padding: ${({ $isMobile }) => ($isMobile ? "0 12px" : "")};
+
+  > div {
+    min-width: ${({ $isMobile }) => ($isMobile ? "20px !important;" : "")};
+  }
+`;
+
+const MenuItemMobileContainer = styled.div<{ $isMobile: boolean }>`
+  display: flex;
+  flex-direction: ${({ $isMobile }) => ($isMobile ? "row" : "column")};
 `;
 
 const OpenInNew = styled(OpenInNewIcon)`
   font-size: 16px;
   margin-left: var(--spacing-xsmall);
+`;
+
+const MenuDivider = styled(Divider)`
+  margin: 0 10px 10px 10px;
 `;

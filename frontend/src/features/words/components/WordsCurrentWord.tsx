@@ -130,5 +130,5 @@ const WordsCurrentWordCloseButton = styled(Button)`
 `;
 
 const WordsCurrentWordWordContainer = styled.div`
-  padding: 0 5px;
+  padding: 0 10px;
 `;
