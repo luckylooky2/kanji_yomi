@@ -13,5 +13,13 @@
   "filter-close": "Close",
   "count-error": "Failed to load count.",
   "count-total": "items found.",
-  "not-found": "No search results"
+  "not-found": "No search results",
+  "wordMenu": {
+    "speak": "Speak",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "copyError": "Failed to copy.",
+    "findInDictionary": "Find in Dictionary",
+    "speakSetting": "Speak Setting"
+  }
 }

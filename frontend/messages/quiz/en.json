@@ -83,5 +83,13 @@
     "no-words": "Play and learn more words :)",
     "back": "Back to Option",
     "csv": "Download Result CSV"
+  },
+  "wordMenu": {
+    "speak": "Speak",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "copyError": "Failed to copy.",
+    "findInDictionary": "Find in Dictionary",
+    "speakSetting": "Speak Setting"
   }
 }

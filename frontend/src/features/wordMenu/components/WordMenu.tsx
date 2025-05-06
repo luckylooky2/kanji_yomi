@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -35,6 +36,7 @@ const WordMenu = () => {
   const timeId = useRef<NodeJS.Timeout | null>(null);
   const { playTTS } = useTTS();
   const router = useRouter();
+  const t = useTranslations("wordMenu");
   const clearTime = 2000;
 
   const handleSpeakWord = () => {
@@ -54,7 +56,7 @@ const WordMenu = () => {
         timeId.current = null;
       }, clearTime);
     } catch {
-      toast.error("복사에 실패하였습니다.");
+      toast.error(t("copyError"));
     }
   };
 
@@ -79,26 +81,26 @@ const WordMenu = () => {
           <ListItemIcon>
             <ResponsiveIcon icon={VolumeUpIcon} />
           </ListItemIcon>
-          <ListItemText>단어 발음 듣기</ListItemText>
+          <ListItemText>{t("speak")}</ListItemText>
         </MenuItemContainer>
         <MenuItemContainer onClick={() => handleCopyWord(selectedWord ?? "")}>
           <ListItemIcon>
             <ResponsiveIcon icon={copied ? CheckIcon : ContentCopyIcon} />
           </ListItemIcon>
-          <ListItemText>{copied ? "완료!" : "복사"}</ListItemText>
+          <ListItemText>{t(copied ? "copied" : "copy")}</ListItemText>
         </MenuItemContainer>
         <MenuItemContainer onClick={handleRedirectDictionary}>
           <ListItemIcon>
             <ResponsiveIcon icon={TravelExploreIcon} />
           </ListItemIcon>
-          <ListItemText>사전에서 찾기</ListItemText>
+          <ListItemText>{t("findInDictionary")}</ListItemText>
           <OpenInNew />
         </MenuItemContainer>
         <MenuItemContainer onClick={handleRedirectSetting}>
           <ListItemIcon>
             <ResponsiveIcon icon={TuneIcon} />
           </ListItemIcon>
-          <ListItemText>단어 발음 설정</ListItemText>
+          <ListItemText>{t("speakSetting")}</ListItemText>
         </MenuItemContainer>
       </MenuList>
     </Popover>

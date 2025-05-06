@@ -1,5 +1,6 @@
 {
   "id": "setting",
+  "speakSetting": "발음 설정",
   "speak": {
     "voice": "음성",
     "rate": "빠르기",

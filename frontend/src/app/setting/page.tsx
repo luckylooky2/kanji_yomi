@@ -1,5 +1,6 @@
 "use client";
 import styled from "@emotion/styled";
+import { useTranslations } from "next-intl";
 
 import QuizWordHintSpeakSetting from "@/features/quiz/components/QuizWordHintSpeakSetting";
 import { useLocale } from "@/shared/hooks/useLocale";
@@ -8,6 +9,7 @@ import Loading from "@/widgets/Loading/Loading";
 
 const SettingPage = () => {
   const { isLoading, isError, retryHandler } = useLocale();
+  const t = useTranslations();
 
   if (isError) {
     return (
@@ -24,7 +26,7 @@ const SettingPage = () => {
 
   return (
     <SpeakSettingContainer>
-      <h2>단어 발음 설정</h2>
+      <h2>{t("speakSetting")}</h2>
       <QuizWordHintSpeakSetting />
     </SpeakSettingContainer>
   );

@@ -7,5 +7,13 @@
   "All": "All",
   "High": "높음",
   "Mid": "중간",
-  "Low": "낮음"
+  "Low": "낮음",
+  "wordMenu": {
+    "speak": "발음 듣기",
+    "copy": "복사",
+    "copied": "완료!",
+    "copyError": "복사에 실패했습니다.",
+    "findInDictionary": "사전에서 찾기",
+    "speakSetting": "발음 설정"
+  }
 }
