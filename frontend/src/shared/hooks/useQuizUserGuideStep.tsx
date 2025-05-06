@@ -21,14 +21,20 @@ export function useQuizUserGuideStep() {
   const [, setShowUserGuide] = useAtom(quizUserGuideShowState);
   const [, setSelectedWord] = useAtom(wordMenuSelectedWordState);
   const t = useTranslations("guide");
-  const quizWordRect = document
-    .getElementById("quiz-word")
-    ?.getClientRects()[0];
-  const quizWordCoord = {
-    top: quizWordRect ? (quizWordRect.top + quizWordRect.bottom) / 2 : 0,
-    left: quizWordRect ? quizWordRect.left : 0,
+
+  const getQuizWordCoord = () => {
+    const quizWordRect = document
+      .getElementById("quiz-word")
+      ?.getClientRects()[0];
+    return {
+      top: quizWordRect ? (quizWordRect.top + quizWordRect.bottom) / 2 : 0,
+      left: quizWordRect ? quizWordRect.left : 0,
+    };
   };
-  const currentWord = document.getElementById("quiz-word")?.textContent ?? "";
+
+  const getCurrentWord = () => {
+    return document.getElementById("quiz-word")?.textContent ?? "";
+  };
 
   const quizUserGuideList: (QuizUserGuideType | null)[] = [
     null,
@@ -114,9 +120,9 @@ export function useQuizUserGuideStep() {
     setUserGuideStep((prev) => {
       const prevIndex = prev - 1;
       setAnchorPosition(
-        prevIndex === quizUserGuideIndex.HINT_MENU ? quizWordCoord : null
+        prevIndex === quizUserGuideIndex.HINT_MENU ? getQuizWordCoord() : null
       );
-      setSelectedWord(currentWord);
+      setSelectedWord(getCurrentWord());
       return Math.max(0, prev - 1);
     });
   };
@@ -125,9 +131,9 @@ export function useQuizUserGuideStep() {
     setUserGuideStep((prev) => {
       const nextIndex = prev + 1;
       setAnchorPosition(
-        nextIndex === quizUserGuideIndex.HINT_MENU ? quizWordCoord : null
+        nextIndex === quizUserGuideIndex.HINT_MENU ? getQuizWordCoord() : null
       );
-      setSelectedWord(currentWord);
+      setSelectedWord(getCurrentWord());
       return Math.min(quizUserGuideList.length - 1, prev + 1);
     });
   };
